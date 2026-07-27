@@ -6,7 +6,6 @@ type ButtonVariant = "primary" | "secondary" | "danger";
 type ButtonSize = "small" | "medium" | "large";
 
 interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
-  className?: string;
   variant?: ButtonVariant;
   size?: ButtonSize;
   fullWidth?: boolean;
