@@ -9,8 +9,6 @@ function App() {
         <p>CRM</p>
     </Provider>
   )
-  
-  
 }
 
 export default App;
