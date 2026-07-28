@@ -1,14 +1,28 @@
+import { useEffect } from "react";
 import { Provider } from "react-redux";
-import { store } from "./store/index";
-import "./styles/global.css"
+import { RouterProvider } from "react-router-dom";
+import { store, useAppDispatch } from "./store";
+import { checkSession } from "../features/auth/model/slice";
+import { router } from "./router";
+import "./styles/global.css";
+
+
+function AppInitializer() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(checkSession());
+  }, [dispatch]);
+  return <RouterProvider router={router} />;
+}
 
 
 function App() {
   return (
     <Provider store={store}>
-        <p>CRM</p>
+      <AppInitializer />
     </Provider>
-  )
+  );
 }
 
 export default App;
