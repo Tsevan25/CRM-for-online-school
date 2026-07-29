@@ -6,6 +6,7 @@ import Button from "../../../../shared/ui/Button";
 import { useAppDispatch } from "../../../../app/store/index";
 import { login } from "../../model/slice";
 import styles from "./LoginForm.module.css";
+import { useNavigate } from 'react-router-dom'
 
 const loginSchema = z.object({
   email: z.string().min(1, "Email is required!").email("Incorrect email"),
@@ -18,6 +19,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate()
 
   const {
     register,
@@ -31,7 +33,7 @@ const LoginForm = () => {
   const onSubmit = async (data: LoginFormData) => {
   try {
     await dispatch(login(data)).unwrap()
-
+    navigate('/dashboard')
   } catch (err) {
     const message =
       err instanceof Error ? err.message : 'Unknown login error'
