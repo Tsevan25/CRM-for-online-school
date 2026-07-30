@@ -1,7 +1,7 @@
 import LoginForm from "../../features/auth/ui/LoginForm";
-import styles from "./Login.module.css";
+import styles from "./LoginPage.module.css";
 
-const Login = () => {
+const LoginPage = () => {
     return (
         <div className={styles.loginWrapper}>
             <LoginForm />
@@ -9,4 +9,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default LoginPage;

@@ -1,9 +1,11 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
-import Login from '../../pages/Login'
+import LoginPage from '../../pages/LoginPage'
 import ProtectedRoute from './ProtectedRouter'
 import Layout from '../layouts/MainLayout'
+import DashboardPage from '../../pages/DashboardPage'
 
-const DashboardPage = () => <div>Дашборд</div>;
+
+
 const StudentsPage = () => <div>Ученики</div>;
 const TransactionsPage = () => <div>Транзакции</div>;
 const SchedulePage = () => <div>Расписание</div>;
@@ -13,7 +15,7 @@ const SettingsPage = () => <div>Настройки</div>;
 export const router = createBrowserRouter([
   {
     path: '/login',
-    element: <Login />,
+    element: <LoginPage />,
   },
   {
     path: '/',
