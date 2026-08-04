@@ -5,16 +5,17 @@ import styles from './Input.module.css'
 interface InputProps extends ComponentPropsWithoutRef<'input'> {
   label?: string
   error?: string
+  labelClassName?: string 
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, className, id, ...rest }, ref) => {
+  ({ label, error, className, labelClassName, id, ...rest }, ref) => {
     const inputId = id ?? label?.toLowerCase().replace(/\s+/g, '-')
 
     return (
       <div className={styles.wrapper}>
         {label && (
-          <label htmlFor={inputId} className={styles.label}>
+          <label htmlFor={inputId} className={clsx(styles.label, labelClassName)}>
             {label}
           </label>
         )}

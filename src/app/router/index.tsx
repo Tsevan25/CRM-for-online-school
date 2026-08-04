@@ -3,10 +3,11 @@ import LoginPage from '../../pages/LoginPage'
 import ProtectedRoute from './ProtectedRouter'
 import Layout from '../layouts/MainLayout'
 import DashboardPage from '../../pages/DashboardPage'
+import StudentsPage from '../../pages/StudentPage/StudentPage'
+import StudentDetailPage from '@/pages/StudentDetailPage'
 
 
 
-const StudentsPage = () => <div>Ученики</div>;
 const TransactionsPage = () => <div>Транзакции</div>;
 const SchedulePage = () => <div>Расписание</div>;
 const UsersPage = () => <div>Пользователи</div>;
@@ -28,6 +29,7 @@ export const router = createBrowserRouter([
           { index: true, element: <Navigate to="/dashboard" replace /> },
           { path: 'dashboard', element: <DashboardPage /> },
           { path: 'students', element: <StudentsPage /> },
+          { path: 'students/:id', element: <StudentDetailPage />},
           { path: 'transactions', element: <TransactionsPage /> },
           { path: 'schedule', element: <SchedulePage /> },
           { path: 'users', element: <UsersPage /> },

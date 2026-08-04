@@ -1,21 +1,21 @@
-import { NavLink } from 'react-router-dom'
-import { useAppSelector } from '../../../store'
-import styles from './Sidebar.module.css'
+import { NavLink } from "react-router-dom";
+import { useAppSelector } from "../../../store";
+import styles from "./Sidebar.module.css";
 
 const Sidebar = () => {
-  const { role } = useAppSelector((state) => state.auth)
+  const { role } = useAppSelector((state) => state.auth);
 
-    const linkClassName = ({ isActive }: { isActive: boolean }) =>
-    isActive ? `${styles.link} ${styles.active}` : styles.link
+  const linkClassName = ({ isActive }: { isActive: boolean }) =>
+    isActive ? `${styles.link} ${styles.active}` : styles.link;
 
-    return (
-           <aside className={styles.sidebar}>
+  return (
+    <aside className={styles.sidebar}>
       <nav className={styles.nav}>
         <NavLink to="/dashboard" className={linkClassName}>
           Дашборд
         </NavLink>
 
-        {role === 'admin' && (
+        {role === "admin" && (
           <>
             <NavLink to="/users" className={linkClassName}>
               Пользователи
@@ -26,7 +26,7 @@ const Sidebar = () => {
           </>
         )}
 
-        {(role === 'admin' || role === 'manager') && (
+        {(role === "admin" || role === "manager") && (
           <>
             <NavLink to="/students" className={linkClassName}>
               Ученики
@@ -42,7 +42,7 @@ const Sidebar = () => {
         </NavLink>
       </nav>
     </aside>
-    )
-}
+  );
+};
 
 export default Sidebar;

@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import Input from "../../../../shared/ui/Input";
-import Button from "../../../../shared/ui/Button";
-import { useAppDispatch } from "../../../../app/store/index";
-import { login } from "../../model/slice";
+import Input from "@/shared/ui/Input";
+import Button from "@/shared/ui/Button";
+import { useAppDispatch } from "@/app/store/index";
+import { login } from "@/features/auth";
 import styles from "./LoginForm.module.css";
 import { useNavigate } from 'react-router-dom'
 
@@ -46,6 +46,7 @@ const LoginForm = () => {
       <h2 className={styles.title}>Вход в CRM</h2>
 
       <Input
+        labelClassName={styles.label}
         label="Email"
         type="email"
         placeholder="Введите email"
@@ -54,6 +55,7 @@ const LoginForm = () => {
       />
 
       <Input
+        labelClassName={styles.label}
         label="Пароль"
         type="password"
         placeholder="Введите пароль"

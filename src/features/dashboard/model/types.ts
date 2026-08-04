@@ -1,7 +1,7 @@
 export interface StatCardData {
   title: string
   value: string | number
-  icon?: string
+  icon?: string | object
   description?: string
 }
 

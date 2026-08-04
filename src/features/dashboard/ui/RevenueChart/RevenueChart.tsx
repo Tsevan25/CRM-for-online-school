@@ -1,5 +1,5 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { formatCurrency } from '../../../../shared/lib/formatCurrency'
+import { formatCurrency } from '@/shared/lib/formatCurrency'
 import type { RevenueChartData } from '../../model/types'
 import styles from './RevenueChart.module.css'
 

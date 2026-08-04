@@ -1,8 +1,9 @@
 import { useAppSelector, useAppDispatch } from "../../../store";
-import { logout } from "../../../../features/auth/model/slice";
-import Button from "../../../../shared/ui/Button";
+import { logout } from '@/features/auth'
+import Button from "@/shared/ui/Button";
 import styles from "./Header.module.css";
 import { Bell } from "lucide-react";
+import logoUrl from '@/shared/assets/icons/secondary-logo.svg'
 
 
 const Header = () => {
@@ -14,7 +15,8 @@ const Header = () => {
   };
   return (
     <header className={styles.header}>
-      <span className={styles.logo}>English School CRM</span>
+      {/* <span className={styles.logo}>English School CRM</span> */}
+      <img className={styles.logoImg} src={logoUrl} alt="logo" />
       <div className={styles.right}>
         <span className={styles.notification}><Bell /></span>
 

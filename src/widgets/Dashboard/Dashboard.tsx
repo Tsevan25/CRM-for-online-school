@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import Card from '../../shared/ui/Card/Card'
+import Card from '@/shared/ui/Card/Card'
 import styles from './Dashboard.module.css'
 
 interface StatCardData {

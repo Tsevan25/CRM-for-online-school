@@ -16,6 +16,11 @@
   color: #ffff;
 }
 
+.logoImg {
+  max-width: 300px;
+  max-height: 700px;
+}
+
 .right {
   display: flex;
   align-items: center;
