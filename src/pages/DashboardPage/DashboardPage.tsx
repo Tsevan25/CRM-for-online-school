@@ -1,5 +1,5 @@
 import  Dashboard  from '@/widgets/Dashboard'
-import { useDashboardData } from '@/features/dashboard/model/useDashboardData'
+import { useDashboardData } from '@/features/dashboard'
 
 const DashboardPage = () => {
   const { stats, chartNode } = useDashboardData()

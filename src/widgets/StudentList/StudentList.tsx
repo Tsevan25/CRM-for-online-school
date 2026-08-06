@@ -1,31 +1,24 @@
 import { useState } from 'react'
-import StudentRow from '../../entities/student/ui/StudentRow'
-import type { Student } from '../../entities/student/model/types'
-import Button from '../../shared/ui/Button/Button'
-import Card from '../../shared/ui/Card/Card'
-import Modal from '../../shared/ui/Modal/Modal'
-import AddStudentForm from '../../features/student/add/ui/AddStudentForm'
-import type { StudentFormData } from '../../features/student/add/ui/AddStudentForm/AddStudentForm'
-import styles from './StudentList.module.css'
 import { useNavigate } from 'react-router-dom'
-
-
-const initialStudents: Student[] = [
-  { id: '1', fullName: 'Alice Johnson', email: 'alice@example.com', phone: '+1 234-567-8901', balance: 1200, createdBy: 'admin', createdAt: '2025-01-15T10:00:00Z' },
-  { id: '2', fullName: 'Bob Smith', email: 'bob@example.com', balance: 850, createdBy: 'manager1', createdAt: '2025-02-20T12:30:00Z' },
-  { id: '3', fullName: 'Charlie Brown', phone: '+44 1234-567890', balance: 0, createdBy: 'manager1', createdAt: '2025-03-10T09:00:00Z' },
-]
+import { type Student, StudentRow }  from '@/entities/student'
+import { mockStudents } from '@/entities/student/model/mock'
+import Button from '@/shared/ui/Button/Button'
+import Card from '@/shared/ui/Card/Card'
+import type { StudentFormData } from '@/entities/student'
+import {
+  AddStudentModal,
+  EditStudentModal,
+  DeleteStudentConfirm
+} from '@/features/student'
+import styles from './StudentList.module.css'
 
 const StudentList = () => {
-  const [students, setStudents] = useState<Student[]>(initialStudents)
+  const [students, setStudents] = useState<Student[]>(mockStudents)
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
+  const [deletingStudent, setDeletingStudent] = useState<Student | null>(null)
 
-  const handleDelete = (id: string) => {
-    setStudents(prev => prev.filter(s => s.id !== id))
-  }
-
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleAddStudent = (data: StudentFormData) => {
     const newStudent: Student = {
@@ -37,25 +30,32 @@ const StudentList = () => {
       createdBy: 'currentUser',
       createdAt: new Date().toISOString(),
     }
-    setStudents(prev => [...prev, newStudent])
+    setStudents((prev) => [...prev, newStudent])
     setIsAddModalOpen(false)
   }
 
   const handleEditStudent = (data: StudentFormData) => {
     if (!editingStudent) return
-    setStudents(prev =>
-      prev.map(s =>
+    setStudents((prev) =>
+      prev.map((s) =>
         s.id === editingStudent.id
-          ? { ...s, fullName: data.fullName, email: data.email || undefined, phone: data.phone || undefined, balance: data.initialBalance }
+          ? {
+              ...s,
+              fullName: data.fullName,
+              email: data.email || undefined,
+              phone: data.phone || undefined,
+              balance: data.initialBalance,
+            }
           : s
       )
     )
     setEditingStudent(null)
   }
 
-  const openEditModal = (id: string) => {
-    const student = students.find(s => s.id === id)
-    if (student) setEditingStudent(student)
+  const handleDeleteStudent = () => {
+    if (!deletingStudent) return
+    setStudents((prev) => prev.filter((s) => s.id !== deletingStudent.id))
+    setDeletingStudent(null)
   }
 
   return (
@@ -84,8 +84,8 @@ const StudentList = () => {
               <StudentRow
                 key={s.id}
                 student={s}
-                onEdit={openEditModal}
-                onDelete={handleDelete}
+                onEdit={() => setEditingStudent(s)}
+                onDelete={() => setDeletingStudent(s)}
                 onView={() => navigate(`/students/${s.id}`)}
               />
             ))}
@@ -93,36 +93,29 @@ const StudentList = () => {
         </table>
       </Card>
 
-      <Modal
+      <AddStudentModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        title="Add Student"
-      >
-        <AddStudentForm
-          onSubmit={handleAddStudent}
-          onCancel={() => setIsAddModalOpen(false)}
-        />
-      </Modal>
+        onSubmit={handleAddStudent}
+      />
 
-      <Modal
-        isOpen={!!editingStudent}
-        onClose={() => setEditingStudent(null)}
-        title="Edit Student"
-      >
-        {editingStudent && (
-          <AddStudentForm
-            defaultValues={{
-              fullName: editingStudent.fullName,
-              email: editingStudent.email || '',
-              phone: editingStudent.phone || '',
-              initialBalance: editingStudent.balance,
-            }}
-            onSubmit={handleEditStudent}
-            onCancel={() => setEditingStudent(null)}
-            submitLabel="Save Changes"
-          />
-        )}
-      </Modal>
+      {editingStudent && (
+        <EditStudentModal
+          student={editingStudent}
+          isOpen={!!editingStudent}
+          onClose={() => setEditingStudent(null)}
+          onSubmit={handleEditStudent}
+        />
+      )}
+
+      {deletingStudent && (
+        <DeleteStudentConfirm
+          studentName={deletingStudent.fullName}
+          isOpen={!!deletingStudent}
+          onClose={() => setDeletingStudent(null)}
+          onConfirm={handleDeleteStudent}
+        />
+      )}
     </div>
   )
 }

@@ -1,7 +1,9 @@
+import type { ReactNode } from "react"
+
 export interface StatCardData {
   title: string
   value: string | number
-  icon?: string | object
+  icon?: ReactNode
   description?: string
 }
 

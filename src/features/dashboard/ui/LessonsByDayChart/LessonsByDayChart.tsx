@@ -1,5 +1,5 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import type { LessonsByDayData } from '../../model/types'
+import type { LessonsByDayData } from '@/features/dashboard'
 import styles from './LessonsByDayChart.module.css'
 
 interface LessonsByDayChartProps {

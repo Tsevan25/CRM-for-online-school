@@ -1,33 +1,25 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import Input from '@/shared/ui/Input'
 import Button from '@/shared/ui/Button'
-import styles from './AddStudentForm.module.css'
+import styles from './StudentForm.module.css'
+import  { studentSchema, type StudentFormData  } from '@/entities/student';
 
-const studentSchema = z.object({
-  fullName: z.string(),
-  email: z.string(),
-  phone: z.string(),
-  initialBalance: z.coerce.number(),
-})
 
-export type StudentFormData = z.infer<typeof studentSchema>
-
-interface AddStudentFormProps {
+interface StudentFormProps {
   defaultValues?: Partial<StudentFormData>
   onSubmit: (data: StudentFormData) => void
   onCancel: () => void
   submitLabel?: string
 }
 
-const AddStudentForm = ({
+const StudentForm = ({
   defaultValues,
   onSubmit,
   onCancel,
   submitLabel = 'Add Student',
-}: AddStudentFormProps) => {
+}: StudentFormProps) => {
   const [rootError, setRootError] = useState<string | null>(null)
 
   const {
@@ -98,4 +90,4 @@ const AddStudentForm = ({
   )
 }
 
-export default AddStudentForm
+export default StudentForm

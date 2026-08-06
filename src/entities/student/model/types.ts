@@ -1,3 +1,4 @@
+import {z} from 'zod';
 export interface Student {
   id: string
   fullName: string
@@ -25,3 +26,12 @@ export interface Transaction {
   date: string
   description?: string
 }
+
+export const studentSchema = z.object({
+  fullName: z.string(),
+  email: z.string(),
+  phone: z.string(),
+  initialBalance: z.coerce.number(),
+})
+
+export type StudentFormData = z.infer<typeof studentSchema>

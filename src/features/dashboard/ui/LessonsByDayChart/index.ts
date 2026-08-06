@@ -1,3 +1,1 @@
-import LessonsByDayChart from "./LessonsByDayChart";
-
-export default LessonsByDayChart;
+export {default as LessonsByDayChart} from './LessonsByDayChart';

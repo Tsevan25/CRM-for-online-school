@@ -1,3 +1,1 @@
-import RevenueChart from "./RevenueChart";
-
-export default RevenueChart;
+export {default as RevenueChart} from './RevenueChart';

@@ -1,13 +1,8 @@
 import type { ReactNode } from 'react'
 import Card from '@/shared/ui/Card/Card'
 import styles from './Dashboard.module.css'
+import type { StatCardData } from '@/features/dashboard'
 
-interface StatCardData {
-  title: string
-  value: string | number
-  icon?: string
-  description?: string
-}
 
 interface DashboardProps {
   heading: string

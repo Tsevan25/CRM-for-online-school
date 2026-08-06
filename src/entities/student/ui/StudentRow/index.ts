@@ -1,3 +1,1 @@
-import StudentRow from "./StudentRow";
-
-export default StudentRow;
+export {default as StudentRow} from './StudentRow';
