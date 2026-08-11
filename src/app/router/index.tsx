@@ -1,15 +1,17 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
-import LoginPage from '../../pages/LoginPage'
-import ProtectedRoute from './ProtectedRouter'
-import Layout from '../layouts/MainLayout'
-import DashboardPage from '../../pages/DashboardPage'
-import StudentsPage from '../../pages/StudentPage/StudentPage'
+import LoginPage from '@/pages/LoginPage'
+import ProtectedRoute from '@/app/router/ProtectedRouter'
+import Layout from '@/app/layouts/MainLayout'
+import DashboardPage from '@/pages/DashboardPage'
+import StudentsPage from '@/pages/StudentPage/StudentPage'
 import StudentDetailPage from '@/pages/StudentDetailPage'
+import SchedulePage from '@/pages/SchedulePage/SchedulePage'
+import TeacherSchedulePage from '@/pages/TeacherSchedulePage/TeacherSchedulePage'
+import TransactionsPage from '@/pages/TransactionsPage/TransactionsPage'
+import MyStudentsPage from '@/pages/MyStudentsPage/MyStudentsPage'
 
 
 
-const TransactionsPage = () => <div>Транзакции</div>;
-const SchedulePage = () => <div>Расписание</div>;
 const UsersPage = () => <div>Пользователи</div>;
 const SettingsPage = () => <div>Настройки</div>;
 
@@ -30,8 +32,10 @@ export const router = createBrowserRouter([
           { path: 'dashboard', element: <DashboardPage /> },
           { path: 'students', element: <StudentsPage /> },
           { path: 'students/:id', element: <StudentDetailPage />},
+          { path: 'my-students', element: <MyStudentsPage /> },
           { path: 'transactions', element: <TransactionsPage /> },
           { path: 'schedule', element: <SchedulePage /> },
+          {path: 'my-schedule', element: <TeacherSchedulePage />},
           { path: 'users', element: <UsersPage /> },
           { path: 'settings', element: <SettingsPage /> },
         ],

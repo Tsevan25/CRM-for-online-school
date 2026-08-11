@@ -34,12 +34,22 @@ const Sidebar = () => {
             <NavLink to="/transactions" className={linkClassName}>
               Транзакции
             </NavLink>
+            <NavLink to="/schedule" className={linkClassName}>
+              Расписание
+            </NavLink>
           </>
         )}
 
-        <NavLink to="/schedule" className={linkClassName}>
-          Расписание
-        </NavLink>
+       {role === 'teacher' && (
+  <>
+    <NavLink to="/my-schedule" className={linkClassName}>
+      My Schedule
+    </NavLink>
+    <NavLink to="/my-students" className={linkClassName}>
+      My Students
+    </NavLink>
+  </>
+)}
       </nav>
     </aside>
   );

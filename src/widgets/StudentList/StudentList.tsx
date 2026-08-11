@@ -1,24 +1,37 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { type Student, StudentRow }  from '@/entities/student'
+import { StudentRow } from '@/entities/student'
+import type { Student } from '@/entities/student/model/types'
 import { mockStudents } from '@/entities/student/model/mock'
 import Button from '@/shared/ui/Button/Button'
 import Card from '@/shared/ui/Card/Card'
-import type { StudentFormData } from '@/entities/student'
-import {
-  AddStudentModal,
-  EditStudentModal,
-  DeleteStudentConfirm
-} from '@/features/student'
+import { AddStudentModal } from '@/features/student'
+import { EditStudentModal } from '@/features/student'
+import { DeleteStudentConfirm } from '@/features/student'
+import type { StudentFormData } from '@/entities/student/model/types'
 import styles from './StudentList.module.css'
 
-const StudentList = () => {
-  const [students, setStudents] = useState<Student[]>(mockStudents)
+interface StudentListProps {
+  students?: Student[]
+  canAdd?: boolean
+  canEdit?: boolean
+  canDelete?: boolean
+}
+
+const StudentList = ({
+  students: externalStudents,
+  canAdd = true,
+  canEdit = true,
+  canDelete = true,
+}: StudentListProps) => {
+  const navigate = useNavigate()
+  const [internalStudents, setInternalStudents] = useState<Student[]>(mockStudents)
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
   const [deletingStudent, setDeletingStudent] = useState<Student | null>(null)
 
-  const navigate = useNavigate()
+  const students = externalStudents ?? internalStudents
+  const isExternal = !!externalStudents
 
   const handleAddStudent = (data: StudentFormData) => {
     const newStudent: Student = {
@@ -30,41 +43,39 @@ const StudentList = () => {
       createdBy: 'currentUser',
       createdAt: new Date().toISOString(),
     }
-    setStudents((prev) => [...prev, newStudent])
+    setInternalStudents((prev) => [...prev, newStudent])
     setIsAddModalOpen(false)
   }
 
   const handleEditStudent = (data: StudentFormData) => {
-    if (!editingStudent) return
-    setStudents((prev) =>
-      prev.map((s) =>
-        s.id === editingStudent.id
-          ? {
-              ...s,
-              fullName: data.fullName,
-              email: data.email || undefined,
-              phone: data.phone || undefined,
-              balance: data.initialBalance,
-            }
-          : s
+    if (editingStudent) {
+      setInternalStudents((prev) =>
+        prev.map((s) =>
+          s.id === editingStudent.id
+            ? { ...s, fullName: data.fullName, email: data.email, phone: data.phone, balance: data.initialBalance }
+            : s
+        )
       )
-    )
-    setEditingStudent(null)
+      setEditingStudent(null)
+    }
   }
 
   const handleDeleteStudent = () => {
-    if (!deletingStudent) return
-    setStudents((prev) => prev.filter((s) => s.id !== deletingStudent.id))
-    setDeletingStudent(null)
+    if (deletingStudent) {
+      setInternalStudents((prev) => prev.filter((s) => s.id !== deletingStudent.id))
+      setDeletingStudent(null)
+    }
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <h2 className={styles.title}>Students</h2>
-        <Button variant="primary" size="small" onClick={() => setIsAddModalOpen(true)}>
-          + Add Student
-        </Button>
+        {canAdd && !isExternal && (
+          <Button variant="primary" size="small" onClick={() => setIsAddModalOpen(true)}>
+            + Add Student
+          </Button>
+        )}
       </div>
 
       <Card padding="small">
@@ -76,7 +87,7 @@ const StudentList = () => {
               <th className={styles.headCell}>Phone</th>
               <th className={styles.headCell}>Balance</th>
               <th className={styles.headCell}>Created</th>
-              <th className={styles.headCell}>Actions</th>
+              {(canEdit || canDelete) && <th className={styles.headCell}>Actions</th>}
             </tr>
           </thead>
           <tbody>
@@ -84,8 +95,8 @@ const StudentList = () => {
               <StudentRow
                 key={s.id}
                 student={s}
-                onEdit={() => setEditingStudent(s)}
-                onDelete={() => setDeletingStudent(s)}
+                onEdit={canEdit && !isExternal ? () => setEditingStudent(s) : undefined}
+                onDelete={canDelete && !isExternal ? () => setDeletingStudent(s) : undefined}
                 onView={() => navigate(`/students/${s.id}`)}
               />
             ))}
@@ -93,11 +104,13 @@ const StudentList = () => {
         </table>
       </Card>
 
-      <AddStudentModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onSubmit={handleAddStudent}
-      />
+      {!isExternal && (
+        <AddStudentModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onSubmit={handleAddStudent}
+        />
+      )}
 
       {editingStudent && (
         <EditStudentModal
