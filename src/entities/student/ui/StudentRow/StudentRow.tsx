@@ -15,17 +15,17 @@ const StudentRow = ({ student, onEdit, onDelete, onView }: StudentRowProps) => {
     minimumFractionDigits: 0,
   }).format(student.balance)
 
-  const formattedDate = new Date(student.createdAt).toLocaleDateString('en-US')
+  const formattedDate = new Date(student.created_at).toLocaleDateString('en-US')
 
   return (
     <tr className={styles.row}>
       <td className={styles.cell}>
         {onView ? (
           <button className={styles.linkButton} onClick={() => onView(student.id)}>
-            {student.fullName}
+            {student.full_name}
           </button>
         ) : (
-          student.fullName
+          student.full_name
         )}
       </td>
       <td className={styles.cell}>{student.email || '—'}</td>

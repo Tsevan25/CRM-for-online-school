@@ -4,12 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import Input from '@/shared/ui/Input'
 import Button from '@/shared/ui/Button'
-import { mockStudents } from '@/entities/student/model/mock'
 import type { TransactionType } from '@/entities/transaction/model/types'
 import styles from './AddTransactionForm.module.css'
 
 const addTransactionSchema = z.object({
-  studentName: z.string().min(1, 'Student is required'),
+  studentId: z.string().min(1, 'Student is required'),
   amount: z.coerce.number(),
   type: z.string().min(1, 'Type is required'),
   description: z.string().optional(),
@@ -18,9 +17,9 @@ const addTransactionSchema = z.object({
 type AddTransactionFormData = z.infer<typeof addTransactionSchema>
 
 interface AddTransactionFormProps {
+  students: { id: string; full_name: string }[]
   onSubmit: (data: {
     studentId: string
-    studentName: string
     amount: number
     type: TransactionType
     description?: string
@@ -28,7 +27,7 @@ interface AddTransactionFormProps {
   onCancel: () => void
 }
 
-const AddTransactionForm = ({ onSubmit, onCancel }: AddTransactionFormProps) => {
+const AddTransactionForm = ({ students, onSubmit, onCancel }: AddTransactionFormProps) => {
   const [rootError, setRootError] = useState<string | null>(null)
 
   const {
@@ -37,18 +36,13 @@ const AddTransactionForm = ({ onSubmit, onCancel }: AddTransactionFormProps) => 
     formState: { errors, isSubmitting },
   } = useForm<AddTransactionFormData>({
     resolver: zodResolver(addTransactionSchema),
+    defaultValues: { amount: 0, description: '' },
   })
 
   const onFormSubmit = async (data: AddTransactionFormData) => {
     try {
-      const student = mockStudents.find(s => s.fullName === data.studentName)
-      if (!student) {
-        setRootError('Student not found')
-        return
-      }
       await onSubmit({
-        studentId: student.id,
-        studentName: student.fullName,
+        studentId: data.studentId,
         amount: data.amount,
         type: data.type as TransactionType,
         description: data.description,
@@ -64,13 +58,15 @@ const AddTransactionForm = ({ onSubmit, onCancel }: AddTransactionFormProps) => 
     <form onSubmit={handleSubmit(onFormSubmit)} className={styles.form}>
       <div className={styles.field}>
         <label className={styles.label}>Student</label>
-        <select className={styles.select} {...register('studentName')}>
+        <select className={styles.select} {...register('studentId')}>
           <option value="">Select student</option>
-          {mockStudents.map(s => (
-            <option key={s.id} value={s.fullName}>{s.fullName}</option>
+          {students.map((s) => (
+            <option key={s.id} value={s.id}>
+              {s.full_name}
+            </option>
           ))}
         </select>
-        {errors.studentName && <span className={styles.error}>{errors.studentName.message}</span>}
+        {errors.studentId && <span className={styles.error}>{errors.studentId.message}</span>}
       </div>
 
       <Input

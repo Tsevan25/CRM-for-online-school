@@ -1,19 +1,43 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useAppSelector } from '@/app/store'
 import { ScheduleCalendar } from '@/widgets/ScheduleCalendar'
-import { mockLessons } from '@/entities/lesson/model/mock'
+import { fetchLessonsByTeacher, updateLesson } from '@/shared/api/lessons'
 import type { Lesson, LessonStatus } from '@/entities/lesson/model/types'
 
 const TeacherSchedulePage = () => {
+  const { user } = useAppSelector((state) => state.auth)
+  const [lessons, setLessons] = useState<Lesson[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const [lessons, setLessons] = useState<Lesson[]>(mockLessons)
+  useEffect(() => {
+    if (!user?.id) return
+    const load = async () => {
+      try {
+        const data = await fetchLessonsByTeacher(user.id)
+        setLessons(data)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load lessons')
+      } finally {
+        setLoading(false)
+      }
+    }
+    load()
+  }, [user?.id])
 
-  const handleStatusChange = (lessonId: string, newStatus: LessonStatus) => {
-    setLessons((prev) =>
-      prev.map((l) =>
-        l.id === lessonId ? { ...l, status: newStatus } : l
+  const handleStatusChange = async (lessonId: string, newStatus: LessonStatus) => {
+    try {
+      const updated = await updateLesson(lessonId, { status: newStatus })
+      setLessons((prev) =>
+        prev.map((l) => (l.id === updated.id ? updated : l))
       )
-    )
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error updating status')
+    }
   }
+
+  if (loading) return <div>Loading your lessons...</div>
+  if (error) return <div style={{ color: 'red' }}>{error}</div>
 
   return (
     <ScheduleCalendar

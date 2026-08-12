@@ -2,21 +2,21 @@ import { useCallback, useState } from 'react'
 import { Calendar, momentLocalizer, type Event } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import type { Lesson, LessonStatus, LessonFormData } from '@/entities/lesson/model/types'
+import type { LessonFormData, LessonStatus, LessonWithNames } from '@/entities/lesson/model/types'
 import { CreateLessonModal, EditLessonModal, CancelLessonConfirm, ChangeLessonStatusModal } from '@/features/lesson'
 import styles from './ScheduleCalendar.module.css'
 
 const localizer = momentLocalizer(moment)
 
-const lessonToEvent = (lesson: Lesson): Event => ({
-  title: `${lesson.studentName} / ${lesson.teacherName}`,
-  start: new Date(lesson.startTime),
-  end: new Date(lesson.endTime),
+const lessonToEvent = (lesson: LessonWithNames): Event => ({
+  title: `${lesson.student?.full_name || '—'} / ${lesson.teacher?.full_name || '—'}`,
+  start: new Date(lesson.start_time),
+  end: new Date(lesson.end_time),
   resource: lesson,
 })
 
 interface ScheduleCalendarProps {
-  lessons: Lesson[]
+  lessons: LessonWithNames[]
   canCreate?: boolean
   canEdit?: boolean
   canCancel?: boolean
@@ -38,7 +38,7 @@ const ScheduleCalendar = ({
   onCancel,
   onStatusChange,
 }: ScheduleCalendarProps) => {
-  const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null)
+  const [selectedLesson, setSelectedLesson] = useState<LessonWithNames | null>(null)
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isCancelOpen, setIsCancelOpen] = useState(false)
@@ -49,7 +49,7 @@ const ScheduleCalendar = ({
 
   const handleSelectEvent = useCallback(
     (event: Event) => {
-      const lesson = event.resource as Lesson
+      const lesson = event.resource as LessonWithNames
       setSelectedLesson(lesson)
       if (canChangeStatus && onStatusChange) {
         setIsStatusOpen(true)
@@ -90,7 +90,6 @@ const ScheduleCalendar = ({
     }
   }
 
- 
   const openCancelConfirm = () => {
     setIsEditOpen(false)
     setIsCancelOpen(true)
@@ -144,8 +143,8 @@ const ScheduleCalendar = ({
 
       {canCancel && selectedLesson && (
         <CancelLessonConfirm
-          studentName={selectedLesson.studentName}
-          startTime={selectedLesson.startTime}
+          studentName={selectedLesson.student?.full_name || ''}
+          startTime={selectedLesson.start_time}
           isOpen={isCancelOpen}
           onClose={() => setIsCancelOpen(false)}
           onConfirm={handleCancelConfirm}
@@ -154,7 +153,7 @@ const ScheduleCalendar = ({
 
       {canChangeStatus && selectedLesson && (
         <ChangeLessonStatusModal
-          studentName={selectedLesson.studentName}
+          studentName={selectedLesson.student?.full_name || ''}
           currentStatus={selectedLesson.status}
           isOpen={isStatusOpen}
           onClose={() => setIsStatusOpen(false)}

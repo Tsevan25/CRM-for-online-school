@@ -1,5 +1,7 @@
-import { useState } from 'react'
-import { mockTransactions, type Transaction } from '@/entities/transaction'
+import { useEffect, useState } from 'react'
+import { type TransactionWithStudent } from '@/entities/transaction/model/types'
+import { fetchTransactions, createTransaction } from '@/shared/api/transactions'
+import { fetchStudents } from '@/shared/api/students'
 import { AddTransactionForm } from '@/features/transaction/add'
 import  Modal  from '@/shared/ui/Modal'
 import Button from '@/shared/ui/Button'
@@ -8,37 +10,52 @@ import { formatCurrency } from '@/shared/lib/formatCurrency'
 import styles from './TransactionList.module.css'
 
 const TransactionList = () => {
-  const [transactions, setTransactions] = useState<Transaction[]>(mockTransactions)
+  const [transactions, setTransactions] = useState<TransactionWithStudent[]>([])
+  const [students, setStudents] = useState<{ id: string; full_name: string }[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
-  const handleAddTransaction = (data: {
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [transData, studentData] = await Promise.all([
+          fetchTransactions(),
+          fetchStudents(),
+        ])
+        setTransactions(transData)
+        setStudents(studentData)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load transactions')
+      } finally {
+        setLoading(false)
+      }
+    }
+    load()
+  }, [])
+
+  const handleAddTransaction = async (data: {
     studentId: string
-    studentName: string
     amount: number
-    type: Transaction['type']
+    type: 'lesson_payment' | 'top_up' | 'refund' | 'adjustment'
     description?: string
   }) => {
-    const newTransaction: Transaction = {
-      id: Date.now().toString(),
-      studentId: data.studentId,
-      studentName: data.studentName,
-      amount: data.amount,
-      type: data.type,
-      date: new Date().toISOString(),
-      description: data.description,
+    try {
+      const newTransaction = await createTransaction({
+        student_id: data.studentId,
+        amount: data.amount,
+        type: data.type,
+        description: data.description,
+      })
+      setTransactions((prev) => [newTransaction, ...prev])
+      setIsAddModalOpen(false)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error creating transaction')
     }
-    setTransactions(prev => [...prev, newTransaction])
-    setIsAddModalOpen(false)
   }
 
-  const formatDate = (dateStr: string) =>
-    new Date(dateStr).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
+  if (loading) return <div>Loading transactions...</div>
+  if (error) return <div style={{ color: 'red' }}>{error}</div>
 
   return (
     <div className={styles.container}>
@@ -61,10 +78,18 @@ const TransactionList = () => {
             </tr>
           </thead>
           <tbody>
-            {transactions.map(t => (
+            {transactions.map((t) => (
               <tr key={t.id} className={styles.row}>
-                <td className={styles.cell}>{formatDate(t.date)}</td>
-                <td className={styles.cell}>{t.studentName}</td>
+                <td className={styles.cell}>
+                  {new Date(t.created_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </td>
+                <td className={styles.cell}>{t.student?.full_name || '—'}</td>
                 <td className={styles.cell}>{t.type.replace('_', ' ')}</td>
                 <td className={`${styles.cell} ${t.amount < 0 ? styles.negative : styles.positive}`}>
                   {formatCurrency(t.amount)}
@@ -82,6 +107,7 @@ const TransactionList = () => {
         title="Add Transaction"
       >
         <AddTransactionForm
+          students={students}
           onSubmit={handleAddTransaction}
           onCancel={() => setIsAddModalOpen(false)}
         />

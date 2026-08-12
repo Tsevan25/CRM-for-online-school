@@ -6,11 +6,23 @@ import Input from '@/shared/ui/Input'
 import Button from '@/shared/ui/Button'
 import styles from './LessonForm.module.css'
 
+interface StudentOption {
+  id: string
+  full_name: string
+}
+
+interface TeacherOption {
+  id: string
+  full_name: string
+}
+
 interface LessonFormProps {
   defaultValues?: Partial<LessonFormData>
   onSubmit: (data: LessonFormData) => void
   onCancel: () => void
   submitLabel?: string
+  students: StudentOption[]
+  teachers: TeacherOption[]
 }
 
 const LessonForm = ({
@@ -18,6 +30,8 @@ const LessonForm = ({
   onSubmit,
   onCancel,
   submitLabel = 'Create Lesson',
+  students,
+  teachers,
 }: LessonFormProps) => {
   const [rootError, setRootError] = useState<string | null>(null)
 
@@ -28,8 +42,8 @@ const LessonForm = ({
   } = useForm<LessonFormData>({
     resolver: zodResolver(lessonSchema),
     defaultValues: {
-      studentName: '',
-      teacherName: '',
+      studentId: '',
+      teacherId: '',
       startTime: '',
       endTime: '',
       price: 0,
@@ -51,20 +65,29 @@ const LessonForm = ({
     <form onSubmit={handleSubmit(onFormSubmit)} className={styles.form}>
       <div className={styles.field}>
         <label className={styles.label}>Student</label>
-        <select className={styles.select} {...register('studentName')}>
+        <select className={styles.select} {...register('studentId')}>
           <option value="">Select student</option>
-          <option value="Alice Johnson">Alice Johnson</option>
-          <option value="Bob Smith">Bob Smith</option>
+          {students.map((s) => (
+            <option key={s.id} value={s.id}>
+              {s.full_name}
+            </option>
+          ))}
         </select>
-        {errors.studentName && <span className={styles.error}>{errors.studentName.message}</span>}
+        {errors.studentId && <span className={styles.error}>{errors.studentId.message}</span>}
       </div>
 
-      <Input
-        label="Teacher Name"
-        placeholder="Mr. Smith"
-        error={errors.teacherName?.message}
-        {...register('teacherName')}
-      />
+      <div className={styles.field}>
+        <label className={styles.label}>Teacher</label>
+        <select className={styles.select} {...register('teacherId')}>
+          <option value="">Select teacher</option>
+          {teachers.map((t) => (
+            <option key={t.id} value={t.id}>
+              {t.full_name}
+            </option>
+          ))}
+        </select>
+        {errors.teacherId && <span className={styles.error}>{errors.teacherId.message}</span>}
+      </div>
 
       <Input
         label="Start Time"

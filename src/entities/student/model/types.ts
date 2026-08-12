@@ -1,12 +1,12 @@
 import {z} from 'zod';
 export interface Student {
   id: string
-  fullName: string
+  full_name: string
   email?: string
   phone?: string
   balance: number
-  createdBy: string
-  createdAt: string
+  created_by: string
+  created_at: string
 }
 
 export interface Lesson {

@@ -37,7 +37,7 @@ const StudentDetails = ({ student, lessons, transactions }: StudentDetailsProps)
       </div>
 
       <Card padding="large" className={styles.infoCard}>
-        <h2 className={styles.name}>{student.fullName}</h2>
+        <h2 className={styles.name}>{student.full_name}</h2>
         <div className={styles.infoGrid}>
           <div className={styles.infoItem}>
             <span className={styles.label}>Email</span>
@@ -53,7 +53,7 @@ const StudentDetails = ({ student, lessons, transactions }: StudentDetailsProps)
           </div>
           <div className={styles.infoItem}>
             <span className={styles.label}>Created</span>
-            <span className={styles.value}>{formatDate(student.createdAt)}</span>
+            <span className={styles.value}>{formatDate(student.created_at)}</span>
           </div>
         </div>
       </Card>

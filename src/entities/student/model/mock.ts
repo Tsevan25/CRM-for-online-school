@@ -4,28 +4,28 @@ import type { Student, Lesson, Transaction  } from './types'
 export const mockStudents: Student[] = [
   {
     id: '1',
-    fullName: 'Alice Johnson',
+    full_name: 'Alice Johnson',
     email: 'alice@example.com',
     phone: '+1 234-567-8901',
     balance: 1200,
-    createdBy: 'admin',
-    createdAt: '2025-01-15T10:00:00Z',
+    created_by: 'admin',
+    created_at: '2025-01-15T10:00:00Z',
   },
   {
     id: '2',
-    fullName: 'Bob Smith',
+    full_name: 'Bob Smith',
     email: 'bob@example.com',
     balance: 850,
-    createdBy: 'manager1',
-    createdAt: '2025-02-20T12:30:00Z',
+    created_by: 'manager1',
+    created_at: '2025-02-20T12:30:00Z',
   },
   {
     id: '3',
-    fullName: 'Charlie Brown',
+    full_name: 'Charlie Brown',
     phone: '+44 1234-567890',
     balance: 0,
-    createdBy: 'manager1',
-    createdAt: '2025-03-10T09:00:00Z',
+    created_by: 'manager1',
+    created_at: '2025-03-10T09:00:00Z',
   },
 ]
 

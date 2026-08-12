@@ -18,7 +18,7 @@ const EditStudentModal = ({
   <Modal isOpen={isOpen} onClose={onClose} title="Edit Student">
     <StudentForm
       defaultValues={{
-        fullName: student.fullName,
+        fullName: student.full_name,
         email: student.email || "",
         phone: student.phone || "",
         initialBalance: student.balance,
