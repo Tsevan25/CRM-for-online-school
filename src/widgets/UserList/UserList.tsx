@@ -1,27 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useAsync } from '@/shared/hooks/useAsync'
 import { fetchUsers } from '@/shared/api/users'
 import type { UserProfile } from '@/entities/user'
-import {Card} from '@/shared'
+import { UpdateRoleSelect } from '@/features/user'
+import { DeleteUserButton } from '@/features/user'
+import Card from '@/shared/ui/Card/Card'
 import styles from './UserList.module.css'
+import { useState } from 'react'
 
 const UserList = () => {
   const [users, setUsers] = useState<UserProfile[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const data = await fetchUsers()
-        setUsers(data)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load users')
-      } finally {
-        setLoading(false)
-      }
-    }
-    load()
-  }, [])
+  const { loading, error, refetch } = useAsync(async () => {
+    const data = await fetchUsers()
+    setUsers(data)
+    return data
+  })
 
   if (loading) return <div>Loading users...</div>
   if (error) return <div style={{ color: 'red' }}>{error}</div>
@@ -37,15 +30,23 @@ const UserList = () => {
               <th className={styles.headCell}>Email</th>
               <th className={styles.headCell}>Role</th>
               <th className={styles.headCell}>Created</th>
+              <th className={styles.headCell}>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((u) => (
-              <tr key={u.id} className={styles.row}>
-                <td className={styles.cell}>{u.full_name || '—'}</td>
-                <td className={styles.cell}>{u.email || '—'}</td>
-                <td className={styles.cell}>{u.role || '—'}</td>
-                <td className={styles.cell}>{new Date(u.created_at).toLocaleDateString('en-US')}</td>
+            {users.map((user) => (
+              <tr key={user.id} className={styles.row}>
+                <td className={styles.cell}>{user.full_name || '—'}</td>
+                <td className={styles.cell}>{user.email || '—'}</td>
+                <td className={styles.cell}>
+                  <UpdateRoleSelect user={user} onRoleUpdated={refetch} />
+                </td>
+                <td className={styles.cell}>
+                  {new Date(user.created_at).toLocaleDateString('en-US')}
+                </td>
+                <td className={styles.actions}>
+                  <DeleteUserButton user={user} onDeleted={refetch} />
+                </td>
               </tr>
             ))}
           </tbody>
