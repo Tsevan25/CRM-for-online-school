@@ -1,6 +1,5 @@
-import Modal from '@/shared/ui/Modal/Modal'
-import Button from '@/shared/ui/Button/Button'
-import styles from './CancelLessonConfirm.module.css'
+import {Modal, Button} from '@/shared';
+import styles from './CancelLessonConfirm.module.css';
 
 interface CancelLessonConfirmProps {
   studentName: string

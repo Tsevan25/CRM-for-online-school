@@ -1,6 +1,6 @@
 import LoginForm from "../../features/auth/ui/LoginForm";
 import styles from "./LoginPage.module.css";
-import logoUrl from "../../shared/assets/icons/main-logo.png";
+import logoUrl from "@/shared/assets/icons/main-logo.png";
 
 const LoginPage = () => {
   return (

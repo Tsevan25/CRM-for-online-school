@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { StudentRow } from '@/entities/student'
 import type { Student, StudentFormData } from '@/entities/student/model/types'
-import Button from '@/shared/ui/Button/Button'
-import Card from '@/shared/ui/Card/Card'
+import {Button, Card} from '@/shared'
 import { AddStudentModal } from '@/features/student'
 import { EditStudentModal } from '@/features/student'
 import { DeleteStudentConfirm } from '@/features/student'
@@ -13,8 +12,9 @@ import {
   updateStudent,
   deleteStudent as deleteStudentAPI,
 } from '@/shared/api/students'
-import styles from './StudentList.module.css'
 import { useAppSelector } from '@/app/store'
+import { useAsync } from '@/shared/hooks/useAsync'
+import styles from './StudentList.module.css'
 
 interface StudentListProps {
   students?: Student[]
@@ -32,8 +32,6 @@ const StudentList = ({
   const navigate = useNavigate()
   const { user } = useAppSelector((state) => state.auth)
   const [internalStudents, setInternalStudents] = useState<Student[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [editingStudent, setEditingStudent] = useState<Student | null>(null)
   const [deletingStudent, setDeletingStudent] = useState<Student | null>(null)
@@ -41,55 +39,44 @@ const StudentList = ({
   const students = externalStudents ?? internalStudents
   const isExternal = !!externalStudents
 
-
-  useEffect(() => {
-  if (!externalStudents) {
-    const load = async () => {
-      try {
-        setLoading(true);
-        const data = await fetchStudents();
-        setInternalStudents(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load students');
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }
-}, [externalStudents]);
+  
+  const { loading, error, refetch } = useAsync(async () => {
+    if (isExternal) return [] 
+    const data = await fetchStudents()
+    setInternalStudents(data)
+    return data
+  })
 
   const handleAddStudent = async (data: StudentFormData) => {
+    if (!user?.id) return
     try {
-      const newStudent = await createStudent({
+      await createStudent({
         full_name: data.fullName,
         email: data.email,
         phone: data.phone,
         balance: data.initialBalance,
-        created_by: user?.id ?? ''
+        created_by: user.id,
       })
-      setInternalStudents((prev) => [...prev, newStudent])
       setIsAddModalOpen(false)
+      await refetch() 
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error creating student')
+      console.error('Error creating student:', err)
     }
   }
 
   const handleEditStudent = async (data: StudentFormData) => {
     if (!editingStudent) return
     try {
-      const updated = await updateStudent(editingStudent.id, {
+      await updateStudent(editingStudent.id, {
         full_name: data.fullName,
         email: data.email,
         phone: data.phone,
         balance: data.initialBalance,
       })
-      setInternalStudents((prev) =>
-        prev.map((s) => (s.id === updated.id ? updated : s))
-      )
       setEditingStudent(null)
+      await refetch()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error updating student')
+      console.error('Error updating student:', err)
     }
   }
 
@@ -97,12 +84,10 @@ const StudentList = ({
     if (!deletingStudent) return
     try {
       await deleteStudentAPI(deletingStudent.id)
-      setInternalStudents((prev) =>
-        prev.filter((s) => s.id !== deletingStudent.id)
-      )
       setDeletingStudent(null)
+      await refetch()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error deleting student')
+      console.error('Error deleting student:', err)
     }
   }
 

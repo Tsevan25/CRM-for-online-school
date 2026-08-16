@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useAppSelector } from "../../../store";
+import { useAppSelector } from "@/app/store";
 import styles from "./Sidebar.module.css";
 
 const Sidebar = () => {
@@ -40,16 +40,16 @@ const Sidebar = () => {
           </>
         )}
 
-       {role === 'teacher' && (
-  <>
-    <NavLink to="/my-schedule" className={linkClassName}>
-      My Schedule
-    </NavLink>
-    <NavLink to="/my-students" className={linkClassName}>
-      My Students
-    </NavLink>
-  </>
-)}
+        {role === "teacher" && (
+          <>
+            <NavLink to="/my-schedule" className={linkClassName}>
+              My Schedule
+            </NavLink>
+            <NavLink to="/my-students" className={linkClassName}>
+              My Students
+            </NavLink>
+          </>
+        )}
       </nav>
     </aside>
   );

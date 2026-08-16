@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
-import Input from '@/shared/ui/Input'
-import Button from '@/shared/ui/Button'
+import {Button, Input} from '@/shared'
 import styles from './StudentForm.module.css'
 import  { studentSchema, type StudentFormData  } from '@/entities/student';
 

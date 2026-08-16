@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { useAppSelector } from '@/app/store'
 import { ScheduleCalendar } from '@/widgets/ScheduleCalendar'
 import { fetchLessonsByTeacher, updateLesson } from '@/shared/api/lessons'
-import type { Lesson, LessonStatus } from '@/entities/lesson/model/types'
+import type { LessonStatus, LessonWithNames } from '@/entities/lesson/model/types'
 
 const TeacherSchedulePage = () => {
   const { user } = useAppSelector((state) => state.auth)
-  const [lessons, setLessons] = useState<Lesson[]>([])
+  const [lessons, setLessons] = useState<LessonWithNames[]>([])  
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 

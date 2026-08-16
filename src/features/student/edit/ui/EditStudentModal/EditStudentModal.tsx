@@ -1,4 +1,4 @@
-import Modal from "@/shared/ui/Modal/Modal";
+import {Modal} from "@/shared";
 import type { Student } from "@/entities/student/model/types";
 import { type StudentFormData, StudentForm } from "@/entities/student";
 

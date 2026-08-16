@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import Modal from '@/shared/ui/Modal/Modal'
-import Button from '@/shared/ui/Button/Button'
+import {Modal, Button} from '@/shared'
 import { LessonForm } from '@/entities/lesson/ui/LessonForm'
 import type { LessonFormData, LessonWithNames } from '@/entities/lesson/model/types'
 import { fetchStudents } from '@/shared/api/students'

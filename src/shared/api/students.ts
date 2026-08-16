@@ -19,6 +19,16 @@ export const fetchStudentById = async (id: string): Promise<Student> => {
   return data as Student
 }
 
+export const fetchStudentsByIds = async (ids: string[]): Promise<Student[]> => {
+  if (ids.length === 0) return []
+  const { data, error } = await supabase
+    .from('students')
+    .select('*')
+    .in('id', ids)
+  if (error) throw error
+  return data as Student[]
+}
+
 export const createStudent = async (
   student: Omit<Student, 'id' | 'created_at' | 'created_by'> & { created_by: string }
 ): Promise<Student> => {

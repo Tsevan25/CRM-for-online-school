@@ -1,9 +1,11 @@
 import { Outlet } from "react-router-dom";
-
 import styles from "./MainLayout.module.css";
-import Footer from "./Footer";
-import Header from "./Header";
-import Sidebar from "./Sidebar";
+
+import { 
+  Header, 
+  Sidebar, 
+  Footer 
+} from "@/app/layouts";
 
 const MainLayout = () => {
   return (

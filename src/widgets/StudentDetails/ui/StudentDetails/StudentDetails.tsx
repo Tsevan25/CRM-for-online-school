@@ -1,13 +1,15 @@
 import Card from '@/shared/ui/Card/Card'
 import Button from '@/shared/ui/Button/Button'
 import { useNavigate } from 'react-router-dom'
-import type { Student, Lesson, Transaction  } from '@/entities/student/model/types'
+import type { Student } from '@/entities/student/model/types'
+import type { LessonWithNames } from '@/entities/lesson/model/types'
+import type { TransactionWithStudent } from '@/entities/transaction/model/types'
 import styles from './StudentDetails.module.css'
 
 interface StudentDetailsProps {
   student: Student
-  lessons: Lesson[]
-  transactions: Transaction[]
+  lessons: LessonWithNames[]
+  transactions: TransactionWithStudent[]
 }
 
 const StudentDetails = ({ student, lessons, transactions }: StudentDetailsProps) => {
@@ -27,6 +29,13 @@ const StudentDetails = ({ student, lessons, transactions }: StudentDetailsProps)
       hour: '2-digit',
       minute: '2-digit',
     })
+
+  const formatCurrency = (amount: number) =>
+    new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+    }).format(amount)
 
   return (
     <div className={styles.container}>
@@ -73,16 +82,16 @@ const StudentDetails = ({ student, lessons, transactions }: StudentDetailsProps)
               </tr>
             </thead>
             <tbody>
-              {lessons.map((l) => (
-                <tr key={l.id} className={styles.row}>
-                  <td className={styles.cell}>{formatDate(l.startTime)}</td>
-                  <td className={styles.cell}>{l.teacherName}</td>
+              {lessons.map((lesson) => (
+                <tr key={lesson.id} className={styles.row}>
+                  <td className={styles.cell}>{formatDate(lesson.start_time)}</td>
+                  <td className={styles.cell}>{lesson.teacher?.full_name || '—'}</td>
                   <td className={styles.cell}>
-                    <span className={`${styles.status} ${styles[l.status]}`}>{l.status}</span>
+                    <span className={`${styles.status} ${styles[lesson.status]}`}>
+                      {lesson.status}
+                    </span>
                   </td>
-                  <td className={styles.cell}>
-                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(l.price)}
-                  </td>
+                  <td className={styles.cell}>{formatCurrency(lesson.price)}</td>
                 </tr>
               ))}
             </tbody>
@@ -105,14 +114,14 @@ const StudentDetails = ({ student, lessons, transactions }: StudentDetailsProps)
               </tr>
             </thead>
             <tbody>
-              {transactions.map((t) => (
-                <tr key={t.id} className={styles.row}>
-                  <td className={styles.cell}>{formatDate(t.date)}</td>
-                  <td className={styles.cell}>{t.type.replace('_', ' ')}</td>
-                  <td className={`${styles.cell} ${t.amount < 0 ? styles.negative : styles.positive}`}>
-                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(t.amount)}
+              {transactions.map((transaction) => (
+                <tr key={transaction.id} className={styles.row}>
+                  <td className={styles.cell}>{formatDate(transaction.created_at)}</td>
+                  <td className={styles.cell}>{transaction.type.replace('_', ' ')}</td>
+                  <td className={`${styles.cell} ${transaction.amount < 0 ? styles.negative : styles.positive}`}>
+                    {formatCurrency(transaction.amount)}
                   </td>
-                  <td className={styles.cell}>{t.description || '—'}</td>
+                  <td className={styles.cell}>{transaction.description || '—'}</td>
                 </tr>
               ))}
             </tbody>

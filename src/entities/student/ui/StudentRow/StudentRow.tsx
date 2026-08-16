@@ -1,6 +1,8 @@
 import type { Student } from '../../model/types'
 import styles from './StudentRow.module.css'
 import { UserPen, Trash } from 'lucide-react'
+import Button from '@/shared/ui/Button/Button'
+
 interface StudentRowProps {
   student: Student
   onEdit?: (id: string) => void
@@ -21,9 +23,14 @@ const StudentRow = ({ student, onEdit, onDelete, onView }: StudentRowProps) => {
     <tr className={styles.row}>
       <td className={styles.cell}>
         {onView ? (
-          <button className={styles.linkButton} onClick={() => onView(student.id)}>
+          <Button
+            variant="secondary"
+            size="small"
+            className={styles.linkButton}
+            onClick={() => onView(student.id)}
+          >
             {student.full_name}
-          </button>
+          </Button>
         ) : (
           student.full_name
         )}
@@ -34,14 +41,26 @@ const StudentRow = ({ student, onEdit, onDelete, onView }: StudentRowProps) => {
       <td className={styles.cell}>{formattedDate}</td>
       <td className={styles.actions}>
         {onEdit && (
-          <button className={styles.actionBtn} onClick={() => onEdit(student.id)}>
+          <Button
+            variant="secondary"
+            size="small"
+            className={styles.actionBtn}
+            onClick={() => onEdit(student.id)}
+            aria-label="Edit student"
+          >
             <UserPen />
-          </button>
+          </Button>
         )}
         {onDelete && (
-          <button className={styles.actionBtn} onClick={() => onDelete(student.id)}>
+          <Button
+            variant="secondary"
+            size="small"
+            className={styles.actionBtn}
+            onClick={() => onDelete(student.id)}
+            aria-label="Delete student"
+          >
             <Trash />
-          </button>
+          </Button>
         )}
       </td>
     </tr>

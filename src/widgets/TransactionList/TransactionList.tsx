@@ -1,38 +1,25 @@
-import { useEffect, useState } from 'react'
-import { type TransactionWithStudent } from '@/entities/transaction/model/types'
+import { useState } from 'react'
+import type { TransactionWithStudent } from '@/entities/transaction/model/types'
 import { fetchTransactions, createTransaction } from '@/shared/api/transactions'
 import { fetchStudents } from '@/shared/api/students'
 import { AddTransactionForm } from '@/features/transaction/add'
-import  Modal  from '@/shared/ui/Modal'
-import Button from '@/shared/ui/Button'
-import Card from '@/shared/ui/Card'
-import { formatCurrency } from '@/shared/lib/formatCurrency'
+import {Modal, Button, Card, formatCurrency, useAsync} from '@/shared'
 import styles from './TransactionList.module.css'
 
 const TransactionList = () => {
   const [transactions, setTransactions] = useState<TransactionWithStudent[]>([])
   const [students, setStudents] = useState<{ id: string; full_name: string }[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const [transData, studentData] = await Promise.all([
-          fetchTransactions(),
-          fetchStudents(),
-        ])
-        setTransactions(transData)
-        setStudents(studentData)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load transactions')
-      } finally {
-        setLoading(false)
-      }
-    }
-    load()
-  }, [])
+  const { loading, error, refetch } = useAsync(async () => {
+    const [transData, studentData] = await Promise.all([
+      fetchTransactions(),
+      fetchStudents(),
+    ])
+    setTransactions(transData)
+    setStudents(studentData)
+    return { transData, studentData }
+  })
 
   const handleAddTransaction = async (data: {
     studentId: string
@@ -41,16 +28,16 @@ const TransactionList = () => {
     description?: string
   }) => {
     try {
-      const newTransaction = await createTransaction({
+      await createTransaction({
         student_id: data.studentId,
         amount: data.amount,
         type: data.type,
         description: data.description,
       })
-      setTransactions((prev) => [newTransaction, ...prev])
       setIsAddModalOpen(false)
+      await refetch() 
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error creating transaction')
+      console.error('Error creating transaction:', err)
     }
   }
 
@@ -82,11 +69,8 @@ const TransactionList = () => {
               <tr key={t.id} className={styles.row}>
                 <td className={styles.cell}>
                   {new Date(t.created_at).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
+                    year: 'numeric', month: 'short', day: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
                   })}
                 </td>
                 <td className={styles.cell}>{t.student?.full_name || '—'}</td>

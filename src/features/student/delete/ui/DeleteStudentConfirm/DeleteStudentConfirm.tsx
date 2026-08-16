@@ -1,5 +1,4 @@
-import Modal from '@/shared/ui/Modal/Modal'
-import Button from '@/shared/ui/Button/Button'
+import {Button, Modal} from '@/shared'
 import styles from './DeleteStudentConfirm.module.css'
 
 interface DeleteStudentConfirmProps {

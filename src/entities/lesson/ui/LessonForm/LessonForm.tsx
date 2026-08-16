@@ -2,9 +2,8 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { lessonSchema, type LessonFormData } from '../../model/types'
-import Input from '@/shared/ui/Input'
-import Button from '@/shared/ui/Button'
-import styles from './LessonForm.module.css'
+import styles from './LessonForm.module.css';
+import {Input, Button} from '@/shared';
 
 interface StudentOption {
   id: string

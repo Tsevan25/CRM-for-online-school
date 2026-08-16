@@ -18,7 +18,7 @@ export const fetchLessonsByTeacher = async (teacherId: string): Promise<LessonWi
   return data as LessonWithNames[]
 }
 
-export const createLesson = async (lesson: {
+export const createLessonWithPayment = async (lesson: {
   student_id: string
   teacher_id: string
   start_time: string
@@ -26,13 +26,16 @@ export const createLesson = async (lesson: {
   price: number
   created_by: string
 }): Promise<LessonWithNames> => {
-  const { data, error } = await supabase
-    .from('lessons')
-    .insert({ ...lesson, status: 'scheduled' })
-    .select('*, student:students(full_name), teacher:profiles!lessons_teacher_id_fkey(full_name)')
-    .single()
+  const { data, error } = await supabase.rpc('create_lesson_with_payment', {
+    p_student_id: lesson.student_id,
+    p_teacher_id: lesson.teacher_id,
+    p_start_time: lesson.start_time,
+    p_end_time: lesson.end_time,
+    p_price: lesson.price,
+    p_created_by: lesson.created_by,
+  })
   if (error) throw error
-  return data as LessonWithNames
+  return data as unknown as LessonWithNames
 }
 
 export const updateLesson = async (
@@ -55,4 +58,13 @@ export const cancelLesson = async (id: string): Promise<void> => {
     .update({ status: 'cancelled' })
     .eq('id', id)
   if (error) throw error
+}
+
+export const fetchLessonsByStudent = async (studentId: string): Promise<LessonWithNames[]> => {
+  const { data, error } = await supabase
+    .from('lessons')
+    .select('*, student:students(full_name), teacher:profiles!lessons_teacher_id_fkey(full_name)')
+    .eq('student_id', studentId)
+  if (error) throw error
+  return data as LessonWithNames[]
 }

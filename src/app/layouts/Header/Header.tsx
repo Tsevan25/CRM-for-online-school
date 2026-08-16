@@ -1,6 +1,6 @@
-import { useAppSelector, useAppDispatch } from "../../../store";
+import { useAppSelector, useAppDispatch } from "@/app/store";
 import { logout } from '@/features/auth'
-import Button from "@/shared/ui/Button";
+import {Button} from "@/shared";
 import styles from "./Header.module.css";
 import { Bell } from "lucide-react";
 import logoUrl from '@/shared/assets/icons/secondary-logo.svg'
@@ -15,7 +15,6 @@ const Header = () => {
   };
   return (
     <header className={styles.header}>
-      {/* <span className={styles.logo}>English School CRM</span> */}
       <img className={styles.logoImg} src={logoUrl} alt="logo" />
       <div className={styles.right}>
         <span className={styles.notification}><Bell /></span>

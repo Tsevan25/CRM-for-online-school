@@ -1,4 +1,4 @@
-import Modal from "@/shared/ui/Modal/Modal";
+import {Modal} from "@/shared";
 import { StudentForm, type StudentFormData } from "@/entities/student";
 
 interface AddStudentModalProps {

@@ -1,36 +1,34 @@
-import { useEffect, useState } from 'react'
 import { useParams, Navigate } from 'react-router-dom'
-import  StudentDetail  from '@/widgets/StudentDetails/ui/StudentDetails'
+import { useAsync } from '@/shared/hooks/useAsync'
 import { fetchStudentById } from '@/shared/api/students'
-import type { Student } from '@/entities/student/model/types'
+import { fetchLessonsByStudent } from '@/shared/api/lessons'
+import { fetchTransactionsByStudent } from '@/shared/api/transactions'
+import  StudentDetails  from '@/widgets/StudentDetails/ui/StudentDetails'
 
 const StudentDetailPage = () => {
   const { id } = useParams<{ id: string }>()
-  const [student, setStudent] = useState<Student | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (!id) return
-    const load = async () => {
-      try {
-        const data = await fetchStudentById(id)
-        setStudent(data)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Student not found')
-      } finally {
-        setLoading(false)
-      }
-    }
-    load()
-  }, [id])
+  const { data, loading, error } = useAsync(async () => {
+    if (!id) return null
+    const student = await fetchStudentById(id)
+    const [lessons, transactions] = await Promise.all([
+      fetchLessonsByStudent(id),
+      fetchTransactionsByStudent(id),
+    ])
+    return { student, lessons, transactions }
+  })
 
-  if (loading) return <div>Loading...</div>
+  if (loading) return <div>Loading student...</div>
   if (error) return <Navigate to="/students" replace />
-  if (!student) return <Navigate to="/students" replace />
+  if (!data?.student) return <Navigate to="/students" replace />
 
-  
-  return <StudentDetail student={student} lessons={[]} transactions={[]} />
+  return (
+    <StudentDetails
+      student={data.student}
+      lessons={data.lessons}
+      transactions={data.transactions}
+    />
+  )
 }
 
 export default StudentDetailPage
