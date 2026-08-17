@@ -1,4 +1,4 @@
-import { Typography } from "@/shared";
+import { Typography, Image } from "@/shared";
 import LoginForm from "../../features/auth/ui/LoginForm";
 import styles from "./LoginPage.module.css";
 import logoUrl from "@/shared/assets/icons/main-logo.png";
@@ -10,7 +10,7 @@ const LoginPage = () => {
         <Typography variant="h1" className={styles.schoolTitle}>
           SurfLingo
         </Typography>
-        <img className={styles.logo} src={logoUrl} alt="logo" />
+        <Image className={styles.logo} src={logoUrl} alt="logo" />
         <Typography variant="body" className={styles.tagline}>
           Conquer the ocean of language. <br /> Speak without limits.
         </Typography>

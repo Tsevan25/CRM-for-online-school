@@ -9,3 +9,4 @@ export {ErrorMessage} from '@/shared/ui/ErrorMessage';
 export {EmptyState} from '@/shared/ui/EmptyState';
 export {DataTable, type Column} from './ui/DataTable';
 export {Typography} from './ui/Typography';
+export {Image} from './ui/Image';
