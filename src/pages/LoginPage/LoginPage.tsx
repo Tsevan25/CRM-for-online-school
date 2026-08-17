@@ -10,10 +10,10 @@ const LoginPage = () => {
         <Typography variant="h1" className={styles.schoolTitle}>
           SurfLingo
         </Typography>
-        <Image className={styles.logo} src={logoUrl} alt="logo" />
         <Typography variant="body" className={styles.tagline}>
           Conquer the ocean of language. <br /> Speak without limits.
         </Typography>
+        <Image className={styles.logo} src={logoUrl} alt="logo" />
         <LoginForm />
       </div>
     </div>

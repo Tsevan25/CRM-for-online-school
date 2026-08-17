@@ -52,7 +52,7 @@
 }
 
 .tagline {
-  font-size: 0.95rem;
+  font-size: 0.75rem;
   font-weight: 900; 
   text-align: center;
   color: var(--text-light);
