@@ -3,7 +3,7 @@ import { fetchUsers } from '@/shared/api/users'
 import type { UserProfile } from '@/entities/user'
 import { UpdateRoleSelect } from '@/features/user'
 import { DeleteUserButton } from '@/features/user'
-import Card from '@/shared/ui/Card/Card'
+import {Card, Spinner} from '@/shared'
 import styles from './UserList.module.css'
 import { useState } from 'react'
 
@@ -16,7 +16,7 @@ const UserList = () => {
     return data
   })
 
-  if (loading) return <div>Loading users...</div>
+  if (loading) return <Spinner />
   if (error) return <div style={{ color: 'red' }}>{error}</div>
 
   return (

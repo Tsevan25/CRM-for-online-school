@@ -13,7 +13,7 @@ import {
   deleteStudent as deleteStudentAPI,
 } from '@/shared/api/students'
 import { useAppSelector } from '@/app/store'
-import { useAsync } from '@/shared/hooks/useAsync'
+import { useAsync, Spinner } from '@/shared'
 import styles from './StudentList.module.css'
 
 interface StudentListProps {
@@ -91,7 +91,7 @@ const StudentList = ({
     }
   }
 
-  if (loading) return <div>Loading students...</div>
+  if (loading) return  <Spinner />
   if (error) return <div style={{ color: 'red' }}>{error}</div>
 
   return (

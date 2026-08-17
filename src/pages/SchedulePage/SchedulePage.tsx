@@ -2,7 +2,7 @@ import { useAppSelector } from '@/app/store'
 import { ScheduleCalendar } from '@/widgets/ScheduleCalendar'
 import { fetchLessons, createLessonWithPayment, updateLesson, cancelLesson } from '@/shared/api/lessons'
 import type { LessonFormData, LessonWithNames } from '@/entities/lesson/model/types'
-import { useAsync } from '@/shared/hooks/useAsync'
+import { useAsync, Spinner } from '@/shared'
 import { useState } from 'react'
 
 const SchedulePage = () => {
@@ -58,7 +58,7 @@ const handleCreate = async (data: LessonFormData) => {
     }
   }
 
-  if (loading) return <div>Loading lessons...</div>
+  if (loading) return <Spinner />
   if (error) return <div style={{ color: 'red' }}>{error}</div>
 
   return (
