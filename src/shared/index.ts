@@ -5,3 +5,4 @@ export {Card} from '@/shared/ui/Card';
 export {formatCurrency} from './lib/formatCurrency';
 export {useAsync} from '@/shared/hooks/useAsync';
 export {Spinner} from '@/shared/ui/Spinner';
+export {ErrorMessage} from '@/shared/ui/ErrorMessage';

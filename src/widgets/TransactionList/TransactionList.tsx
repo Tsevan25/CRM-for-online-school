@@ -3,7 +3,7 @@ import type { TransactionWithStudent } from '@/entities/transaction/model/types'
 import { fetchTransactions, createTransaction } from '@/shared/api/transactions'
 import { fetchStudents } from '@/shared/api/students'
 import { AddTransactionForm } from '@/features/transaction/add'
-import {Modal, Button, Card, formatCurrency, useAsync, Spinner} from '@/shared'
+import {Modal, Button, Card, formatCurrency, useAsync, Spinner, ErrorMessage} from '@/shared'
 import styles from './TransactionList.module.css'
 
 const TransactionList = () => {
@@ -42,7 +42,7 @@ const TransactionList = () => {
   }
 
   if (loading) return <Spinner />
-  if (error) return <div style={{ color: 'red' }}>{error}</div>
+  if (error) return <ErrorMessage message={error} />
 
   return (
     <div className={styles.container}>

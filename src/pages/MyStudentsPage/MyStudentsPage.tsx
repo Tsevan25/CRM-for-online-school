@@ -3,7 +3,7 @@ import  StudentList  from '@/widgets/StudentList'
 import { fetchLessonsByTeacher } from '@/shared/api/lessons'
 import { fetchStudentsByIds } from '@/shared/api/students'
 import type { Student } from '@/entities/student/model/types'
-import { useAsync, Spinner } from '@/shared'
+import { useAsync, Spinner, ErrorMessage } from '@/shared'
 import { useState } from 'react'
 
 const MyStudentsPage = () => {
@@ -20,7 +20,7 @@ const MyStudentsPage = () => {
   })
 
   if (loading) return <Spinner />
-  if (error) return <div style={{ color: 'red' }}>{error}</div>
+  if (error) return <ErrorMessage message={error} />
 
   return (
     <StudentList

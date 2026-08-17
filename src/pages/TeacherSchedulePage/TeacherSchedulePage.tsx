@@ -3,7 +3,7 @@ import { useAppSelector } from '@/app/store'
 import { ScheduleCalendar } from '@/widgets/ScheduleCalendar'
 import { fetchLessonsByTeacher, updateLesson } from '@/shared/api/lessons'
 import type { LessonStatus, LessonWithNames } from '@/entities/lesson/model/types'
-import {Spinner} from '@/shared';
+import {Spinner, ErrorMessage} from '@/shared';
 
 const TeacherSchedulePage = () => {
   const { user } = useAppSelector((state) => state.auth)
@@ -38,7 +38,7 @@ const TeacherSchedulePage = () => {
   }
 
   if (loading) return <Spinner />
-  if (error) return <div style={{ color: 'red' }}>{error}</div>
+  if (error) return <ErrorMessage message={error} />
 
   return (
     <ScheduleCalendar

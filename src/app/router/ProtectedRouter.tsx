@@ -1,11 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "../store";
+import { Spinner } from "@/shared";
 
 const ProtectedRoute = () => {
   const { user, loading } = useAppSelector((state) => state.auth);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Spinner />;
   }
 
   if (!user) {
