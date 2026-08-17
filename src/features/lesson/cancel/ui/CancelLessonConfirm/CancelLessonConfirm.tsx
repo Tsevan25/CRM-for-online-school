@@ -1,4 +1,4 @@
-import {Modal, Button} from '@/shared';
+import {Modal, Button, Typography} from '@/shared';
 import styles from './CancelLessonConfirm.module.css';
 
 interface CancelLessonConfirmProps {
@@ -17,8 +17,8 @@ const CancelLessonConfirm = ({
   onConfirm,
 }: CancelLessonConfirmProps) => (
   <Modal isOpen={isOpen} onClose={onClose} title="Cancel Lesson">
-    <p className={styles.message}>
-      Are you sure you want to cancel the lesson with{' '}
+    <Typography variant='body' className={styles.message}>
+       Are you sure you want to cancel the lesson with{' '}
       <strong>{studentName}</strong> on{' '}
       {new Date(startTime).toLocaleDateString('en-US', {
         month: 'short',
@@ -27,7 +27,7 @@ const CancelLessonConfirm = ({
         minute: '2-digit',
       })}
       ?
-    </p>
+    </Typography>
     <div className={styles.actions}>
       <Button variant="secondary" onClick={onClose}>
         Keep Lesson

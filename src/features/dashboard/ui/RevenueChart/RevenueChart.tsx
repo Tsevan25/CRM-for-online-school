@@ -1,5 +1,5 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { formatCurrency } from '@/shared/lib/formatCurrency'
+import { formatCurrency, Typography } from '@/shared'
 import type { RevenueChartData } from '@/features/dashboard'
 import styles from './RevenueChart.module.css'
 
@@ -10,7 +10,7 @@ interface RevenueChartProps {
 const RevenueChart = ({ data }: RevenueChartProps) => {
   return (
     <>
-      <h3 className={styles.title}>Monthly Revenue</h3>
+      <Typography variant='h3' className={styles.title}>Monthly Revenue</Typography>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />

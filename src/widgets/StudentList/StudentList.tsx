@@ -11,7 +11,7 @@ import {
   deleteStudent as deleteStudentAPI,
 } from '@/shared/api/students'
 import { useAppSelector } from '@/app/store'
-import { useAsync, Spinner, ErrorMessage, Button, Card, EmptyState, DataTable, type Column, formatCurrency } from '@/shared'
+import { useAsync, Spinner, ErrorMessage, Button, Card, EmptyState, DataTable, type Column, formatCurrency, Typography } from '@/shared'
 import styles from './StudentList.module.css'
 import { UserPen, Trash } from 'lucide-react'
 
@@ -159,7 +159,8 @@ const StudentList = ({
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.title}>Students</h2>
+        <Typography variant='h2' className={styles.title}>Students</Typography>
+  
         {canAdd && !isExternal && (
           <Button variant="primary" size="small" onClick={() => setIsAddModalOpen(true)}>
             + Add Student

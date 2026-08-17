@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import {Card} from '@/shared'
+import {Card, Typography} from '@/shared'
 import styles from './Dashboard.module.css'
 import type { StatCardData } from '@/features/dashboard'
 
@@ -13,17 +13,17 @@ interface DashboardProps {
 const Dashboard = ({ heading, stats, chart }: DashboardProps) => {
   return (
     <div className={styles.dashboard}>
-      <h2 className={styles.heading}>{heading}</h2>
+      <Typography variant='h2' className={styles.heading}>{heading}</Typography>
 
       <div className={styles.grid}>
         {stats.map((stat) => (
           <Card key={stat.title} padding="medium" className={styles.statCard}>
             {stat.icon && <span className={styles.icon}>{stat.icon}</span>}
             <div className={styles.body}>
-              <span className={styles.title}>{stat.title}</span>
-              <span className={styles.value}>{stat.value}</span>
+              <Typography variant='caption' className={styles.title}>{stat.title}</Typography>
+               <Typography variant='caption' className={styles.value}>{stat.value}</Typography>
               {stat.description && (
-                <span className={styles.desc}>{stat.description}</span>
+                <Typography variant='caption' className={styles.desc}>{stat.description}</Typography>
               )}
             </div>
           </Card>

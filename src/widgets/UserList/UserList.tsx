@@ -3,7 +3,7 @@ import { fetchUsers } from '@/shared/api/users'
 import type { UserProfile } from '@/entities/user'
 import { UpdateRoleSelect } from '@/features/user'
 import { DeleteUserButton } from '@/features/user'
-import {Card, Spinner, ErrorMessage, EmptyState, DataTable, type Column} from '@/shared'
+import {Card, Spinner, ErrorMessage, EmptyState, DataTable, type Column, Typography} from '@/shared'
 import styles from './UserList.module.css'
 import { useState } from 'react'
 
@@ -42,7 +42,7 @@ const UserList = () => {
 
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Users</h2>
+      <Typography variant='h2' className={styles.title}>Users</Typography>
       <Card padding="small">
         {users.length === 0 ? (
           <EmptyState message="No users" />

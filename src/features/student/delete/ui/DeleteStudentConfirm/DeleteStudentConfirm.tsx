@@ -1,4 +1,4 @@
-import {Button, Modal} from '@/shared'
+import {Button, Modal, Typography} from '@/shared'
 import styles from './DeleteStudentConfirm.module.css'
 
 interface DeleteStudentConfirmProps {
@@ -15,9 +15,7 @@ const DeleteStudentConfirm = ({
   onConfirm,
 }: DeleteStudentConfirmProps) => (
   <Modal isOpen={isOpen} onClose={onClose} title="Delete Student">
-    <p className={styles.message}>
-      Are you sure you want to delete <strong>{studentName}</strong>?
-    </p>
+    <Typography variant='body' className={styles.message}> Are you sure you want to delete <strong>{studentName}</strong>?</Typography>
     <div className={styles.actions}>
       <Button variant="secondary" onClick={onClose}>
         Cancel

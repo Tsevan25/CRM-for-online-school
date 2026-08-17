@@ -1,10 +1,9 @@
-import Card from '@/shared/ui/Card/Card'
-import Button from '@/shared/ui/Button/Button'
 import { useNavigate } from 'react-router-dom'
 import type { Student } from '@/entities/student/model/types'
 import type { LessonWithNames } from '@/entities/lesson/model/types'
 import type { TransactionWithStudent } from '@/entities/transaction/model/types'
 import styles from './StudentDetails.module.css'
+import { Typography, Card, Button, DataTable, type Column } from '@/shared'
 
 interface StudentDetailsProps {
   student: Student
@@ -37,6 +36,36 @@ const StudentDetails = ({ student, lessons, transactions }: StudentDetailsProps)
       minimumFractionDigits: 0,
     }).format(amount)
 
+  const lessonColumns: Column<LessonWithNames>[] = [
+    { key: 'date', header: 'Date', render: (l) => formatDate(l.start_time) },
+    { key: 'teacher', header: 'Teacher', render: (l) => l.teacher?.full_name || '—' },
+    {
+      key: 'status',
+      header: 'Status',
+      render: (l) => (
+        <Typography variant="caption" className={`${styles.status} ${styles[l.status]}`}>
+          {l.status}
+        </Typography>
+      ),
+    },
+    { key: 'price', header: 'Price', render: (l) => formatCurrency(l.price) },
+  ]
+
+  const transactionColumns: Column<TransactionWithStudent>[] = [
+    { key: 'date', header: 'Date', render: (t) => formatDate(t.created_at) },
+    { key: 'type', header: 'Type', render: (t) => t.type.replace('_', ' ') },
+    {
+      key: 'amount',
+      header: 'Amount',
+      render: (t) => (
+        <span className={t.amount < 0 ? styles.negative : styles.positive}>
+          {formatCurrency(t.amount)}
+        </span>
+      ),
+    },
+    { key: 'description', header: 'Description', render: (t) => t.description || '—' },
+  ]
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -46,7 +75,7 @@ const StudentDetails = ({ student, lessons, transactions }: StudentDetailsProps)
       </div>
 
       <Card padding="large" className={styles.infoCard}>
-        <h2 className={styles.name}>{student.full_name}</h2>
+        <Typography variant="h2" className={styles.name}>{student.full_name}</Typography>
         <div className={styles.infoGrid}>
           <div className={styles.infoItem}>
             <span className={styles.label}>Email</span>
@@ -68,64 +97,20 @@ const StudentDetails = ({ student, lessons, transactions }: StudentDetailsProps)
       </Card>
 
       <Card padding="large" className={styles.sectionCard}>
-        <h3 className={styles.sectionTitle}>Lesson History</h3>
+        <Typography variant="h3" className={styles.sectionTitle}>Lesson History</Typography>
         {lessons.length === 0 ? (
-          <p className={styles.empty}>No lessons yet</p>
+          <Typography variant="body" className={styles.empty}>No lessons yet</Typography>
         ) : (
-          <table className={styles.table}>
-            <thead>
-              <tr className={styles.headRow}>
-                <th className={styles.headCell}>Date</th>
-                <th className={styles.headCell}>Teacher</th>
-                <th className={styles.headCell}>Status</th>
-                <th className={styles.headCell}>Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {lessons.map((lesson) => (
-                <tr key={lesson.id} className={styles.row}>
-                  <td className={styles.cell}>{formatDate(lesson.start_time)}</td>
-                  <td className={styles.cell}>{lesson.teacher?.full_name || '—'}</td>
-                  <td className={styles.cell}>
-                    <span className={`${styles.status} ${styles[lesson.status]}`}>
-                      {lesson.status}
-                    </span>
-                  </td>
-                  <td className={styles.cell}>{formatCurrency(lesson.price)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <DataTable columns={lessonColumns} data={lessons} keyField="id" />
         )}
       </Card>
 
       <Card padding="large" className={styles.sectionCard}>
-        <h3 className={styles.sectionTitle}>Transaction History</h3>
+        <Typography variant="h3" className={styles.sectionTitle}>Transaction History</Typography>
         {transactions.length === 0 ? (
-          <p className={styles.empty}>No transactions yet</p>
+          <Typography variant="body" className={styles.empty}>No transactions yet</Typography>
         ) : (
-          <table className={styles.table}>
-            <thead>
-              <tr className={styles.headRow}>
-                <th className={styles.headCell}>Date</th>
-                <th className={styles.headCell}>Type</th>
-                <th className={styles.headCell}>Amount</th>
-                <th className={styles.headCell}>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions.map((transaction) => (
-                <tr key={transaction.id} className={styles.row}>
-                  <td className={styles.cell}>{formatDate(transaction.created_at)}</td>
-                  <td className={styles.cell}>{transaction.type.replace('_', ' ')}</td>
-                  <td className={`${styles.cell} ${transaction.amount < 0 ? styles.negative : styles.positive}`}>
-                    {formatCurrency(transaction.amount)}
-                  </td>
-                  <td className={styles.cell}>{transaction.description || '—'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <DataTable columns={transactionColumns} data={transactions} keyField="id" />
         )}
       </Card>
     </div>

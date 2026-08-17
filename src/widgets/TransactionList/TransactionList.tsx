@@ -3,7 +3,7 @@ import type { TransactionWithStudent } from '@/entities/transaction/model/types'
 import { fetchTransactions, createTransaction } from '@/shared/api/transactions'
 import { fetchStudents } from '@/shared/api/students'
 import { AddTransactionForm } from '@/features/transaction/add'
-import {Modal, Button, Card, formatCurrency, useAsync, Spinner, ErrorMessage, EmptyState, DataTable, type Column} from '@/shared'
+import {Modal, Button, Card, formatCurrency, useAsync, Spinner, ErrorMessage, EmptyState, DataTable, type Column, Typography} from '@/shared'
 import styles from './TransactionList.module.css'
 
 
@@ -75,7 +75,7 @@ const TransactionList = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2 className={styles.title}>Transactions</h2>
+        <Typography variant='h2' className={styles.title}>Transactions</Typography>
         <Button variant="primary" size="small" onClick={() => setIsAddModalOpen(true)}>
           + Add Transaction
         </Button>
