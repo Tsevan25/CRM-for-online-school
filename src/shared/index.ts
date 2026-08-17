@@ -7,3 +7,4 @@ export {useAsync} from '@/shared/hooks/useAsync';
 export {Spinner} from '@/shared/ui/Spinner';
 export {ErrorMessage} from '@/shared/ui/ErrorMessage';
 export {EmptyState} from '@/shared/ui/EmptyState';
+export {DataTable, type Column} from './ui/DataTable'

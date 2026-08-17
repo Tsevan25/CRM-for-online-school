@@ -3,8 +3,36 @@ import type { TransactionWithStudent } from '@/entities/transaction/model/types'
 import { fetchTransactions, createTransaction } from '@/shared/api/transactions'
 import { fetchStudents } from '@/shared/api/students'
 import { AddTransactionForm } from '@/features/transaction/add'
-import {Modal, Button, Card, formatCurrency, useAsync, Spinner, ErrorMessage} from '@/shared'
+import {Modal, Button, Card, formatCurrency, useAsync, Spinner, ErrorMessage, EmptyState, DataTable, type Column} from '@/shared'
 import styles from './TransactionList.module.css'
+
+
+const columns: Column<TransactionWithStudent>[] = [
+  {
+    key: 'date',
+    header: 'Date',
+    render: (t) =>
+      new Date(t.created_at).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+  },
+  { key: 'student', header: 'Student', render: (t) => t.student?.full_name || '—' },
+  { key: 'type', header: 'Type', render: (t) => t.type.replace('_', ' ') },
+  {
+    key: 'amount',
+    header: 'Amount',
+    render: (t) => (
+      <span className={t.amount < 0 ? styles.negative : styles.positive}>
+        {formatCurrency(t.amount)}
+      </span>
+    ),
+  },
+  { key: 'description', header: 'Description', render: (t) => t.description || '—' },
+]
 
 const TransactionList = () => {
   const [transactions, setTransactions] = useState<TransactionWithStudent[]>([])
@@ -35,7 +63,7 @@ const TransactionList = () => {
         description: data.description,
       })
       setIsAddModalOpen(false)
-      await refetch() 
+      await refetch()
     } catch (err) {
       console.error('Error creating transaction:', err)
     }
@@ -54,35 +82,11 @@ const TransactionList = () => {
       </div>
 
       <Card padding="small">
-        <table className={styles.table}>
-          <thead>
-            <tr className={styles.headRow}>
-              <th className={styles.headCell}>Date</th>
-              <th className={styles.headCell}>Student</th>
-              <th className={styles.headCell}>Type</th>
-              <th className={styles.headCell}>Amount</th>
-              <th className={styles.headCell}>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.map((t) => (
-              <tr key={t.id} className={styles.row}>
-                <td className={styles.cell}>
-                  {new Date(t.created_at).toLocaleDateString('en-US', {
-                    year: 'numeric', month: 'short', day: 'numeric',
-                    hour: '2-digit', minute: '2-digit'
-                  })}
-                </td>
-                <td className={styles.cell}>{t.student?.full_name || '—'}</td>
-                <td className={styles.cell}>{t.type.replace('_', ' ')}</td>
-                <td className={`${styles.cell} ${t.amount < 0 ? styles.negative : styles.positive}`}>
-                  {formatCurrency(t.amount)}
-                </td>
-                <td className={styles.cell}>{t.description || '—'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {transactions.length === 0 ? (
+          <EmptyState message="No transactions" />
+        ) : (
+          <DataTable columns={columns} data={transactions} keyField="id" />
+        )}
       </Card>
 
       <Modal

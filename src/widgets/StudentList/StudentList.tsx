@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { StudentRow } from '@/entities/student'
 import type { Student, StudentFormData } from '@/entities/student/model/types'
-import {Button, Card} from '@/shared'
 import { AddStudentModal } from '@/features/student'
 import { EditStudentModal } from '@/features/student'
 import { DeleteStudentConfirm } from '@/features/student'
@@ -13,8 +11,9 @@ import {
   deleteStudent as deleteStudentAPI,
 } from '@/shared/api/students'
 import { useAppSelector } from '@/app/store'
-import { useAsync, Spinner, ErrorMessage } from '@/shared'
+import { useAsync, Spinner, ErrorMessage, Button, Card, EmptyState, DataTable, type Column, formatCurrency } from '@/shared'
 import styles from './StudentList.module.css'
+import { UserPen, Trash } from 'lucide-react'
 
 interface StudentListProps {
   students?: Student[]
@@ -39,9 +38,8 @@ const StudentList = ({
   const students = externalStudents ?? internalStudents
   const isExternal = !!externalStudents
 
-  
   const { loading, error, refetch } = useAsync(async () => {
-    if (isExternal) return [] 
+    if (isExternal) return []
     const data = await fetchStudents()
     setInternalStudents(data)
     return data
@@ -58,7 +56,7 @@ const StudentList = ({
         created_by: user.id,
       })
       setIsAddModalOpen(false)
-      await refetch() 
+      await refetch()
     } catch (err) {
       console.error('Error creating student:', err)
     }
@@ -91,7 +89,71 @@ const StudentList = ({
     }
   }
 
-  if (loading) return  <Spinner />
+  const columns: Column<Student>[] = [
+    {
+      key: 'name',
+      header: 'Name',
+      render: (student) =>
+        !isExternal ? (
+          <Button
+            variant="secondary"
+            size="small"
+            onClick={() => navigate(`/students/${student.id}`)}
+          >
+            {student.full_name}
+          </Button>
+        ) : (
+          student.full_name
+        ),
+    },
+    { key: 'email', header: 'Email', render: (student) => student.email || '—' },
+    { key: 'phone', header: 'Phone', render: (student) => student.phone || '—' },
+    {
+      key: 'balance',
+      header: 'Balance',
+      render: (student) => formatCurrency(student.balance),
+    },
+    {
+      key: 'created_at',
+      header: 'Created',
+      render: (student) =>
+        new Date(student.created_at).toLocaleDateString('en-US'),
+    },
+    ...(canEdit || canDelete
+      ? [
+          {
+            key: 'actions',
+            header: 'Actions',
+            render: (student: Student) => (
+              <>
+                {canEdit && !isExternal && (
+                  <Button
+                    variant="secondary"
+                    size="small"
+                    onClick={() => setEditingStudent(student)}
+                    aria-label="Edit student"
+                  >
+                    <UserPen />
+                  </Button>
+                )}
+                {canDelete && !isExternal && (
+                  <Button
+                    variant="secondary"
+                    size="small"
+                    onClick={() => setDeletingStudent(student)}
+                    aria-label="Delete student"
+                  >
+                    <Trash />
+                  </Button>
+                )}
+              </>
+            ),
+          },
+        ]
+      : []),
+  ]
+
+  if (loading) return <Spinner />
   if (error) return <ErrorMessage message={error} />
 
   return (
@@ -106,29 +168,11 @@ const StudentList = ({
       </div>
 
       <Card padding="small">
-        <table className={styles.table}>
-          <thead>
-            <tr className={styles.headRow}>
-              <th className={styles.headCell}>Name</th>
-              <th className={styles.headCell}>Email</th>
-              <th className={styles.headCell}>Phone</th>
-              <th className={styles.headCell}>Balance</th>
-              <th className={styles.headCell}>Created</th>
-              {(canEdit || canDelete) && <th className={styles.headCell}>Actions</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {students.map((s) => (
-              <StudentRow
-                key={s.id}
-                student={s}
-                onEdit={canEdit && !isExternal ? () => setEditingStudent(s) : undefined}
-                onDelete={canDelete && !isExternal ? () => setDeletingStudent(s) : undefined}
-                onView={() => navigate(`/students/${s.id}`)}
-              />
-            ))}
-          </tbody>
-        </table>
+        {students.length === 0 ? (
+          <EmptyState message="No students" />
+        ) : (
+          <DataTable columns={columns} data={students} keyField="id" />
+        )}
       </Card>
 
       {!isExternal && (
