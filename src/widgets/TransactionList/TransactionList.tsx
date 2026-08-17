@@ -2,8 +2,11 @@ import { useState } from 'react'
 import type { TransactionWithStudent } from '@/entities/transaction/model/types'
 import { fetchTransactions, createTransaction } from '@/shared/api/transactions'
 import { fetchStudents } from '@/shared/api/students'
-import { AddTransactionForm } from '@/features/transaction/add'
-import {Modal, Button, Card, formatCurrency, useAsync, Spinner, ErrorMessage, EmptyState, DataTable, type Column, Typography} from '@/shared'
+import { AddTransactionForm } from '@/features/transaction-add/AddTransactionForm'
+import {Modal, Button, Card, Spinner, ErrorMessage, EmptyState, DataTable, Typography} from '@/shared/ui'
+import { formatCurrency } from '@/shared/lib/formatCurrency'
+import type { Column } from '@/shared/ui/DataTable'
+import { useAsync } from '@/shared/hooks/useAsync'
 import styles from './TransactionList.module.css'
 
 

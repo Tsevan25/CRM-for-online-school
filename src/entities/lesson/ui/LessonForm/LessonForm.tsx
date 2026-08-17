@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { lessonSchema, type LessonFormData } from '../../model/types'
 import styles from './LessonForm.module.css';
-import {Input, Button} from '@/shared';
+import {Input, Button} from '@/shared/ui';
 
 interface StudentOption {
   id: string

@@ -2,7 +2,8 @@ import { useAppSelector } from '@/app/store'
 import { ScheduleCalendar } from '@/widgets/ScheduleCalendar'
 import { fetchLessons, createLessonWithPayment, updateLesson, cancelLesson } from '@/shared/api/lessons'
 import type { LessonFormData, LessonWithNames } from '@/entities/lesson/model/types'
-import { useAsync, Spinner, ErrorMessage } from '@/shared'
+import { Spinner, ErrorMessage } from '@/shared/ui'
+import { useAsync } from '@/shared/hooks/useAsync'
 import { useState } from 'react'
 
 const SchedulePage = () => {

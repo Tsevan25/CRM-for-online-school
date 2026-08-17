@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import {Card, Typography} from '@/shared'
+import {Card, Typography} from '@/shared/ui'
 import styles from './Dashboard.module.css'
 import type { StatCardData } from '@/features/dashboard'
 

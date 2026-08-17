@@ -1,5 +1,5 @@
-import { Typography, Image } from "@/shared";
-import LoginForm from "../../features/auth/ui/LoginForm";
+import { Typography, Image } from "@/shared/ui";
+import {LoginForm} from '@/features/auth';
 import styles from "./LoginPage.module.css";
 import logoUrl from "@/shared/assets/icons/main-logo.png";
 

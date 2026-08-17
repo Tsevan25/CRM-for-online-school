@@ -1,6 +1,6 @@
 import { type PropsWithChildren, useEffect } from "react";
 import styles from "./Modal.module.css";
-import { Button } from "@/shared";
+import { Button, Typography } from "@/shared/ui";
 
 interface ModalProps extends PropsWithChildren {
   isOpen: boolean;
@@ -34,7 +34,7 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
-          <h2 className={styles.title}>{title}</h2>
+          <Typography variant="h2" className={styles.title}>{title}</Typography>
           <Button
             variant="secondary"
             size="small"

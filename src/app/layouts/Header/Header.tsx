@@ -1,10 +1,9 @@
 import { useAppSelector, useAppDispatch } from "@/app/store";
-import { logout } from '@/features/auth'
-import {Button} from "@/shared";
+import { logout } from "@/features/auth";
+import { Button, Image, Typography } from "@/shared/ui";
 import styles from "./Header.module.css";
 import { Bell } from "lucide-react";
-import logoUrl from '@/shared/assets/icons/secondary-logo.svg'
-
+import logoUrl from "@/shared/assets/icons/secondary-logo.svg";
 
 const Header = () => {
   const { user, role, fullName } = useAppSelector((state) => state.auth);
@@ -15,13 +14,19 @@ const Header = () => {
   };
   return (
     <header className={styles.header}>
-      <img className={styles.logoImg} src={logoUrl} alt="logo" />
+      <Image className={styles.logoImg} src={logoUrl} alt="logo" />
       <div className={styles.right}>
-        <span className={styles.notification}><Bell /></span>
+        <Typography variant="caption" className={styles.notification}>
+          <Bell />
+        </Typography>
 
         <div className={styles.userInfo}>
-          <span className={styles.email}>{fullName || user?.email}</span>
-          <span className={styles.role}>{role}</span>
+          <Typography variant="caption" className={styles.email}>
+            {fullName || user?.email}
+          </Typography>
+          <Typography variant="caption" className={styles.role}>
+            {role}
+          </Typography>
         </div>
 
         <Button variant="secondary" size="small" onClick={handleLogout}>

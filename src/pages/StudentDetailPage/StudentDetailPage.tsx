@@ -3,8 +3,8 @@ import { useAsync } from '@/shared/hooks/useAsync'
 import { fetchStudentById } from '@/shared/api/students'
 import { fetchLessonsByStudent } from '@/shared/api/lessons'
 import { fetchTransactionsByStudent } from '@/shared/api/transactions'
-import  StudentDetails  from '@/widgets/StudentDetails/ui/StudentDetails'
-import {Spinner} from '@/shared'
+import  StudentDetails  from '@/widgets/StudentDetails/StudentDetails'
+import {Spinner} from '@/shared/ui'
 
 
 const StudentDetailPage = () => {

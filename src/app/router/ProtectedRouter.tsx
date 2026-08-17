@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "../store";
-import { Spinner } from "@/shared";
+import { Spinner } from "@/shared/ui";
 
 const ProtectedRoute = () => {
   const { user, loading } = useAppSelector((state) => state.auth);

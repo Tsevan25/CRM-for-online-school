@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {Input, Button, Typography} from '@/shared';
+import {Input, Button, Typography} from '@/shared/ui';
 import { useAppDispatch } from "@/app/store/index";
 import { login } from "@/features/auth";
 import styles from "./LoginForm.module.css";

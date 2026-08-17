@@ -3,7 +3,7 @@ import { useAppSelector } from '@/app/store'
 import { ScheduleCalendar } from '@/widgets/ScheduleCalendar'
 import { fetchLessonsByTeacher, updateLesson } from '@/shared/api/lessons'
 import type { LessonStatus, LessonWithNames } from '@/entities/lesson/model/types'
-import {Spinner, ErrorMessage} from '@/shared';
+import {Spinner, ErrorMessage} from '@/shared/ui';
 
 const TeacherSchedulePage = () => {
   const { user } = useAppSelector((state) => state.auth)

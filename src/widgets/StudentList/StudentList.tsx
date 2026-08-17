@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { Student, StudentFormData } from '@/entities/student/model/types'
-import { AddStudentModal } from '@/features/student'
-import { EditStudentModal } from '@/features/student'
-import { DeleteStudentConfirm } from '@/features/student'
+import { AddStudentModal } from '@/features/student-add/AddStudentModal'
+import { EditStudentModal } from '@/features/student-edit/EditStudentModal'
+import { DeleteStudentConfirm } from '@/features/student-delete/DeleteStudentConfirm'
 import {
   fetchStudents,
   createStudent,
@@ -11,7 +11,10 @@ import {
   deleteStudent as deleteStudentAPI,
 } from '@/shared/api/students'
 import { useAppSelector } from '@/app/store'
-import { useAsync, Spinner, ErrorMessage, Button, Card, EmptyState, DataTable, type Column, formatCurrency, Typography } from '@/shared'
+import {  Spinner, ErrorMessage, Button, Card, EmptyState, DataTable, Typography } from '@/shared/ui'
+import { useAsync } from '@/shared/hooks/useAsync'
+import type { Column } from '@/shared/ui/DataTable'
+import { formatCurrency } from '@/shared/lib/formatCurrency'
 import styles from './StudentList.module.css'
 import { UserPen, Trash } from 'lucide-react'
 

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
-import {Button, Input} from '@/shared'
+import {Button, Input, Typography} from '@/shared/ui'
 import styles from './StudentForm.module.css'
 import  { studentSchema, type StudentFormData  } from '@/entities/student';
 
@@ -75,7 +75,8 @@ const StudentForm = ({
         {...register('initialBalance')}
       />
 
-      {rootError && <p className={styles.rootError}>{rootError}</p>}
+       
+      {rootError &&  <Typography variant='body' className={styles.rootError}>{rootError}</Typography>}
 
       <div className={styles.actions}>
         <Button type="button" variant="secondary" onClick={onCancel}>

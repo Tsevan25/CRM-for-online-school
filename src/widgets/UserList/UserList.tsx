@@ -1,9 +1,10 @@
 import { useAsync } from '@/shared/hooks/useAsync'
 import { fetchUsers } from '@/shared/api/users'
 import type { UserProfile } from '@/entities/user'
-import { UpdateRoleSelect } from '@/features/user'
-import { DeleteUserButton } from '@/features/user'
-import {Card, Spinner, ErrorMessage, EmptyState, DataTable, type Column, Typography} from '@/shared'
+import { UpdateRoleSelect } from '@/features/user-role-update/UpdateRoleSelect'
+import { DeleteUserButton } from '@/features/user-delete/DeleteUserButton'
+import {Card, Spinner, ErrorMessage, EmptyState, DataTable, Typography} from '@/shared/ui'
+import type { Column } from '@/shared/ui/DataTable'
 import styles from './UserList.module.css'
 import { useState } from 'react'
 

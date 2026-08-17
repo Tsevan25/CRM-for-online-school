@@ -3,7 +3,8 @@ import  StudentList  from '@/widgets/StudentList'
 import { fetchLessonsByTeacher } from '@/shared/api/lessons'
 import { fetchStudentsByIds } from '@/shared/api/students'
 import type { Student } from '@/entities/student/model/types'
-import { useAsync, Spinner, ErrorMessage } from '@/shared'
+import { Spinner, ErrorMessage } from '@/shared/ui'
+import { useAsync } from '@/shared/hooks/useAsync'
 import { useState } from 'react'
 
 const MyStudentsPage = () => {

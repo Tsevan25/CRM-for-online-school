@@ -3,7 +3,10 @@ import { Calendar, momentLocalizer, type Event } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import type { LessonFormData, LessonStatus, LessonWithNames } from '@/entities/lesson/model/types'
-import { CreateLessonModal, EditLessonModal, CancelLessonConfirm, ChangeLessonStatusModal } from '@/features/lesson'
+import { CreateLessonModal } from '@/features/lesson-create/CreateLessonModal'
+import { EditLessonModal } from '@/features/lesson-edit/EditLessonModal'
+import { CancelLessonConfirm } from '@/features/lesson-cancel/CancelLessonConfirm'
+import { ChangeLessonStatusModal } from '@/features/lesson-status/ChangeLessonStatusModal'
 import styles from './ScheduleCalendar.module.css'
 
 const localizer = momentLocalizer(moment)

@@ -1,6 +1,6 @@
 import  Dashboard  from '@/widgets/Dashboard'
 import { useDashboardData } from '@/features/dashboard/model/useDashboardData'
-import {Spinner, ErrorMessage} from '@/shared'
+import {Spinner, ErrorMessage} from '@/shared/ui'
 
 const DashboardPage = () => {
   const { stats, chartNode, loading, error } = useDashboardData()

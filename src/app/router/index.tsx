@@ -3,17 +3,16 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/app/router/ProtectedRouter";
 import { MainLayout } from "@/app/layouts/MainLayout";
 
-import {
-  LoginPage,
-  DashboardPage,
-  StudentsPage,
-  StudentDetailPage,
-  SchedulePage,
-  TeacherSchedulePage,
-  TransactionsPage,
-  MyStudentsPage,
-  UsersPage,
-} from "@/pages";
+import {LoginPage} from '@/pages/LoginPage';
+import {DashboardPage} from '@/pages/DashboardPage';
+import {StudentsPage} from '@/pages/StudentsPage';
+import {StudentDetailPage} from '@/pages/StudentDetailPage';
+import {SchedulePage} from '@/pages/SchedulePage';
+import {TeacherSchedulePage} from '@/pages/TeacherSchedulePage';
+import { TransactionsPage } from '@/pages/TransactionsPage';
+import {MyStudentsPage} from '@/pages/MyStudentsPage';
+import {UsersPage} from '@/pages/UsersPage';
+
 
 const SettingsPage = () => <div>Настройки</div>;
 
