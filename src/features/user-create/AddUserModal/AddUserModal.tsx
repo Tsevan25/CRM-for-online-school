@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import {Modal, Input, Button, FormField} from '@/shared/ui'
+import {Modal, Input, Button, Select} from '@/shared/ui'
 import { createUser } from '@/shared/api/users'
 import styles from './AddUserModal.module.css'
 
@@ -40,53 +40,46 @@ const AddUserModal = ({ isOpen, onClose, onCreated }: AddUserModalProps) => {
     }
   }
 
+  const roleOptions = [
+    { value: 'teacher', label: 'Teacher' },
+    { value: 'manager', label: 'Manager' },
+    { value: 'admin', label: 'Admin' },
+  ]
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Add User">
       <form onSubmit={handleSubmit} className={styles.form}>
-        <FormField label="Full Name">
-          <Input
-            placeholder="John Doe"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            required
-          />
-        </FormField>
-
-        <FormField label="Email">
-          <Input
-            type="email"
-            placeholder="user@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </FormField>
-
-        <FormField label="Password">
-          <Input
-            type="password"
-            placeholder="Min 6 characters"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={6}
-          />
-        </FormField>
-
-        <FormField label="Role">
-          <select
-            className={styles.select}
-            value={role}
-            onChange={(e) => setRole(e.target.value as Role)}
-          >
-            <option value="teacher">Teacher</option>
-            <option value="manager">Manager</option>
-            <option value="admin">Admin</option>
-          </select>
-        </FormField>
-
+        <Input
+          label="Full Name"
+          placeholder="John Doe"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          required
+        />
+        <Input
+          label="Email"
+          type="email"
+          placeholder="user@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <Input
+          label="Password"
+          type="password"
+          placeholder="Min 6 characters"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          minLength={6}
+        />
+        <Select
+          label="Role"
+          value={role}
+          onChange={(e) => setRole(e.target.value as Role)}
+          options={roleOptions}
+        />
         {error && <p className={styles.error}>{error}</p>}
-
         <div className={styles.actions}>
           <Button type="button" variant="secondary" onClick={onClose}>
             Cancel

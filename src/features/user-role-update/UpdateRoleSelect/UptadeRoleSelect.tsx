@@ -1,9 +1,13 @@
 import { useState } from 'react'
 import { updateUserRole } from '@/shared/api/users'
 import type { UserProfile } from '@/entities/user/model/types'
-import styles from './UpdateRoleSelect.module.css'
+import { Select } from '@/shared/ui'
 
-const ROLE_OPTIONS = ['admin', 'manager', 'teacher'] as const
+const ROLE_OPTIONS = [
+  { value: 'teacher', label: 'Teacher' },
+  { value: 'manager', label: 'Manager' },
+  { value: 'admin', label: 'Admin' },
+]
 
 interface UpdateRoleSelectProps {
   user: UserProfile
@@ -23,25 +27,19 @@ const UpdateRoleSelect = ({ user, onRoleUpdated }: UpdateRoleSelectProps) => {
       onRoleUpdated?.()
     } catch (err) {
       console.error('Error updating role:', err)
-      setRole(user.role || 'teacher') 
+      setRole(user.role || 'teacher')
     } finally {
       setIsUpdating(false)
     }
   }
 
   return (
-    <select
-      className={styles.select}
+    <Select
       value={role}
       onChange={handleChange}
       disabled={isUpdating}
-    >
-      {ROLE_OPTIONS.map((option) => (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
+      options={ROLE_OPTIONS}
+    />
   )
 }
 

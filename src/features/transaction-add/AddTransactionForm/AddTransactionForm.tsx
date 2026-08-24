@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import {Input, Button, FormField} from '@/shared/ui'
+import {Input, Button, Select} from '@/shared/ui'
 import type { TransactionType } from '@/entities/transaction/model/types'
 import styles from './AddTransactionForm.module.css'
 
@@ -53,44 +53,42 @@ const AddTransactionForm = ({ students, onSubmit, onCancel }: AddTransactionForm
     }
   }
 
+  const transactionTypeOptions = [
+    { value: 'top_up', label: 'Top-up' },
+    { value: 'lesson_payment', label: 'Lesson Payment' },
+    { value: 'refund', label: 'Refund' },
+    { value: 'adjustment', label: 'Adjustment' },
+  ]
+
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} className={styles.form}>
-      <FormField label="Student" error={errors.studentId?.message}>
-        <select className={styles.select} {...register('studentId')}>
-          <option value="">Select student</option>
-          {students.map((student) => (
-            <option key={student.id} value={student.id}>
-              {student.full_name}
-            </option>
-          ))}
-        </select>
-      </FormField>
+      <Select
+        label="Student"
+        error={errors.studentId?.message}
+        options={students.map((s) => ({ value: s.id, label: s.full_name }))}
+        {...register('studentId')}
+      />
 
-      <FormField label="Amount ($)" error={errors.amount?.message}>
-        <Input
-          type="number"
-          error={errors.amount?.message}
-          {...register('amount')}
-        />
-      </FormField>
+      <Input
+        label="Amount ($)"
+        type="number"
+        error={errors.amount?.message}
+        {...register('amount')}
+      />
 
-      <FormField label="Type" error={errors.type?.message}>
-        <select className={styles.select} {...register('type')}>
-          <option value="">Select type</option>
-          <option value="top_up">Top-up</option>
-          <option value="lesson_payment">Lesson Payment</option>
-          <option value="refund">Refund</option>
-          <option value="adjustment">Adjustment</option>
-        </select>
-      </FormField>
+      <Select
+        label="Type"
+        error={errors.type?.message}
+        options={transactionTypeOptions}
+        {...register('type')}
+      />
 
-      <FormField label="Description" error={errors.description?.message}>
-        <Input
-          placeholder="Optional"
-          error={errors.description?.message}
-          {...register('description')}
-        />
-      </FormField>
+      <Input
+        label="Description"
+        placeholder="Optional"
+        error={errors.description?.message}
+        {...register('description')}
+      />
 
       {rootError && <p className={styles.rootError}>{rootError}</p>}
 
