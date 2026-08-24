@@ -1,3 +1,1 @@
-import StudentDetails from "./StudentDetails";
-
-export default StudentDetails;
+export {default as StudentDetails} from './StudentDetails';

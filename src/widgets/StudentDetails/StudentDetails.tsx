@@ -1,19 +1,32 @@
-import { useNavigate } from 'react-router-dom'
-import type { Student } from '@/entities/student/model/types'
+import { useParams, Navigate, useNavigate } from 'react-router-dom'
+import { useAsync } from '@/shared/hooks/useAsync'
+import { fetchStudentById } from '@/shared/api/students'
+import { fetchLessonsByStudent } from '@/shared/api/lessons'
+import { fetchTransactionsByStudent } from '@/shared/api/transactions'
 import type { LessonWithNames } from '@/entities/lesson/model/types'
 import type { TransactionWithStudent } from '@/entities/transaction/model/types'
 import styles from './StudentDetails.module.css'
-import { Typography, Card, Button, DataTable} from '@/shared/ui'
+import { Typography, Card, Button, DataTable, Spinner } from '@/shared/ui'
 import type { Column } from '@/shared/ui/DataTable'
 
-interface StudentDetailsProps {
-  student: Student
-  lessons: LessonWithNames[]
-  transactions: TransactionWithStudent[]
-}
-
-const StudentDetails = ({ student, lessons, transactions }: StudentDetailsProps) => {
+const StudentDetails = () => {
+  const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+
+  const { data, loading, error } = useAsync(async () => {
+    if (!id) return null
+    const student = await fetchStudentById(id)
+    const [lessons, transactions] = await Promise.all([
+      fetchLessonsByStudent(id),
+      fetchTransactionsByStudent(id),
+    ])
+    return { student, lessons, transactions }
+  })
+
+  if (loading) return <Spinner />
+  if (error || !data?.student) return <Navigate to="/students" replace />
+
+  const { student, lessons, transactions } = data
 
   const formattedBalance = new Intl.NumberFormat('en-US', {
     style: 'currency',
