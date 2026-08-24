@@ -1,15 +1,15 @@
 import  Dashboard  from '@/widgets/Dashboard'
 import { useDashboardData } from '@/features/dashboard/model/useDashboardData'
-import {Spinner, ErrorMessage} from '@/shared/ui'
+import { AsyncBoundary } from '@/shared/ui/AsyncBoundary'
 
 const DashboardPage = () => {
   const { stats, chartNode, loading, error } = useDashboardData()
 
-  if (loading) return <Spinner />
-  if (error) return <ErrorMessage message={error} />
-  if (!chartNode) return <div>No data</div>
-
-  return <Dashboard heading="Dashboard" stats={stats} chart={chartNode} />
+  return (
+    <AsyncBoundary loading={loading} error={error}>
+      {chartNode ? <Dashboard heading="Dashboard" stats={stats} chart={chartNode} /> : null}
+    </AsyncBoundary>
+  )
 }
 
 export default DashboardPage

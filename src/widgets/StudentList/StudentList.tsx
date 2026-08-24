@@ -1,28 +1,35 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import type { Student, StudentFormData } from '@/entities/student/model/types'
-import { AddStudentModal } from '@/features/student-add/AddStudentModal'
-import { EditStudentModal } from '@/features/student-edit/EditStudentModal'
-import { DeleteStudentConfirm } from '@/features/student-delete/DeleteStudentConfirm'
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import type { Student, StudentFormData } from "@/entities/student/model/types";
+import { AddStudentModal } from "@/features/student-add/AddStudentModal";
+import { EditStudentModal } from "@/features/student-edit/EditStudentModal";
+import { DeleteStudentConfirm } from "@/features/student-delete/DeleteStudentConfirm";
 import {
   fetchStudents,
   createStudent,
   updateStudent,
   deleteStudent as deleteStudentAPI,
-} from '@/shared/api/students'
-import { useAppSelector } from '@/app/store'
-import {  Spinner, ErrorMessage, Button, Card, EmptyState, DataTable, Typography } from '@/shared/ui'
-import { useAsync } from '@/shared/hooks/useAsync'
-import type { Column } from '@/shared/ui/DataTable'
-import { formatCurrency } from '@/shared/lib/formatCurrency'
-import styles from './StudentList.module.css'
-import { UserPen, Trash } from 'lucide-react'
+} from "@/shared/api/students";
+import { useAppSelector } from "@/app/store";
+import {
+  Button,
+  Card,
+  EmptyState,
+  DataTable,
+  Typography,
+  AsyncBoundary,
+} from "@/shared/ui";
+import { useAsync } from "@/shared/hooks/useAsync";
+import type { Column } from "@/shared/ui/DataTable";
+import { formatCurrency } from "@/shared/lib/formatCurrency";
+import styles from "./StudentList.module.css";
+import { UserPen, Trash } from "lucide-react";
 
 interface StudentListProps {
-  students?: Student[]
-  canAdd?: boolean
-  canEdit?: boolean
-  canDelete?: boolean
+  students?: Student[];
+  canAdd?: boolean;
+  canEdit?: boolean;
+  canDelete?: boolean;
 }
 
 const StudentList = ({
@@ -31,25 +38,25 @@ const StudentList = ({
   canEdit = true,
   canDelete = true,
 }: StudentListProps) => {
-  const navigate = useNavigate()
-  const { user } = useAppSelector((state) => state.auth)
-  const [internalStudents, setInternalStudents] = useState<Student[]>([])
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
-  const [editingStudent, setEditingStudent] = useState<Student | null>(null)
-  const [deletingStudent, setDeletingStudent] = useState<Student | null>(null)
+  const navigate = useNavigate();
+  const { user } = useAppSelector((state) => state.auth);
+  const [internalStudents, setInternalStudents] = useState<Student[]>([]);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editingStudent, setEditingStudent] = useState<Student | null>(null);
+  const [deletingStudent, setDeletingStudent] = useState<Student | null>(null);
 
-  const students = externalStudents ?? internalStudents
-  const isExternal = !!externalStudents
+  const students = externalStudents ?? internalStudents;
+  const isExternal = !!externalStudents;
 
   const { loading, error, refetch } = useAsync(async () => {
-    if (isExternal) return []
-    const data = await fetchStudents()
-    setInternalStudents(data)
-    return data
-  })
+    if (isExternal) return [];
+    const data = await fetchStudents();
+    setInternalStudents(data);
+    return data;
+  });
 
   const handleAddStudent = async (data: StudentFormData) => {
-    if (!user?.id) return
+    if (!user?.id) return;
     try {
       await createStudent({
         full_name: data.fullName,
@@ -57,45 +64,45 @@ const StudentList = ({
         phone: data.phone,
         balance: data.initialBalance,
         created_by: user.id,
-      })
-      setIsAddModalOpen(false)
-      await refetch()
+      });
+      setIsAddModalOpen(false);
+      await refetch();
     } catch (err) {
-      console.error('Error creating student:', err)
+      console.error("Error creating student:", err);
     }
-  }
+  };
 
   const handleEditStudent = async (data: StudentFormData) => {
-    if (!editingStudent) return
+    if (!editingStudent) return;
     try {
       await updateStudent(editingStudent.id, {
         full_name: data.fullName,
         email: data.email,
         phone: data.phone,
         balance: data.initialBalance,
-      })
-      setEditingStudent(null)
-      await refetch()
+      });
+      setEditingStudent(null);
+      await refetch();
     } catch (err) {
-      console.error('Error updating student:', err)
+      console.error("Error updating student:", err);
     }
-  }
+  };
 
   const handleDeleteStudent = async () => {
-    if (!deletingStudent) return
+    if (!deletingStudent) return;
     try {
-      await deleteStudentAPI(deletingStudent.id)
-      setDeletingStudent(null)
-      await refetch()
+      await deleteStudentAPI(deletingStudent.id);
+      setDeletingStudent(null);
+      await refetch();
     } catch (err) {
-      console.error('Error deleting student:', err)
+      console.error("Error deleting student:", err);
     }
-  }
+  };
 
   const columns: Column<Student>[] = [
     {
-      key: 'name',
-      header: 'Name',
+      key: "name",
+      header: "Name",
       render: (student) =>
         !isExternal ? (
           <Button
@@ -109,24 +116,32 @@ const StudentList = ({
           student.full_name
         ),
     },
-    { key: 'email', header: 'Email', render: (student) => student.email || '—' },
-    { key: 'phone', header: 'Phone', render: (student) => student.phone || '—' },
     {
-      key: 'balance',
-      header: 'Balance',
+      key: "email",
+      header: "Email",
+      render: (student) => student.email || "—",
+    },
+    {
+      key: "phone",
+      header: "Phone",
+      render: (student) => student.phone || "—",
+    },
+    {
+      key: "balance",
+      header: "Balance",
       render: (student) => formatCurrency(student.balance),
     },
     {
-      key: 'created_at',
-      header: 'Created',
+      key: "created_at",
+      header: "Created",
       render: (student) =>
-        new Date(student.created_at).toLocaleDateString('en-US'),
+        new Date(student.created_at).toLocaleDateString("en-US"),
     },
     ...(canEdit || canDelete
       ? [
           {
-            key: 'actions',
-            header: 'Actions',
+            key: "actions",
+            header: "Actions",
             render: (student: Student) => (
               <>
                 {canEdit && !isExternal && (
@@ -154,58 +169,63 @@ const StudentList = ({
           },
         ]
       : []),
-  ]
-
-  if (loading) return <Spinner />
-  if (error) return <ErrorMessage message={error} />
+  ];
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <Typography variant='h2' className={styles.title}>Students</Typography>
-  
-        {canAdd && !isExternal && (
-          <Button variant="primary" size="small" onClick={() => setIsAddModalOpen(true)}>
-            + Add Student
-          </Button>
+    <AsyncBoundary loading={loading} error={error}>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <Typography variant="h2" className={styles.title}>
+            Students
+          </Typography>
+
+          {canAdd && !isExternal && (
+            <Button
+              variant="primary"
+              size="small"
+              onClick={() => setIsAddModalOpen(true)}
+            >
+              + Add Student
+            </Button>
+          )}
+        </div>
+
+        <Card padding="small">
+          {students.length === 0 ? (
+            <EmptyState message="No students" />
+          ) : (
+            <DataTable columns={columns} data={students} keyField="id" />
+          )}
+        </Card>
+
+        {!isExternal && (
+          <AddStudentModal
+            isOpen={isAddModalOpen}
+            onClose={() => setIsAddModalOpen(false)}
+            onSubmit={handleAddStudent}
+          />
+        )}
+
+        {editingStudent && (
+          <EditStudentModal
+            student={editingStudent}
+            isOpen={!!editingStudent}
+            onClose={() => setEditingStudent(null)}
+            onSubmit={handleEditStudent}
+          />
+        )}
+
+        {deletingStudent && (
+          <DeleteStudentConfirm
+            studentName={deletingStudent.full_name}
+            isOpen={!!deletingStudent}
+            onClose={() => setDeletingStudent(null)}
+            onConfirm={handleDeleteStudent}
+          />
         )}
       </div>
+    </AsyncBoundary>
+  );
+};
 
-      <Card padding="small">
-        {students.length === 0 ? (
-          <EmptyState message="No students" />
-        ) : (
-          <DataTable columns={columns} data={students} keyField="id" />
-        )}
-      </Card>
-
-      {!isExternal && (
-        <AddStudentModal
-          isOpen={isAddModalOpen}
-          onClose={() => setIsAddModalOpen(false)}
-          onSubmit={handleAddStudent}
-        />
-      )}
-
-      {editingStudent && (
-        <EditStudentModal
-          student={editingStudent}
-          isOpen={!!editingStudent}
-          onClose={() => setEditingStudent(null)}
-          onSubmit={handleEditStudent}
-        />
-      )}
-
-      {deletingStudent && (
-        <DeleteStudentConfirm
-          studentName={deletingStudent.full_name}
-          isOpen={!!deletingStudent}
-          onClose={() => setDeletingStudent(null)}
-          onConfirm={handleDeleteStudent}
-        />
-      )}
-    </div>
-  )
-}
-
-export default StudentList
+export default StudentList;

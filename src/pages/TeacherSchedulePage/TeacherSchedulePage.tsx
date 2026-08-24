@@ -1,55 +1,60 @@
-import { useEffect, useState } from 'react'
-import { useAppSelector } from '@/app/store'
-import { ScheduleCalendar } from '@/widgets/ScheduleCalendar'
-import { fetchLessonsByTeacher, updateLesson } from '@/shared/api/lessons'
-import type { LessonStatus, LessonWithNames } from '@/entities/lesson/model/types'
-import {Spinner, ErrorMessage} from '@/shared/ui';
+import { useEffect, useState } from "react";
+import { useAppSelector } from "@/app/store";
+import { ScheduleCalendar } from "@/widgets/ScheduleCalendar";
+import { fetchLessonsByTeacher, updateLesson } from "@/shared/api/lessons";
+import type {
+  LessonStatus,
+  LessonWithNames,
+} from "@/entities/lesson/model/types";
+import { AsyncBoundary } from "@/shared/ui";
 
 const TeacherSchedulePage = () => {
-  const { user } = useAppSelector((state) => state.auth)
-  const [lessons, setLessons] = useState<LessonWithNames[]>([])  
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const { user } = useAppSelector((state) => state.auth);
+  const [lessons, setLessons] = useState<LessonWithNames[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!user?.id) return
+    if (!user?.id) return;
     const load = async () => {
       try {
-        const data = await fetchLessonsByTeacher(user.id)
-        setLessons(data)
+        const data = await fetchLessonsByTeacher(user.id);
+        setLessons(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load lessons')
+        setError(err instanceof Error ? err.message : "Failed to load lessons");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    load()
-  }, [user?.id])
+    };
+    load();
+  }, [user?.id]);
 
-  const handleStatusChange = async (lessonId: string, newStatus: LessonStatus) => {
+  const handleStatusChange = async (
+    lessonId: string,
+    newStatus: LessonStatus,
+  ) => {
     try {
-      const updated = await updateLesson(lessonId, { status: newStatus })
+      const updated = await updateLesson(lessonId, { status: newStatus });
       setLessons((prev) =>
-        prev.map((l) => (l.id === updated.id ? updated : l))
-      )
+        prev.map((l) => (l.id === updated.id ? updated : l)),
+      );
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error updating status')
+      setError(err instanceof Error ? err.message : "Error updating status");
     }
-  }
-
-  if (loading) return <Spinner />
-  if (error) return <ErrorMessage message={error} />
+  };
 
   return (
-    <ScheduleCalendar
-      lessons={lessons}
-      canCreate={false}
-      canEdit={false}
-      canCancel={false}
-      canChangeStatus={true}
-      onStatusChange={handleStatusChange}
-    />
-  )
-}
+    <AsyncBoundary loading={loading} error={error}>
+      <ScheduleCalendar
+        lessons={lessons}
+        canCreate={false}
+        canEdit={false}
+        canCancel={false}
+        canChangeStatus={true}
+        onStatusChange={handleStatusChange}
+      />
+    </AsyncBoundary>
+  );
+};
 
-export default TeacherSchedulePage
+export default TeacherSchedulePage;

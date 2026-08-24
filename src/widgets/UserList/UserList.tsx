@@ -6,12 +6,11 @@ import { DeleteUserButton } from "@/features/user-delete/DeleteUserButton";
 import { AddUserModal } from "@/features/user-create/AddUserModal";
 import {
   Card,
-  Spinner,
-  ErrorMessage,
   EmptyState,
   DataTable,
   Typography,
   Button,
+  AsyncBoundary,
 } from "@/shared/ui";
 import type { Column } from "@/shared/ui/DataTable";
 import styles from "./UserList.module.css";
@@ -47,38 +46,37 @@ const UserList = () => {
     },
   ];
 
-  if (loading) return <Spinner />;
-  if (error) return <ErrorMessage message={error} />;
-
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <Typography variant="h2" className={styles.title}>
-          Users
-        </Typography>
-        <Button
-          variant="primary"
-          size="small"
-          onClick={() => setIsAddUserModalOpen(true)}
-        >
-          + Add User
-        </Button>
+    <AsyncBoundary loading={loading} error={error}>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <Typography variant="h2" className={styles.title}>
+            Users
+          </Typography>
+          <Button
+            variant="primary"
+            size="small"
+            onClick={() => setIsAddUserModalOpen(true)}
+          >
+            + Add User
+          </Button>
+        </div>
+
+        <Card padding="small">
+          {users.length === 0 ? (
+            <EmptyState message="No users" />
+          ) : (
+            <DataTable columns={columns} data={users} keyField="id" />
+          )}
+        </Card>
+
+        <AddUserModal
+          isOpen={isAddUserModalOpen}
+          onClose={() => setIsAddUserModalOpen(false)}
+          onCreated={() => refetch()}
+        />
       </div>
-
-      <Card padding="small">
-        {users.length === 0 ? (
-          <EmptyState message="No users" />
-        ) : (
-          <DataTable columns={columns} data={users} keyField="id" />
-        )}
-      </Card>
-
-      <AddUserModal
-        isOpen={isAddUserModalOpen}
-        onClose={() => setIsAddUserModalOpen(false)}
-        onCreated={() => refetch()}
-      />
-    </div>
+    </AsyncBoundary>
   );
 };
 
