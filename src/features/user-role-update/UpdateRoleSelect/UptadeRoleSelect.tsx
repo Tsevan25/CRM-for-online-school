@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { updateUserRole } from '@/shared/api/users'
 import type { UserProfile } from '@/entities/user/model/types'
 import { Select } from '@/shared/ui'
+import { useAppDispatch } from '@/app/store'
+import { addNotification } from '@/features/notifications'
 
 const ROLE_OPTIONS = [
   { value: 'teacher', label: 'Teacher' },
@@ -15,6 +17,7 @@ interface UpdateRoleSelectProps {
 }
 
 const UpdateRoleSelect = ({ user, onRoleUpdated }: UpdateRoleSelectProps) => {
+  const dispatch = useAppDispatch()
   const [role, setRole] = useState(user.role || 'teacher')
   const [isUpdating, setIsUpdating] = useState(false)
 
@@ -25,9 +28,11 @@ const UpdateRoleSelect = ({ user, onRoleUpdated }: UpdateRoleSelectProps) => {
     try {
       await updateUserRole(user.id, newRole)
       onRoleUpdated?.()
+      dispatch(addNotification({ type: 'success', message: 'Role updated successfully' }))
     } catch (err) {
       console.error('Error updating role:', err)
       setRole(user.role || 'teacher')
+      dispatch(addNotification({ type: 'error', message: 'Failed to update role' }))
     } finally {
       setIsUpdating(false)
     }

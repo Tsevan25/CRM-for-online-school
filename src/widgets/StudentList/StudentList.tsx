@@ -9,7 +9,7 @@ import {
   updateStudent,
   deleteStudent as deleteStudentAPI,
 } from "@/shared/api/students";
-import { useAppSelector } from "@/app/store";
+import { useAppSelector, useAppDispatch } from "@/app/store";
 import {
   Button,
   Card,
@@ -24,6 +24,7 @@ import type { Column } from "@/shared/ui/DataTable";
 import { formatCurrency } from "@/shared/lib/formatCurrency";
 import styles from "./StudentList.module.css";
 import { UserPen, Trash } from "lucide-react";
+import { addNotification } from "@/features/notifications";
 
 interface StudentListProps {
   students?: Student[];
@@ -34,11 +35,13 @@ interface StudentListProps {
 
 const StudentList = ({
   students: externalStudents,
+  canAdd = true,
   canEdit = true,
   canDelete = true,
 }: StudentListProps) => {
   const navigate = useNavigate();
   const { user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   const [internalStudents, setInternalStudents] = useState<Student[]>([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
@@ -66,8 +69,10 @@ const StudentList = ({
       });
       setIsAddModalOpen(false);
       await refetch();
+      dispatch(addNotification({ type: "success", message: "Student added successfully" }));
     } catch (err) {
       console.error("Error creating student:", err);
+      dispatch(addNotification({ type: "error", message: "Failed to add student" }));
     }
   };
 
@@ -82,8 +87,10 @@ const StudentList = ({
       });
       setEditingStudent(null);
       await refetch();
+      dispatch(addNotification({ type: "success", message: "Student updated successfully" }));
     } catch (err) {
       console.error("Error updating student:", err);
+      dispatch(addNotification({ type: "error", message: "Failed to update student" }));
     }
   };
 
@@ -93,8 +100,10 @@ const StudentList = ({
       await deleteStudentAPI(deletingStudent.id);
       setDeletingStudent(null);
       await refetch();
+      dispatch(addNotification({ type: "success", message: "Student deleted successfully" }));
     } catch (err) {
       console.error("Error deleting student:", err);
+      dispatch(addNotification({ type: "error", message: "Failed to delete student" }));
     }
   };
 
@@ -176,13 +185,15 @@ const StudentList = ({
         <PageHeader
           title="Students"
           action={
-            <Button
-              variant="primary"
-              size="small"
-              onClick={() => setIsAddModalOpen(true)}
-            >
-              + Add Student
-            </Button>
+            canAdd && !isExternal ? (
+              <Button
+                variant="primary"
+                size="small"
+                onClick={() => setIsAddModalOpen(true)}
+              >
+                + Add Student
+              </Button>
+            ) : undefined
           }
         />
 

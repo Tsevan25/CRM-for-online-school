@@ -14,10 +14,13 @@ import {
   PageHeader,
 } from "@/shared/ui";
 import type { Column } from "@/shared/ui/DataTable";
+import { useAppDispatch } from "@/app/store";
+import { addNotification } from "@/features/notifications";
 import styles from "./UserList.module.css";
 import { useState } from "react";
 
 const UserList = () => {
+  const dispatch = useAppDispatch();
   const [users, setUsers] = useState<UserProfile[]>([]);
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
   const [deletingUser, setDeletingUser] = useState<UserProfile | null>(null);
@@ -34,9 +37,31 @@ const UserList = () => {
       await deleteUser(deletingUser.id);
       setDeletingUser(null);
       await refetch();
+      dispatch(
+        addNotification({
+          type: "success",
+          message: "User deleted successfully",
+        }),
+      );
     } catch (err) {
       console.error("Error deleting user:", err);
+      dispatch(
+        addNotification({
+          type: "error",
+          message: "Failed to delete user",
+        }),
+      );
     }
+  };
+
+  const handleUserCreated = () => {
+    refetch();
+    dispatch(
+      addNotification({
+        type: "success",
+        message: "User created successfully",
+      }),
+    );
   };
 
   const columns: Column<UserProfile>[] = [
@@ -86,7 +111,7 @@ const UserList = () => {
         <AddUserModal
           isOpen={isAddUserModalOpen}
           onClose={() => setIsAddUserModalOpen(false)}
-          onCreated={() => refetch()}
+          onCreated={handleUserCreated}
         />
 
         <ConfirmDialog

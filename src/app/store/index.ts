@@ -3,10 +3,12 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { useDispatch, useSelector } from 'react-redux';
 import type { TypedUseSelectorHook } from 'react-redux';
 import { authReducer } from '@/features/auth/model';
+import { notificationsReducer } from '@/features/notifications/model'
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    notifications: notificationsReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(),
 });

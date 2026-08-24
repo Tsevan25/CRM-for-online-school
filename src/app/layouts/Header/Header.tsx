@@ -4,6 +4,7 @@ import { Button, Image, Typography } from "@/shared/ui";
 import styles from "./Header.module.css";
 import { Bell } from "lucide-react";
 import logoUrl from "@/shared/assets/icons/secondary-logo.svg";
+import { SquareArrowRightExit } from "lucide-react";
 
 const Header = () => {
   const { user, role, fullName } = useAppSelector((state) => state.auth);
@@ -29,8 +30,8 @@ const Header = () => {
           </Typography>
         </div>
 
-        <Button variant="secondary" size="small" onClick={handleLogout}>
-          Выйти
+        <Button variant="icon" size="small" onClick={handleLogout}>
+          <SquareArrowRightExit />
         </Button>
       </div>
     </header>

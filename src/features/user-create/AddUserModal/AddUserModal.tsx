@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import {Modal, Input, Button, Select} from '@/shared/ui'
+import { Modal, Input, Button, Select } from '@/shared/ui'
 import { createUser } from '@/shared/api/users'
+import { useAppDispatch } from '@/app/store'
+import { addNotification } from '@/features/notifications'
 import styles from './AddUserModal.module.css'
 
 type Role = 'admin' | 'manager' | 'teacher'
@@ -12,6 +14,7 @@ interface AddUserModalProps {
 }
 
 const AddUserModal = ({ isOpen, onClose, onCreated }: AddUserModalProps) => {
+  const dispatch = useAppDispatch()
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -27,6 +30,7 @@ const AddUserModal = ({ isOpen, onClose, onCreated }: AddUserModalProps) => {
       await createUser({ email, password, full_name: fullName, role })
       onCreated()
       onClose()
+      dispatch(addNotification({ type: 'success', message: 'User created successfully' }))
     } catch (err) {
       const message =
         err instanceof Error
@@ -35,6 +39,7 @@ const AddUserModal = ({ isOpen, onClose, onCreated }: AddUserModalProps) => {
             ? (err as { message?: string }).message || JSON.stringify(err)
             : 'Error creating user'
       setError(message)
+      dispatch(addNotification({ type: 'error', message: message }))
     } finally {
       setIsSubmitting(false)
     }

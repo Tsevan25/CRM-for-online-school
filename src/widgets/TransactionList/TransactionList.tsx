@@ -18,6 +18,8 @@ import {
 import { formatCurrency } from "@/shared/lib/formatCurrency";
 import type { Column } from "@/shared/ui/DataTable";
 import { useAsync } from "@/shared/hooks/useAsync";
+import { useAppDispatch } from "@/app/store";
+import { addNotification } from "@/features/notifications";
 import styles from "./TransactionList.module.css";
 
 const columns: Column<TransactionWithStudent>[] = [
@@ -56,6 +58,7 @@ const columns: Column<TransactionWithStudent>[] = [
 ];
 
 const TransactionList = () => {
+  const dispatch = useAppDispatch();
   const [transactions, setTransactions] = useState<TransactionWithStudent[]>(
     [],
   );
@@ -89,8 +92,20 @@ const TransactionList = () => {
       });
       setIsAddModalOpen(false);
       await refetch();
+      dispatch(
+        addNotification({
+          type: "success",
+          message: "Transaction added successfully",
+        }),
+      );
     } catch (err) {
       console.error("Error creating transaction:", err);
+      dispatch(
+        addNotification({
+          type: "error",
+          message: "Failed to add transaction",
+        }),
+      );
     }
   };
 
