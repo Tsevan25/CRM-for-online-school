@@ -15,9 +15,9 @@ import {
   Card,
   EmptyState,
   DataTable,
-  Typography,
   AsyncBoundary,
   ConfirmDialog,
+  PageHeader,
 } from "@/shared/ui";
 import { useAsync } from "@/shared/hooks/useAsync";
 import type { Column } from "@/shared/ui/DataTable";
@@ -34,7 +34,6 @@ interface StudentListProps {
 
 const StudentList = ({
   students: externalStudents,
-  canAdd = true,
   canEdit = true,
   canDelete = true,
 }: StudentListProps) => {
@@ -174,12 +173,9 @@ const StudentList = ({
   return (
     <AsyncBoundary loading={loading} error={error}>
       <div className={styles.container}>
-        <div className={styles.header}>
-          <Typography variant="h2" className={styles.title}>
-            Students
-          </Typography>
-
-          {canAdd && !isExternal && (
+        <PageHeader
+          title="Students"
+          action={
             <Button
               variant="primary"
               size="small"
@@ -187,8 +183,8 @@ const StudentList = ({
             >
               + Add Student
             </Button>
-          )}
-        </div>
+          }
+        />
 
         <Card padding="small">
           {students.length === 0 ? (

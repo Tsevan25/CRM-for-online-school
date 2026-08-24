@@ -2,18 +2,6 @@
   max-width: 1200px;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-}
-
-.title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-main);
-}
 
 .table {
   width: 100%;

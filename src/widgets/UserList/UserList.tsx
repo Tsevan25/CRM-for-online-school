@@ -8,10 +8,10 @@ import {
   Card,
   EmptyState,
   DataTable,
-  Typography,
   Button,
   AsyncBoundary,
   ConfirmDialog,
+  PageHeader,
 } from "@/shared/ui";
 import type { Column } from "@/shared/ui/DataTable";
 import styles from "./UserList.module.css";
@@ -62,18 +62,18 @@ const UserList = () => {
   return (
     <AsyncBoundary loading={loading} error={error}>
       <div className={styles.container}>
-        <div className={styles.header}>
-          <Typography variant="h2" className={styles.title}>
-            Users
-          </Typography>
-          <Button
-            variant="primary"
-            size="small"
-            onClick={() => setIsAddUserModalOpen(true)}
-          >
-            + Add User
-          </Button>
-        </div>
+        <PageHeader
+          title="Users"
+          action={
+            <Button
+              variant="primary"
+              size="small"
+              onClick={() => setIsAddUserModalOpen(true)}
+            >
+              + Add User
+            </Button>
+          }
+        />
 
         <Card padding="small">
           {users.length === 0 ? (

@@ -12,8 +12,8 @@ import {
   Card,
   EmptyState,
   DataTable,
-  Typography,
   AsyncBoundary,
+  PageHeader,
 } from "@/shared/ui";
 import { formatCurrency } from "@/shared/lib/formatCurrency";
 import type { Column } from "@/shared/ui/DataTable";
@@ -97,18 +97,18 @@ const TransactionList = () => {
   return (
     <AsyncBoundary loading={loading} error={error}>
       <div className={styles.container}>
-        <div className={styles.header}>
-          <Typography variant="h2" className={styles.title}>
-            Transactions
-          </Typography>
-          <Button
-            variant="primary"
-            size="small"
-            onClick={() => setIsAddModalOpen(true)}
-          >
-            + Add Transaction
-          </Button>
-        </div>
+        <PageHeader
+          title="Transactions"
+          action={
+            <Button
+              variant="primary"
+              size="small"
+              onClick={() => setIsAddModalOpen(true)}
+            >
+              + Add Transaction
+            </Button>
+          }
+        />
 
         <Card padding="small">
           {transactions.length === 0 ? (
