@@ -1,1 +1,0 @@
-export {default as DeleteStudentConfirm} from './DeleteStudentConfirm';

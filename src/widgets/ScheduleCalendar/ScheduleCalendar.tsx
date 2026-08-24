@@ -5,9 +5,9 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 import type { LessonFormData, LessonStatus, LessonWithNames } from '@/entities/lesson/model/types'
 import { CreateLessonModal } from '@/features/lesson-create/CreateLessonModal'
 import { EditLessonModal } from '@/features/lesson-edit/EditLessonModal'
-import { CancelLessonConfirm } from '@/features/lesson-cancel/CancelLessonConfirm'
 import { ChangeLessonStatusModal } from '@/features/lesson-status/ChangeLessonStatusModal'
 import styles from './ScheduleCalendar.module.css'
+import { ConfirmDialog } from '@/shared/ui/ConfirmDialog'
 
 const localizer = momentLocalizer(moment)
 
@@ -144,15 +144,15 @@ const ScheduleCalendar = ({
         />
       )}
 
-      {canCancel && selectedLesson && (
-        <CancelLessonConfirm
-          studentName={selectedLesson.student?.full_name || ''}
-          startTime={selectedLesson.start_time}
-          isOpen={isCancelOpen}
-          onClose={() => setIsCancelOpen(false)}
-          onConfirm={handleCancelConfirm}
-        />
-      )}
+        <ConfirmDialog
+        isOpen={isCancelOpen}
+        title="Cancel Lesson"
+        message={`Are you sure you want to cancel the lesson with ${selectedLesson?.student?.full_name || 'this student'}?`}
+        confirmLabel="Cancel Lesson"
+        cancelLabel="Keep Lesson"
+        onConfirm={handleCancelConfirm}
+        onCancel={() => setIsCancelOpen(false)}
+      />
 
       {canChangeStatus && selectedLesson && (
         <ChangeLessonStatusModal

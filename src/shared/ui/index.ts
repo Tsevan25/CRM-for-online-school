@@ -10,3 +10,4 @@ export {Spinner} from './Spinner';
 export {Typography} from './Typography';
 export {FormField} from './FormField';
 export {AsyncBoundary} from './AsyncBoundary';
+export {ConfirmDialog} from './ConfirmDialog';

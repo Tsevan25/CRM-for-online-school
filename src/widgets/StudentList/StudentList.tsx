@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import type { Student, StudentFormData } from "@/entities/student/model/types";
 import { AddStudentModal } from "@/features/student-add/AddStudentModal";
 import { EditStudentModal } from "@/features/student-edit/EditStudentModal";
-import { DeleteStudentConfirm } from "@/features/student-delete/DeleteStudentConfirm";
 import {
   fetchStudents,
   createStudent,
@@ -18,6 +17,7 @@ import {
   DataTable,
   Typography,
   AsyncBoundary,
+  ConfirmDialog,
 } from "@/shared/ui";
 import { useAsync } from "@/shared/hooks/useAsync";
 import type { Column } from "@/shared/ui/DataTable";
@@ -215,14 +215,15 @@ const StudentList = ({
           />
         )}
 
-        {deletingStudent && (
-          <DeleteStudentConfirm
-            studentName={deletingStudent.full_name}
-            isOpen={!!deletingStudent}
-            onClose={() => setDeletingStudent(null)}
-            onConfirm={handleDeleteStudent}
-          />
-        )}
+        <ConfirmDialog
+          isOpen={!!deletingStudent}
+          title="Delete Student"
+          message={`Are you sure you want to delete ${deletingStudent?.full_name}?`}
+          confirmLabel="Delete"
+          cancelLabel="Cancel"
+          onConfirm={handleDeleteStudent}
+          onCancel={() => setDeletingStudent(null)}
+        />
       </div>
     </AsyncBoundary>
   );
