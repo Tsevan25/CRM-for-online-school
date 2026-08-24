@@ -8,3 +8,4 @@ export {Input} from './Input';
 export {Modal} from './Modal';
 export {Spinner} from './Spinner';
 export {Typography} from './Typography';
+export {FormField} from './FormField';

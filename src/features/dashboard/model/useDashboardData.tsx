@@ -6,20 +6,26 @@ import { formatCurrency } from '@/shared/lib/formatCurrency'
 import { supabase } from '@/shared/api/supabase'
 import { GraduationCap, CalendarDays, HandCoins, CircleCheckBig } from 'lucide-react'
 import { LiaChalkboardTeacherSolid } from 'react-icons/lia'
-
-interface DashboardData {
-  stats: StatCardData[]
-  chartNode: React.ReactNode
-}
+import type { Student } from '@/entities/student/model/types'
+import type { Lesson } from '@/entities/lesson/model/types'
+import type { Transaction } from '@/entities/transaction/model/types'
+import {
+  startOfMonth,
+  endOfMonth,
+  isInRange,
+  sumLessonPayments,
+  buildMonthlyRevenue,
+  buildLessonsByDay,
+} from './dashboardUtils'
 
 export const useDashboardData = () => {
   const { role, user } = useAppSelector((state) => state.auth)
-  const [data, setData] = useState<DashboardData | null>(null)
+  const [data, setData] = useState<{ stats: StatCardData[]; chartNode: React.ReactNode } | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const loadDashboard = async () => {
+    const load = async () => {
       try {
         setLoading(true)
         setError(null)
@@ -36,110 +42,52 @@ export const useDashboardData = () => {
         if (lessonsRes.error) throw lessonsRes.error
         if (transactionsRes.error) throw transactionsRes.error
 
-        const studentsData = studentsRes.data || []
-        const totalStudents = studentsRes.count || 0
-        const totalTeachers = teachersRes.count || 0
+        const students: Student[] = studentsRes.data || []
+        const lessons: Lesson[] = lessonsRes.data || []
+        const transactions: Transaction[] = transactionsRes.data || []
 
         const now = new Date()
-        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
-        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59).toISOString()
+        const monthStart = startOfMonth(now)
+        const monthEnd = endOfMonth(now)
 
-     
-        const lessonsThisMonth = (lessonsRes.data || []).filter(
-          (l) => new Date(l.start_time) >= new Date(startOfMonth) && new Date(l.start_time) <= new Date(endOfMonth)
-        )
-        const lessonsCount = lessonsThisMonth.length
-
-
-        const revenueThisMonth = (transactionsRes.data || [])
-          .filter(
-            (t) =>
-              t.type === 'lesson_payment' &&
-              new Date(t.created_at) >= new Date(startOfMonth) &&
-              new Date(t.created_at) <= new Date(endOfMonth)
-          )
-          .reduce((sum, t) => sum + Math.abs(t.amount), 0)
-
-     
-        const monthlyRevenue = []
-        for (let i = 5; i >= 0; i--) {
-          const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
-          const monthStart = new Date(d.getFullYear(), d.getMonth(), 1).toISOString()
-          const monthEnd = new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59).toISOString()
-          const monthLabel = d.toLocaleDateString('en-US', { month: 'short' })
-          const monthRevenue = (transactionsRes.data || [])
-            .filter(
-              (t) =>
-                t.type === 'lesson_payment' &&
-                new Date(t.created_at) >= new Date(monthStart) &&
-                new Date(t.created_at) <= new Date(monthEnd)
-            )
-            .reduce((sum, t) => sum + Math.abs(t.amount), 0)
-          monthlyRevenue.push({ month: monthLabel, revenue: monthRevenue })
-        }
+        const lessonsThisMonth = lessons.filter(l => isInRange(l.start_time, monthStart, monthEnd))
+        const revenueThisMonth = sumLessonPayments(transactions, monthStart, monthEnd)
+        const monthlyRevenue = buildMonthlyRevenue(transactions)
 
         let stats: StatCardData[] = []
         let chartNode: React.ReactNode = null
 
         if (role === 'admin') {
           stats = [
-            { title: 'Students', value: totalStudents, icon: <GraduationCap />, description: 'Total active students' },
-            { title: 'Teachers', value: totalTeachers, icon: <LiaChalkboardTeacherSolid /> },
-            { title: 'Lessons (month)', value: lessonsCount, icon: <CalendarDays /> },
+            { title: 'Students', value: studentsRes.count || 0, icon: <GraduationCap />, description: 'Total active students' },
+            { title: 'Teachers', value: teachersRes.count || 0, icon: <LiaChalkboardTeacherSolid /> },
+            { title: 'Lessons (month)', value: lessonsThisMonth.length, icon: <CalendarDays /> },
             { title: 'Revenue (month)', value: formatCurrency(revenueThisMonth), icon: <HandCoins /> },
           ]
           chartNode = <RevenueChart data={monthlyRevenue} />
         } else if (role === 'manager') {
-      
-          const myStudentsCount = studentsData.filter((s) => s.created_by === user?.id).length
-
-          const todayStart = new Date(now.setHours(0, 0, 0, 0)).toISOString()
-          const todayEnd = new Date(now.setHours(23, 59, 59, 999)).toISOString()
-          const todayLessonsCount = (lessonsRes.data || []).filter(
-            (l) => new Date(l.start_time) >= new Date(todayStart) && new Date(l.start_time) <= new Date(todayEnd)
-          ).length
-
-          const weekAgo = new Date()
-          weekAgo.setDate(weekAgo.getDate() - 7)
-          const weekLessonsCount = (lessonsRes.data || []).filter(
-            (l) => {
-              const d = new Date(l.start_time)
-              return d >= weekAgo && d <= new Date()
-            }
-          ).length
+          const myStudentsCount = students.filter(s => s.created_by === user?.id).length
+          const todayStart = new Date(now.setHours(0, 0, 0, 0))
+          const todayEnd = new Date(now.setHours(23, 59, 59, 999))
+          const todayLessons = lessons.filter(l => isInRange(l.start_time, todayStart, todayEnd)).length
+          const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+          const weekLessons = lessons.filter(l => isInRange(l.start_time, weekAgo, now)).length
 
           stats = [
             { title: 'My Students', value: myStudentsCount, icon: <GraduationCap />, description: 'Total assigned students' },
-            { title: "Today's Lessons", value: todayLessonsCount, icon: <CalendarDays /> },
-            { title: 'Week Lessons', value: weekLessonsCount, icon: <CalendarDays /> },
+            { title: "Today's Lessons", value: todayLessons, icon: <CalendarDays /> },
+            { title: 'Week Lessons', value: weekLessons, icon: <CalendarDays /> },
             { title: 'Revenue (month)', value: formatCurrency(revenueThisMonth), icon: <HandCoins /> },
           ]
           chartNode = <RevenueChart data={monthlyRevenue} />
         } else if (role === 'teacher' && user) {
-          const teacherLessons = (lessonsRes.data || []).filter((l) => l.teacher_id === user.id)
-          const myStudentsSet = new Set(teacherLessons.map((l) => l.student_id))
-          const myStudentsCount = myStudentsSet.size
-
-          const todayStart = new Date(now.setHours(0, 0, 0, 0)).toISOString()
-          const todayEnd = new Date(now.setHours(23, 59, 59, 999)).toISOString()
-          const myTodayLessons = teacherLessons.filter(
-            (l) => new Date(l.start_time) >= new Date(todayStart) && new Date(l.start_time) <= new Date(todayEnd)
-          ).length
-
-          const completedThisMonth = teacherLessons.filter(
-            (l) => l.status === 'completed' &&
-                 new Date(l.start_time) >= new Date(startOfMonth) &&
-                 new Date(l.start_time) <= new Date(endOfMonth)
-          ).length
-
-          const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-          const lessonsByDay = daysOfWeek.map((day, index) => {
-            const count = teacherLessons.filter((l) => {
-              const d = new Date(l.start_time)
-              return d >= new Date(startOfMonth) && d <= new Date(endOfMonth) && d.getDay() === index
-            }).length
-            return { day, lessons: count }
-          })
+          const teacherLessons = lessons.filter(l => l.teacher_id === user.id)
+          const myStudentsCount = new Set(teacherLessons.map(l => l.student_id)).size
+          const todayStart = new Date(now.setHours(0, 0, 0, 0))
+          const todayEnd = new Date(now.setHours(23, 59, 59, 999))
+          const myTodayLessons = teacherLessons.filter(l => isInRange(l.start_time, todayStart, todayEnd)).length
+          const completedThisMonth = teacherLessons.filter(l => l.status === 'completed' && isInRange(l.start_time, monthStart, monthEnd)).length
+          const lessonsByDay = buildLessonsByDay(lessons, user.id, monthStart, monthEnd)
 
           stats = [
             { title: 'My Students', value: myStudentsCount, icon: <GraduationCap />, description: 'Students with lessons' },
@@ -152,14 +100,13 @@ export const useDashboardData = () => {
         setData({ stats, chartNode })
       } catch (err) {
         console.error('Error loading dashboard data:', err)
-        const message = err instanceof Error ? err.message : 'Failed to load dashboard'
-        setError(message)
+        setError(err instanceof Error ? err.message : 'Failed to load dashboard')
       } finally {
         setLoading(false)
       }
     }
 
-    loadDashboard()
+    load()
   }, [role, user?.id])
 
   return { stats: data?.stats || [], chartNode: data?.chartNode || null, loading, error }

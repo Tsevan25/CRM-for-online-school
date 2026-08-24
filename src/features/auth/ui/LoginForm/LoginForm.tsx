@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {Input, Button, Typography} from '@/shared/ui';
+import { Input, Button, Typography, FormField } from '@/shared/ui';
 import { useAppDispatch } from "@/app/store/index";
 import { login } from "@/features/auth";
 import styles from "./LoginForm.module.css";
@@ -18,7 +18,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const {
     register,
@@ -30,37 +30,37 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-  try {
-    await dispatch(login(data)).unwrap()
-    navigate('/dashboard')
-  } catch (err) {
-    const message =
-      err instanceof Error ? err.message : 'Unknown login error'
-    setError('root', { message })
-  }
-}
+    try {
+      await dispatch(login(data)).unwrap();
+      navigate('/dashboard');
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : 'Unknown login error';
+      setError('root', { message });
+    }
+  };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <Typography variant="h2" className={styles.title}>Log In to CRM</Typography>
 
-      <Input
-        labelClassName={styles.label}
-        label="Email"
-        type="email"
-        placeholder="Enter your email adress"
-        error={errors.email?.message}
-        {...register("email")}
-      />
+      <FormField label="Email" error={errors.email?.message}>
+        <Input
+          type="email"
+          placeholder="Enter your email address"
+          error={errors.email?.message}
+          {...register("email")}
+        />
+      </FormField>
 
-      <Input
-        labelClassName={styles.label}
-        label="Password"
-        type="password"
-        placeholder="Enter your password"
-        error={errors.password?.message}
-        {...register("password")}
-      />
+      <FormField label="Password" error={errors.password?.message}>
+        <Input
+          type="password"
+          placeholder="Enter your password"
+          error={errors.password?.message}
+          {...register("password")}
+        />
+      </FormField>
 
       {errors.root && <p className={styles.rootError}>{errors.root.message}</p>}
 

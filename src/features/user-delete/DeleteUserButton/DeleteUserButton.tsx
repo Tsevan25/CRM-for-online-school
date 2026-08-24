@@ -2,7 +2,8 @@ import { useState } from 'react'
 import {Button} from '@/shared/ui'
 import { deleteUser } from '@/shared/api/users'
 import type { UserProfile } from '@/entities/user/model/types'
-
+import { Trash } from 'lucide-react'
+import styles from './DeleteUserButton.module.css'
 interface DeleteUserButtonProps {
   user: UserProfile
   onDeleted?: () => void
@@ -29,8 +30,8 @@ const DeleteUserButton = ({ user, onDeleted }: DeleteUserButtonProps) => {
   }
 
   return (
-    <Button variant="danger" size="small" onClick={handleClick} disabled={isDeleting}>
-      Delete
+    <Button variant='icon' size="small" onClick={handleClick} disabled={isDeleting} className={styles.deleteButton}>
+      <Trash />
     </Button>
   )
 }

@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { lessonSchema, type LessonFormData } from '../../model/types'
-import styles from './LessonForm.module.css';
-import {Input, Button} from '@/shared/ui';
+import {FormField, Input, Button} from '@/shared/ui'
+import styles from './LessonForm.module.css'
 
 interface StudentOption {
   id: string
@@ -62,52 +62,51 @@ const LessonForm = ({
 
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} className={styles.form}>
-      <div className={styles.field}>
-        <label className={styles.label}>Student</label>
+      <FormField label="Student" error={errors.studentId?.message}>
         <select className={styles.select} {...register('studentId')}>
           <option value="">Select student</option>
-          {students.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.full_name}
+          {students.map((student) => (
+            <option key={student.id} value={student.id}>
+              {student.full_name}
             </option>
           ))}
         </select>
-        {errors.studentId && <span className={styles.error}>{errors.studentId.message}</span>}
-      </div>
+      </FormField>
 
-      <div className={styles.field}>
-        <label className={styles.label}>Teacher</label>
+      <FormField label="Teacher" error={errors.teacherId?.message}>
         <select className={styles.select} {...register('teacherId')}>
           <option value="">Select teacher</option>
-          {teachers.map((t) => (
-            <option key={t.id} value={t.id}>
-              {t.full_name}
+          {teachers.map((teacher) => (
+            <option key={teacher.id} value={teacher.id}>
+              {teacher.full_name}
             </option>
           ))}
         </select>
-        {errors.teacherId && <span className={styles.error}>{errors.teacherId.message}</span>}
-      </div>
+      </FormField>
 
-      <Input
-        label="Start Time"
-        type="datetime-local"
-        error={errors.startTime?.message}
-        {...register('startTime')}
-      />
+      <FormField label="Start Time" error={errors.startTime?.message}>
+        <Input
+          type="datetime-local"
+          error={errors.startTime?.message}
+          {...register('startTime')}
+        />
+      </FormField>
 
-      <Input
-        label="End Time"
-        type="datetime-local"
-        error={errors.endTime?.message}
-        {...register('endTime')}
-      />
+      <FormField label="End Time" error={errors.endTime?.message}>
+        <Input
+          type="datetime-local"
+          error={errors.endTime?.message}
+          {...register('endTime')}
+        />
+      </FormField>
 
-      <Input
-        label="Price ($)"
-        type="number"
-        error={errors.price?.message}
-        {...register('price')}
-      />
+      <FormField label="Price ($)" error={errors.price?.message}>
+        <Input
+          type="number"
+          error={errors.price?.message}
+          {...register('price')}
+        />
+      </FormField>
 
       {rootError && <p className={styles.rootError}>{rootError}</p>}
 

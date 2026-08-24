@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {Button, Input, Typography} from '@/shared/ui'
+import { studentSchema, type StudentFormData } from '../../model/types'
+import {Input, Button , FormField} from '@/shared/ui'
 import styles from './StudentForm.module.css'
-import  { studentSchema, type StudentFormData  } from '@/entities/student';
-
 
 interface StudentFormProps {
   defaultValues?: Partial<StudentFormData>
@@ -48,35 +47,41 @@ const StudentForm = ({
 
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} className={styles.form}>
-      <Input
-        label="Full Name"
-        placeholder="John Doe"
-        error={errors.fullName?.message}
-        {...register('fullName')}
-      />
-      <Input
-        label="Email"
-        type="email"
-        placeholder="student@example.com"
-        error={errors.email?.message}
-        {...register('email')}
-      />
-      <Input
-        label="Phone"
-        type="tel"
-        placeholder="+1 234 567 890"
-        error={errors.phone?.message}
-        {...register('phone')}
-      />
-      <Input
-        label="Initial Balance ($)"
-        type="number"
-        error={errors.initialBalance?.message}
-        {...register('initialBalance')}
-      />
+      <FormField label="Full Name" error={errors.fullName?.message}>
+        <Input
+          placeholder="John Doe"
+          error={errors.fullName?.message}
+          {...register('fullName')}
+        />
+      </FormField>
 
-       
-      {rootError &&  <Typography variant='body' className={styles.rootError}>{rootError}</Typography>}
+      <FormField label="Email" error={errors.email?.message}>
+        <Input
+          type="email"
+          placeholder="student@example.com"
+          error={errors.email?.message}
+          {...register('email')}
+        />
+      </FormField>
+
+      <FormField label="Phone" error={errors.phone?.message}>
+        <Input
+          type="tel"
+          placeholder="+1 234 567 890"
+          error={errors.phone?.message}
+          {...register('phone')}
+        />
+      </FormField>
+
+      <FormField label="Initial Balance ($)" error={errors.initialBalance?.message}>
+        <Input
+          type="number"
+          error={errors.initialBalance?.message}
+          {...register('initialBalance')}
+        />
+      </FormField>
+
+      {rootError && <p className={styles.rootError}>{rootError}</p>}
 
       <div className={styles.actions}>
         <Button type="button" variant="secondary" onClick={onCancel}>

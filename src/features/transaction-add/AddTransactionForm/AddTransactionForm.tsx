@@ -1,37 +1,33 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Input, Button, Typography } from "@/shared/ui";
-import type { TransactionType } from "@/entities/transaction/model/types";
-import styles from "./AddTransactionForm.module.css";
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import {Input, Button, FormField} from '@/shared/ui'
+import type { TransactionType } from '@/entities/transaction/model/types'
+import styles from './AddTransactionForm.module.css'
 
 const addTransactionSchema = z.object({
-  studentId: z.string().min(1, "Student is required"),
+  studentId: z.string().min(1, 'Student is required'),
   amount: z.coerce.number(),
-  type: z.string().min(1, "Type is required"),
+  type: z.string().min(1, 'Type is required'),
   description: z.string().optional(),
-});
+})
 
-type AddTransactionFormData = z.infer<typeof addTransactionSchema>;
+type AddTransactionFormData = z.infer<typeof addTransactionSchema>
 
 interface AddTransactionFormProps {
-  students: { id: string; full_name: string }[];
+  students: { id: string; full_name: string }[]
   onSubmit: (data: {
-    studentId: string;
-    amount: number;
-    type: TransactionType;
-    description?: string;
-  }) => void;
-  onCancel: () => void;
+    studentId: string
+    amount: number
+    type: TransactionType
+    description?: string
+  }) => void
+  onCancel: () => void
 }
 
-const AddTransactionForm = ({
-  students,
-  onSubmit,
-  onCancel,
-}: AddTransactionFormProps) => {
-  const [rootError, setRootError] = useState<string | null>(null);
+const AddTransactionForm = ({ students, onSubmit, onCancel }: AddTransactionFormProps) => {
+  const [rootError, setRootError] = useState<string | null>(null)
 
   const {
     register,
@@ -39,8 +35,8 @@ const AddTransactionForm = ({
     formState: { errors, isSubmitting },
   } = useForm<AddTransactionFormData>({
     resolver: zodResolver(addTransactionSchema),
-    defaultValues: { amount: 0, description: "" },
-  });
+    defaultValues: { amount: 0, description: '' },
+  })
 
   const onFormSubmit = async (data: AddTransactionFormData) => {
     try {
@@ -49,63 +45,52 @@ const AddTransactionForm = ({
         amount: data.amount,
         type: data.type as TransactionType,
         description: data.description,
-      });
-      setRootError(null);
+      })
+      setRootError(null)
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Error adding transaction";
-      setRootError(message);
+      const message = err instanceof Error ? err.message : 'Error adding transaction'
+      setRootError(message)
     }
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit(onFormSubmit)} className={styles.form}>
-      <div className={styles.field}>
-        <label className={styles.label}>Student</label>
-        <select className={styles.select} {...register("studentId")}>
+      <FormField label="Student" error={errors.studentId?.message}>
+        <select className={styles.select} {...register('studentId')}>
           <option value="">Select student</option>
-          {students.map((s) => (
-            <option key={s.id} value={s.id}>
-              {s.full_name}
+          {students.map((student) => (
+            <option key={student.id} value={student.id}>
+              {student.full_name}
             </option>
           ))}
         </select>
-        {errors.studentId && (
-          <Typography variant="caption" className={styles.error}>
-            {errors.studentId.message}
-          </Typography>
-        )}
-      </div>
+      </FormField>
 
-      <Input
-        label="Amount ($)"
-        type="number"
-        error={errors.amount?.message}
-        {...register("amount")}
-      />
+      <FormField label="Amount ($)" error={errors.amount?.message}>
+        <Input
+          type="number"
+          error={errors.amount?.message}
+          {...register('amount')}
+        />
+      </FormField>
 
-      <div className={styles.field}>
-        <label className={styles.label}>Type</label>
-        <select className={styles.select} {...register("type")}>
+      <FormField label="Type" error={errors.type?.message}>
+        <select className={styles.select} {...register('type')}>
           <option value="">Select type</option>
           <option value="top_up">Top-up</option>
           <option value="lesson_payment">Lesson Payment</option>
           <option value="refund">Refund</option>
           <option value="adjustment">Adjustment</option>
         </select>
-        {errors.type && (
-          <Typography variant="caption" className={styles.error}>
-            {errors.type.message}
-          </Typography>
-        )}
-      </div>
+      </FormField>
 
-      <Input
-        label="Description"
-        placeholder="Optional"
-        error={errors.description?.message}
-        {...register("description")}
-      />
+      <FormField label="Description" error={errors.description?.message}>
+        <Input
+          placeholder="Optional"
+          error={errors.description?.message}
+          {...register('description')}
+        />
+      </FormField>
 
       {rootError && <p className={styles.rootError}>{rootError}</p>}
 
@@ -114,11 +99,11 @@ const AddTransactionForm = ({
           Cancel
         </Button>
         <Button type="submit" variant="primary" disabled={isSubmitting}>
-          {isSubmitting ? "Adding..." : "Add Transaction"}
+          {isSubmitting ? 'Adding...' : 'Add Transaction'}
         </Button>
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default AddTransactionForm;
+export default AddTransactionForm

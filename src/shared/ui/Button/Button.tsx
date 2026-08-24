@@ -2,7 +2,7 @@ import type { ComponentPropsWithoutRef } from "react";
 import clsx from "clsx";
 import styles from "./Button.module.css";
 
-type ButtonVariant = "primary" | "secondary" | "danger";
+type ButtonVariant = "primary" | "secondary" | "danger" | "icon";
 type ButtonSize = "small" | "medium" | "large";
 
 interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
