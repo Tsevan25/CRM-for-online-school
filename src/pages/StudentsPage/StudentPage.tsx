@@ -1,7 +1,6 @@
-import StudentList from "@/widgets/StudentList";
+import {StudentsList} from '@/widgets/students/StudentsList';
 
-const StudentsPage = () => {
-  return <StudentList />;
+export const StudentsPage = () => {
+  return <StudentsList />;
 };
 
-export default StudentsPage;

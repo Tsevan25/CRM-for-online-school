@@ -1,0 +1,15 @@
+.card {
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  margin-bottom: 1rem;
+}
+
+.positive {
+  color: #166534;
+}
+
+.negative {
+  color: #991b1b;
+}

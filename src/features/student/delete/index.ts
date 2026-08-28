@@ -1,0 +1,1 @@
+export {DeleteStudentAction} from './ui/DeleteStudentAction/DeleteStudentAction';

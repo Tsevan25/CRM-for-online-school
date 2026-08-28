@@ -1,15 +1,5 @@
-import  Dashboard  from '@/widgets/Dashboard'
-import { useDashboardData } from '@/features/dashboard/model/useDashboardData'
-import { AsyncBoundary } from '@/shared/ui/AsyncBoundary'
+import { DashboardAnalytics } from '@/widgets/dashboard/DashboardAnalytics'
 
-const DashboardPage = () => {
-  const { stats, chartNode, loading, error } = useDashboardData()
-
-  return (
-    <AsyncBoundary loading={loading} error={error}>
-      {chartNode ? <Dashboard heading="Dashboard" stats={stats} chart={chartNode} /> : null}
-    </AsyncBoundary>
-  )
+export const DashboardPage = () => {
+  return <DashboardAnalytics />
 }
-
-export default DashboardPage

@@ -5,6 +5,7 @@ import styles from "./Header.module.css";
 import { Bell } from "lucide-react";
 import logoUrl from "@/shared/assets/icons/secondary-logo.svg";
 import { SquareArrowRightExit } from "lucide-react";
+import { ThemeToggleButton } from "@/features/theme";
 
 const Header = () => {
   const { user, role, fullName } = useAppSelector((state) => state.auth);
@@ -29,6 +30,8 @@ const Header = () => {
             {role}
           </Typography>
         </div>
+
+         <ThemeToggleButton />
 
         <Button variant="icon" size="small" onClick={handleLogout}>
           <SquareArrowRightExit />

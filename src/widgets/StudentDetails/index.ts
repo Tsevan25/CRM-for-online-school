@@ -1,1 +1,0 @@
-export {default as StudentDetails} from './StudentDetails';

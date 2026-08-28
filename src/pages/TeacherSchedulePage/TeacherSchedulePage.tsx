@@ -1,4 +1,4 @@
-import { TeacherSchedule } from '@/widgets/TeacherSchedule'
+import { TeacherSchedule } from '@/widgets/schedule/TeacherSchedule'
 
 const TeacherSchedulePage = () => {
   return <TeacherSchedule />

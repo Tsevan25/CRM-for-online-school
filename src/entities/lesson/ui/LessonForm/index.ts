@@ -1,1 +1,1 @@
-export { default as LessonForm } from './LessonForm'
+export {  LessonForm } from './LessonForm'

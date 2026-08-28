@@ -1,7 +1,6 @@
-import { UserList } from '@/widgets/UserList'
+import { UserList } from '@/widgets/users/UserList/UserList';
 
-const UsersPage = () => {
+export const UsersPage = () => {
   return <UserList />
 }
 
-export default UsersPage

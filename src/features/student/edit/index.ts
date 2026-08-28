@@ -1,0 +1,1 @@
+export { EditStudentAction } from './ui/EditStudentAction/EditStudentAction';

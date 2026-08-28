@@ -1,4 +1,4 @@
-import { TransactionList } from '@/widgets/TransactionList'
+import { TransactionList } from '@/widgets/transactions/TransactionList'
 
 const TransactionsPage = () => {
   return <TransactionList />

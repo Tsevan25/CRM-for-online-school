@@ -1,4 +1,4 @@
-import { AdminSchedule } from '@/widgets/AdminSchedule'
+import { AdminSchedule } from '@/widgets/schedule/AdminSchedule'
 
 const SchedulePage = () => {
   return <AdminSchedule />

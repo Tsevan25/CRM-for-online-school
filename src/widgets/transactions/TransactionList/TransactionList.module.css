@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.positive {
+  color: #166534;
+}
+
+.negative {
+  color: #991b1b;
+}

@@ -23,8 +23,7 @@ interface LessonFormProps {
   students: StudentOption[]
   teachers: TeacherOption[]
 }
-
-const LessonForm = ({
+export const LessonForm = ({
   defaultValues,
   onSubmit,
   onCancel,
@@ -111,4 +110,3 @@ const LessonForm = ({
   )
 }
 
-export default LessonForm

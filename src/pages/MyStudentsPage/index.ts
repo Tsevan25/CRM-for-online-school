@@ -1,1 +1,1 @@
-export {default as MyStudentsPage} from './MyStudentsPage'
+export { MyStudentsPage} from './MyStudentsPage'
