@@ -1,0 +1,46 @@
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: 300px;
+}
+
+.city {
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
+}
+
+.date {
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.tempRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.temperature {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.weatherIcon {
+  font-size: 3rem;
+}
+
+.description {
+  color: var(--text-main);
+  margin-bottom: 0.25rem;
+}
+
+.wind {
+  color: var(--text-muted);
+}

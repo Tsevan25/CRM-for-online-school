@@ -1,1 +1,1 @@
-export {DashboardAnalytics} from './ui/DashboardAnalytics/DashboardAnalytics';
+export {DashboardAnalytics} from './ui/DashboardAnalytics';

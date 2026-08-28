@@ -1,11 +1,16 @@
 import { Typography, Image } from "@/shared/ui";
-import {LoginForm} from '@/features/auth';
+import { LoginForm } from '@/features/auth';
+import { ThemeToggleButton } from '@/features/theme';
 import styles from "./LoginPage.module.css";
 import logoUrl from "@/shared/assets/icons/main-logo.png";
 
-const LoginPage = () => {
+export const LoginPage = () => {
   return (
     <div className={styles.loginPage}>
+      <div className={styles.themeToggle}>
+        <ThemeToggleButton />
+      </div>
+
       <div className={styles.contentArea}>
         <Typography variant="h1" className={styles.schoolTitle}>
           SurfLingo
@@ -14,10 +19,12 @@ const LoginPage = () => {
           Conquer the ocean of language. <br /> Speak without limits.
         </Typography>
         <Image className={styles.logo} src={logoUrl} alt="logo" />
-        <LoginForm />
+
+        <div className={styles.formWrapper}>
+          <LoginForm />
+        </div>
       </div>
     </div>
   );
 };
 
-export default LoginPage;

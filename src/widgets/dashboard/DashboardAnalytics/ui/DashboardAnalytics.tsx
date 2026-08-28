@@ -1,9 +1,9 @@
-import { useMetrics } from '../../model/useMetrics'
-import { StatCard } from '../StatCard/StatCard'
-import { RevenueChart } from '../RevenueChart/RevenueChart'
-import { LessonsByDayChart } from '../LessonsByDayChart/LessonsByDayChart'
+import { useMetrics } from '../model/useMetrics'
+import { StatCard } from './StatCard/StatCard'
+import { RevenueChart } from './RevenueChart/RevenueChart'
+import { LessonsByDayChart } from './LessonsByDayChart/LessonsByDayChart'
 import { AsyncBoundary } from '@/shared/ui'
-import type { RevenueChartData, LessonsByDayData } from '../../model/types'
+import type { RevenueChartData, LessonsByDayData } from '../model/types'
 import styles from './DashboardAnalytics.module.css'
 
 export const DashboardAnalytics = () => {

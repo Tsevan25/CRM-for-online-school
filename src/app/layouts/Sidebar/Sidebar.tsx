@@ -11,17 +11,17 @@ const Sidebar = () => {
   return (
     <aside className={styles.sidebar}>
       <nav className={styles.nav}>
+        <NavLink to="/home" className={linkClassName}>
+          Home
+        </NavLink>
         <NavLink to="/dashboard" className={linkClassName}>
-          Дашборд
+          Dashboard
         </NavLink>
 
         {role === "admin" && (
           <>
             <NavLink to="/users" className={linkClassName}>
-              Пользователи
-            </NavLink>
-            <NavLink to="/settings" className={linkClassName}>
-              Настройки
+              Users
             </NavLink>
           </>
         )}
@@ -29,13 +29,13 @@ const Sidebar = () => {
         {(role === "admin" || role === "manager") && (
           <>
             <NavLink to="/students" className={linkClassName}>
-              Ученики
+              Students
             </NavLink>
             <NavLink to="/transactions" className={linkClassName}>
-              Транзакции
+              Transactions
             </NavLink>
             <NavLink to="/schedule" className={linkClassName}>
-              Расписание
+              Schedule
             </NavLink>
           </>
         )}

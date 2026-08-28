@@ -4,6 +4,7 @@ import ProtectedRoute from "@/app/router/ProtectedRouter";
 import { MainLayout } from "@/app/layouts/MainLayout";
 
 import {LoginPage} from '@/pages/LoginPage';
+import { HomePage } from "@/pages/HomePage";
 import {DashboardPage} from '@/pages/DashboardPage';
 import {StudentsPage} from '@/pages/StudentsPage';
 import {StudentDetailPage} from '@/pages/StudentDetailPage';
@@ -13,8 +14,6 @@ import { TransactionsPage } from '@/pages/TransactionsPage';
 import {MyStudentsPage} from '@/pages/MyStudentsPage';
 import {UsersPage} from '@/pages/UsersPage';
 
-
-const SettingsPage = () => <div>Настройки</div>;
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +28,7 @@ export const router = createBrowserRouter([
         element: <MainLayout />,
         children: [
           { index: true, element: <Navigate to="/dashboard" replace /> },
+          { path: "home", element: <HomePage /> },
           { path: "dashboard", element: <DashboardPage /> },
           { path: "students", element: <StudentsPage /> },
           { path: "students/:id", element: <StudentDetailPage /> },
@@ -37,7 +37,6 @@ export const router = createBrowserRouter([
           { path: "schedule", element: <SchedulePage /> },
           { path: "my-schedule", element: <TeacherSchedulePage /> },
           { path: "users", element: <UsersPage /> },
-          { path: "settings", element: <SettingsPage /> },
         ],
       },
     ],
