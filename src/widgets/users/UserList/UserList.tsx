@@ -1,7 +1,19 @@
 import { useAsync } from '@/shared/hooks/useAsync'
+import { useSearch } from '@/shared/hooks/useSearch'
 import { fetchUsers } from '@/entities/user'
-import { CreateUserAction, UpdateRoleSelect, DeleteUserAction } from '@/features/user'
-import { PageHeader, DataTable, Card, EmptyState, AsyncBoundary } from '@/shared/ui'
+import {
+  CreateUserAction,
+  UpdateRoleSelect,
+  DeleteUserAction,
+} from '@/features/user'
+import {
+  PageHeader,
+  DataTable,
+  Card,
+  EmptyState,
+  AsyncBoundary,
+  SearchInput,
+} from '@/shared/ui'
 import type { Column } from '@/shared/ui/DataTable'
 import type { UserProfile } from '@/entities/user/model/types'
 import styles from './UserList.module.css'
@@ -9,6 +21,11 @@ import styles from './UserList.module.css'
 export const UserList = () => {
   const { data, loading, error, refetch } = useAsync(fetchUsers)
   const users = data ?? []
+
+  const { searchTerm, setSearchTerm, filteredData } = useSearch(
+    users,
+    (user) => `${user.full_name ?? ''} ${user.email ?? ''}`
+  )
 
   const columns: Column<UserProfile>[] = [
     { key: 'name', header: 'Name', render: (u) => u.full_name || '—' },
@@ -33,12 +50,17 @@ export const UserList = () => {
   return (
     <AsyncBoundary loading={loading} error={error}>
       <div className={styles.container}>
-        <PageHeader title="Users" action={<CreateUserAction onSuccess={refetch}/>} />
+        <PageHeader title="Users" action={<CreateUserAction onSuccess={refetch} />} />
+        <SearchInput
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder="Search users..."
+        />
         <Card padding="small">
-          {users.length === 0 ? (
+          {filteredData.length === 0 ? (
             <EmptyState message="No users" />
           ) : (
-            <DataTable columns={columns} data={users} keyField="id" />
+            <DataTable columns={columns} data={filteredData} keyField="id" />
           )}
         </Card>
       </div>

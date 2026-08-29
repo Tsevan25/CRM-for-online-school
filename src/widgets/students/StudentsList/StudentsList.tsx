@@ -4,7 +4,7 @@ import { fetchStudents, fetchStudentsByIds } from '@/entities/student'
 import { fetchLessonsByTeacher } from '@/shared/api/lessons'
 import { AddStudentAction } from '@/features/student/add'
 import { EditStudentAction } from '@/features/student/edit'
-import {DeleteStudentAction} from '@/features/student/delete'
+import { DeleteStudentAction } from '@/features/student/delete'
 import {
   PageHeader,
   DataTable,
@@ -12,8 +12,10 @@ import {
   EmptyState,
   AsyncBoundary,
   Button,
+  SearchInput
 } from '@/shared/ui'
 import type { Column } from '@/shared/ui/DataTable'
+import { useSearch } from '@/shared/hooks/useSearch'
 import { formatCurrency } from '@/shared/lib/formatCurrency'
 import type { Student } from '@/entities/student'
 import styles from './StudentsList.module.css'
@@ -48,6 +50,11 @@ export const StudentsList = ({
   })
 
   const students = data ?? []
+
+  const { searchTerm, setSearchTerm, filteredData } = useSearch(
+    students,
+    (student) => `${student.full_name} ${student.email ?? ''} ${student.phone ?? ''}`
+  )
 
   const columns: Column<Student>[] = [
     {
@@ -113,11 +120,16 @@ export const StudentsList = ({
             canAddFinal ? <AddStudentAction onSuccess={refetch} /> : undefined
           }
         />
+        <SearchInput
+          value={searchTerm}
+          onChange={setSearchTerm}
+          placeholder="Search students..."
+        />
         <Card padding="small">
-          {students.length === 0 ? (
+          {filteredData.length === 0 ? (
             <EmptyState message="No students" />
           ) : (
-            <DataTable columns={columns} data={students} keyField="id" />
+            <DataTable columns={columns} data={filteredData} keyField="id" />
           )}
         </Card>
       </div>

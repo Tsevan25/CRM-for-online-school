@@ -1,0 +1,44 @@
+.page {
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 320px; 
+  gap: 2rem;
+  align-items: start;
+}
+
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+
+.greeting {
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  margin: 0.5rem 0 0;
+}
+
+.rightColumn {
+
+  position: sticky;
+  top: 2rem;
+}
+
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rightColumn {
+    position: static;
+  }
+}

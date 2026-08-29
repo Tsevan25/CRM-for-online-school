@@ -22,7 +22,7 @@
 }
 
 .row:hover {
-  background-color: #f8fafc;
+  background-color: var(--bg-hover);
 }
 
 .cell {

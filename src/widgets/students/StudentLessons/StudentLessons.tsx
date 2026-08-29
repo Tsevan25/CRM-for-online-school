@@ -1,3 +1,4 @@
+import { useAppSelector } from '@/app/store'
 import { useParams } from 'react-router-dom'
 import { useAsync } from '@/shared/hooks/useAsync'
 import { fetchLessonsByStudent } from '@/entities/lesson/api/lessonApi'
@@ -9,6 +10,7 @@ import styles from './StudentLessons.module.css'
 
 export const StudentLessons = () => {
   const { id } = useParams<{ id: string }>()
+  const { role } = useAppSelector((state) => state.auth) 
 const { data, loading, error } = useAsync(() => fetchLessonsByStudent(id!))
 const lessons = data ?? []
 
@@ -33,7 +35,13 @@ const lessons = data ?? []
         </span>
       ),
     },
-    { key: 'price', header: 'Price', render: (l) => formatCurrency(l.price) },
+     ...(role === 'admin' || role === 'manager'
+      ? [{
+          key: 'price',
+          header: 'Price',
+          render: (l: LessonWithNames) => formatCurrency(l.price),
+        }]
+      : []),
   ]
 
   return (

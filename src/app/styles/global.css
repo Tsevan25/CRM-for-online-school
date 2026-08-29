@@ -66,6 +66,8 @@ a {
   --text-light: #f0e9e9e4;
 
   --border: #e2e8f0;
+
+  --bg-hover: #f1f5f9; 
 }
 [data-theme='dark'] {
   --bg-main: #0f172a;
@@ -77,4 +79,6 @@ a {
   --text-light: #f8fafc;
 
   --border: #334155;
+
+   --bg-hover: #2d3b4f;
 }

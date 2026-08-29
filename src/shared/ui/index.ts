@@ -13,3 +13,4 @@ export {AsyncBoundary} from './AsyncBoundary';
 export {ConfirmDialog} from './ConfirmDialog';
 export {PageHeader} from './PageHeader';
 export  {Select} from './Select';
+export {SearchInput} from './SearchInput';

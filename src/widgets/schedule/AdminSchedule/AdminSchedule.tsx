@@ -1,12 +1,17 @@
 import { useState } from 'react'
 import { useAsync } from '@/shared/hooks/useAsync'
-import { fetchLessons } from '@/entities/lesson'
+import { fetchLessons } from '@/entities/lesson/api/lessonApi'
 import { ScheduleCalendar } from '@/entities/lesson/ui/ScheduleCalendar'
 import { CreateLessonModal } from '@/features/lesson/create'
-import { EditLessonModal } from '@/features/lesson/edit'
+import { EditLessonModal } from '@/features/lesson/edit/ui/EditLessonModal'
 import { CancelLessonModal } from '@/features/lesson/cancel'
 import { AsyncBoundary } from '@/shared/ui'
 import type { LessonWithNames } from '@/entities/lesson/model/types'
+
+const formatToLocalInput = (date: Date): string => {
+  const offset = date.getTimezoneOffset() * 60000
+  return new Date(date.getTime() - offset).toISOString().slice(0, 16)
+}
 
 export const AdminSchedule = () => {
   const [selectedLesson, setSelectedLesson] = useState<LessonWithNames | null>(null)
@@ -24,6 +29,9 @@ export const AdminSchedule = () => {
   }
 
   const handleSelectSlot = (start: Date) => {
+    const day = start.getDay()
+    if (day === 0 || day === 6) return
+    if (start <= new Date()) return
     setNewSlotStart(start)
     setIsCreateOpen(true)
   }
@@ -41,7 +49,7 @@ export const AdminSchedule = () => {
           isOpen={isCreateOpen}
           onClose={() => setIsCreateOpen(false)}
           onSuccess={refetch}
-          defaultStartTime={newSlotStart ? newSlotStart.toISOString().slice(0, 16) : undefined}
+          defaultStartTime={newSlotStart ? formatToLocalInput(newSlotStart) : undefined}
         />
       )}
       {isEditOpen && selectedLesson && (

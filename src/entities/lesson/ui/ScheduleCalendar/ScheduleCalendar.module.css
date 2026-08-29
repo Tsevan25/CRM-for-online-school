@@ -5,10 +5,65 @@
   padding: 1rem;
 }
 
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.navButtons,
+.viewButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* События */
 .event {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   padding: 2px 4px;
+  border-radius: 4px;
+  background-color: #dbeafe;
+  color: #1e40af;
+  cursor: pointer;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+}
+
+.event.cancelled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+.event.completed {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+/* Увеличенные слоты для дня */
+:global(.rbc-timeslot-group) {
+  min-height: 70px;
+  border-bottom: 1px solid var(--border);
+}
+
+:global(.rbc-time-slot) {
+  min-height: 70px;
+}
+
+:global(.rbc-day-slot .rbc-time-slot) {
+  min-height: 70px;
+}
+
+/* Чёткие границы */
+:global(.rbc-time-view) {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background-color: var(--bg-card);
+}
+
+:global(.rbc-day-bg) {
+  border-left: 1px solid var(--border);
 }

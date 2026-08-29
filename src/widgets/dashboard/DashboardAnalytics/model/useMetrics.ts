@@ -28,7 +28,7 @@ export const useMetrics = (): MetricsState => {
       return { ...admin, loading, error }
     }
     case 'manager': {
-      const manager = buildManagerDashboard(raw, user?.id)
+      const manager = buildManagerDashboard(raw)
       return { ...manager, loading, error }
     }
     case 'teacher': {

@@ -23,6 +23,7 @@ export const fetchLessonsByStudent = async (studentId: string): Promise<LessonWi
     .from('lessons')
     .select('*, student:students(full_name), teacher:profiles!lessons_teacher_id_fkey(full_name)')
     .eq('student_id', studentId)
+    .order('start_time', { ascending: false })   
   if (error) throw error
   return data as LessonWithNames[]
 }

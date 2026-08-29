@@ -3,10 +3,12 @@ import { Button } from '@/shared/ui';
 import { StudentInfoCard } from '@/widgets/students/StudentInfoCard';
 import { StudentLessons } from '@/widgets/students/StudentLessons';
 import { StudentTransactions } from '@/widgets/students/StudentTransactions';
+import { useAppSelector } from '@/app/store';
 import styles from './StudentDetailPage.module.css';
 
 export const StudentDetailPage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { role } = useAppSelector((state) => state.auth);
 
   return (
     <div className={styles.page}>
@@ -21,10 +23,14 @@ export const StudentDetailPage = () => {
 
       <StudentInfoCard />
 
-      <div className={styles.columns}>
+      {role === 'admin' || role === 'manager' ? (
+        <div className={styles.columns}>
+          <StudentLessons />
+          <StudentTransactions />
+        </div>
+      ) : (
         <StudentLessons />
-        <StudentTransactions />
-      </div>
+      )}
     </div>
-  )
-}
+  );
+};
