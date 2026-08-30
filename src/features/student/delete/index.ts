@@ -1,1 +1,1 @@
-export {DeleteStudentAction} from './ui/DeleteStudentAction/DeleteStudentAction';
+export {DeleteStudentAction} from './ui/DeleteStudentAction';

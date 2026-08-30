@@ -1,7 +1,5 @@
 import { TransactionList } from '@/widgets/transactions/TransactionList'
 
-const TransactionsPage = () => {
+export const TransactionsPage = () => {
   return <TransactionList />
 }
-
-export default TransactionsPage

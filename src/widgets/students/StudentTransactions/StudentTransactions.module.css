@@ -7,9 +7,9 @@
 }
 
 .positive {
-  color: #166534;
+  color: var(--text-success);
 }
 
 .negative {
-  color: #991b1b;
+  color: var(--text-danger);
 }

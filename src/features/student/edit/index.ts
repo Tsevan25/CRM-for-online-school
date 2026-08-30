@@ -1,1 +1,1 @@
-export { EditStudentAction } from './ui/EditStudentAction/EditStudentAction';
+export { EditStudentAction } from './ui/EditStudentAction';

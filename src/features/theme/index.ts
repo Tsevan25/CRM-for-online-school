@@ -1,1 +1,1 @@
-export { ThemeToggleButton } from './ui/ThemeToggleButton/ThemeToggleButton'
+export { ThemeToggleButton } from './ui/ThemeToggleButton';

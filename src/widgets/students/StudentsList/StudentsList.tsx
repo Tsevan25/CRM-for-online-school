@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import { useAsync } from '@/shared/hooks/useAsync'
 import { fetchStudents, fetchStudentsByIds } from '@/entities/student'
-import { fetchLessonsByTeacher } from '@/shared/api/lessons'
+import { fetchLessonsByTeacher } from '@/entities/lesson/api/lessonApi'
 import { AddStudentAction } from '@/features/student/add'
 import { EditStudentAction } from '@/features/student/edit'
 import { DeleteStudentAction } from '@/features/student/delete'
+
 import {
   PageHeader,
   DataTable,

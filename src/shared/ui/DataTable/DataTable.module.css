@@ -30,3 +30,11 @@
   font-size: 0.875rem;
   color: var(--text-main);
 }
+
+@media (max-width: 768px) {
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

@@ -14,3 +14,13 @@
   gap: 1.5rem;
 }
 
+
+@media (max-width: 768px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+
+  .page {
+    gap: 1rem;
+  }
+}

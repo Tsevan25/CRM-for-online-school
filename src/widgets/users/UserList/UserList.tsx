@@ -1,11 +1,10 @@
 import { useAsync } from '@/shared/hooks/useAsync'
 import { useSearch } from '@/shared/hooks/useSearch'
 import { fetchUsers } from '@/entities/user'
-import {
-  CreateUserAction,
-  UpdateRoleSelect,
-  DeleteUserAction,
-} from '@/features/user'
+
+import { CreateUserAction } from '@/features/user/create'
+import { UpdateRoleSelect } from '@/features/user/role-update'
+import { DeleteUserAction } from '@/features/user/delete'
 import {
   PageHeader,
   DataTable,

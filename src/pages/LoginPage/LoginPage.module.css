@@ -128,3 +128,31 @@
   margin-top: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.15);
 }
+
+
+@media (max-width: 768px) {
+  .loginPage {
+    padding: 1rem;
+  }
+
+  .contentArea {
+    max-width: 100%;
+  }
+
+  .schoolTitle {
+    font-size: 28px;
+  }
+
+  .logo {
+    max-width: 140px;
+  }
+
+  .formWrapper {
+    padding: 1rem;
+  }
+
+  .themeToggle {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+}

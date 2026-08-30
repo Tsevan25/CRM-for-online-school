@@ -1,18 +1,9 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { Input, Button, Select } from '@/shared/ui'
+import { Input, Button, Select, FormField } from '@/shared/ui'
 import styles from './TransactionForm.module.css'
-
-const transactionSchema = z.object({
-  studentId: z.string().min(1, 'Student is required'),
-  amount: z.coerce.number(),
-  type: z.string().min(1, 'Type is required'),
-  description: z.string().optional(),
-})
-
-export type TransactionFormData = z.infer<typeof transactionSchema>
+import { transactionSchema, type TransactionFormData } from '../../model/types'
 
 interface TransactionFormProps {
   students: { id: string; full_name: string }[]
@@ -57,24 +48,26 @@ export const TransactionForm = ({ students, onSubmit, onCancel }: TransactionFor
         options={students.map((s) => ({ value: s.id, label: s.full_name }))}
         {...register('studentId')}
       />
-      <Input
-        label="Amount ($)"
-        type="number"
-        error={errors.amount?.message}
-        {...register('amount')}
-      />
+      <FormField label="Amount ($)" error={errors.amount?.message}>
+        <Input
+          type="number"
+          error={!!errors.amount}
+          {...register('amount')}
+        />
+      </FormField>
       <Select
         label="Type"
         error={errors.type?.message}
         options={typeOptions}
         {...register('type')}
       />
-      <Input
-        label="Description"
-        placeholder="Optional"
-        error={errors.description?.message}
-        {...register('description')}
-      />
+      <FormField label="Description" error={errors.description?.message}>
+        <Input
+          placeholder="Optional"
+          error={!!errors.description}
+          {...register('description')}
+        />
+      </FormField>
       {rootError && <p className={styles.rootError}>{rootError}</p>}
       <div className={styles.actions}>
         <Button type="button" variant="secondary" onClick={onCancel}>

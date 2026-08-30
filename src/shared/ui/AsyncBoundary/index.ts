@@ -1,1 +1,1 @@
-export { default as AsyncBoundary } from './AsyncBoundary'
+export {  AsyncBoundary } from './AsyncBoundary'

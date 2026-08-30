@@ -1,5 +1,5 @@
 import {Modal} from "@/shared/ui";
-import type { Student } from "@/entities/student/model/types";
+import type { Student } from "@/entities/student";
 import { type StudentFormData, StudentForm } from "@/entities/student";
 
 interface EditStudentModalProps {

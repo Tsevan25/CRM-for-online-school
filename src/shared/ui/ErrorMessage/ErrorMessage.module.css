@@ -1,8 +1,8 @@
 .error {
   padding: 0.75rem 1rem;
-  background-color: #fef2f2;
-  border: 1px solid #fecaca;
+  background-color: var(--bg-danger);
+  border: 1px solid var(--border-danger);
   border-radius: 6px;
-  color: #991b1b;
+  color: var(--text-danger);
   font-size: 0.875rem;
 }

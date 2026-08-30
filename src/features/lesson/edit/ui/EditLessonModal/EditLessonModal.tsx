@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import Modal from "@/shared/ui/Modal/Modal";
-import Button from "@/shared/ui/Button/Button";
+import {Modal, Button} from '@/shared/ui';
 import { LessonForm } from "@/entities/lesson/ui/LessonForm";
 import { updateLesson } from "../../api/updateLesson";
 import { useAppDispatch } from "@/app/store";
@@ -11,6 +10,7 @@ import type {
 } from "@/entities/lesson/model/types";
 import { fetchStudents } from "@/entities/student/api/studentApi";
 import { supabase } from "@/shared/api/supabase";
+import styles from './EditLessonModa.module.css';
 
 const toLocalInput = (iso: string) => {
   const date = new Date(iso);
@@ -99,7 +99,7 @@ export const EditLessonModal = ({
         teachers={teachers}
       />
       {onCancelRequest && (
-        <div style={{ marginTop: "1rem", textAlign: "right" }}>
+         <div className={styles.cancelSection}>
           <Button variant="danger" onClick={onCancelRequest}>
             Cancel Lesson
           </Button>

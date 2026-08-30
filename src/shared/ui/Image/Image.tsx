@@ -10,7 +10,7 @@ interface ImageProps {
   loading?: 'lazy' | 'eager'
 }
 
-const Image = ({
+export const Image = ({
   src,
   alt,
   className,
@@ -36,4 +36,3 @@ const Image = ({
   )
 }
 
-export default Image

@@ -1,4 +1,15 @@
 import { Typography } from '@/shared/ui'
+import {
+  Sun,
+  CloudSun,
+  Cloud,
+  CloudDrizzle,
+  CloudRain,
+  CloudSnow,
+  CloudRainWind,
+  CloudLightning,
+  Cloudy,
+} from 'lucide-react'
 import styles from './WeatherCard.module.css'
 
 interface WeatherCardProps {
@@ -30,31 +41,35 @@ const weatherDescriptions: Record<number, string> = {
   95: 'Thunderstorm',
 }
 
+const weatherIcons = (code: number) => {
+  if (code <= 2) return <Sun className={styles.weatherIcon} />
+  if (code === 3) return <CloudSun className={styles.weatherIcon} />
+  if (code <= 48) return <Cloud className={styles.weatherIcon} />
+  if (code <= 55) return <CloudDrizzle className={styles.weatherIcon} />
+  if (code <= 65) return <CloudRain className={styles.weatherIcon} />
+  if (code <= 75) return <CloudSnow className={styles.weatherIcon} />
+  if (code <= 82) return <CloudRainWind className={styles.weatherIcon} />
+  if (code >= 95) return <CloudLightning className={styles.weatherIcon} />
+  return <Cloudy className={styles.weatherIcon} />
+}
+
 export const WeatherCard = ({ temperature, windspeed, weathercode, date }: WeatherCardProps) => {
   const description = weatherDescriptions[weathercode] || 'Unknown'
 
   return (
     <div className={styles.card}>
       <Typography variant="h3" className={styles.city}>Your Location</Typography>
-      <Typography variant="body" className={styles.date}>{new Date(date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</Typography>
+      <Typography variant="body" className={styles.date}>
+        {new Date(date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+      </Typography>
       <div className={styles.tempRow}>
-        <Typography variant="h1" className={styles.temperature}>{Math.round(temperature)}°C</Typography>
-        <span className={styles.weatherIcon}>{getWeatherIcon(weathercode)}</span>
+        <Typography variant="h1" className={styles.temperature}>
+          {Math.round(temperature)}°C
+        </Typography>
+        {weatherIcons(weathercode)}
       </div>
       <Typography variant="body" className={styles.description}>{description}</Typography>
       <Typography variant="caption" className={styles.wind}>Wind: {windspeed} km/h</Typography>
     </div>
   )
-}
-
-function getWeatherIcon(code: number): string {
-  if (code <= 2) return '☀️'
-  if (code <= 3) return '⛅'
-  if (code <= 48) return '🌫️'
-  if (code <= 55) return '🌦️'
-  if (code <= 65) return '🌧️'
-  if (code <= 75) return '❄️'
-  if (code <= 82) return '🌧️'
-  if (code >= 95) return '⛈️'
-  return '🌡️'
 }

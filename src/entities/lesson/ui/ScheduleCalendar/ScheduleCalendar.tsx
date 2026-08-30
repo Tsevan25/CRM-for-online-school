@@ -1,27 +1,26 @@
-import { useCallback, useState } from 'react'
-import { Calendar, momentLocalizer, type Event } from 'react-big-calendar'
-import moment from 'moment'
-import 'react-big-calendar/lib/css/react-big-calendar.css'
-import type { LessonWithNames } from '../../model/types'
-import { Button } from '@/shared/ui'
-import styles from './ScheduleCalendar.module.css'
+import { useCallback, useState } from "react";
+import { Calendar, momentLocalizer, type Event } from "react-big-calendar";
+import moment from "moment";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import type { LessonWithNames } from "../../model/types";
+import { Button } from "@/shared/ui";
+import styles from "./ScheduleCalendar.module.css";
 
-// Первый день недели — понедельник
-moment.updateLocale('en', { week: { dow: 1 } })
-const localizer = momentLocalizer(moment)
+moment.updateLocale("en", { week: { dow: 1 } });
+const localizer = momentLocalizer(moment);
 
 const lessonToEvent = (lesson: LessonWithNames): Event => ({
-  title: `${lesson.student?.full_name || '—'} / ${lesson.teacher?.full_name || '—'}`,
+  title: `${lesson.student?.full_name || "—"} / ${lesson.teacher?.full_name || "—"}`,
   start: new Date(lesson.start_time),
   end: new Date(lesson.end_time),
   resource: lesson,
-})
+});
 
 interface ScheduleCalendarProps {
-  lessons: LessonWithNames[]
-  selectable?: boolean
-  onSelectEvent?: (lesson: LessonWithNames) => void
-  onSelectSlot?: (start: Date) => void
+  lessons: LessonWithNames[];
+  selectable?: boolean;
+  onSelectEvent?: (lesson: LessonWithNames) => void;
+  onSelectSlot?: (start: Date) => void;
 }
 
 export const ScheduleCalendar = ({
@@ -30,72 +29,75 @@ export const ScheduleCalendar = ({
   onSelectEvent,
   onSelectSlot,
 }: ScheduleCalendarProps) => {
-  const [view, setView] = useState<'month' | 'day'>('month')
-  const [date, setDate] = useState(new Date())
+  const [view, setView] = useState<"month" | "day">("month");
+  const [date, setDate] = useState(new Date());
 
-  const events = lessons.map(lessonToEvent)
+  const events = lessons.map(lessonToEvent);
 
   const handleSelectEvent = useCallback(
     (event: Event) => {
-      onSelectEvent?.(event.resource as LessonWithNames)
+      onSelectEvent?.(event.resource as LessonWithNames);
     },
-    [onSelectEvent]
-  )
+    [onSelectEvent],
+  );
 
   const handleSelectSlot = useCallback(
     (slotInfo: { start: Date }) => {
-      if (view === 'month') {
-        // Клик по дню в месяце — открываем день
-        setDate(slotInfo.start)
-        setView('day')
-        return
+      if (view === "month") {
+        setDate(slotInfo.start);
+        setView("day");
+        return;
       }
-      // В дневном режиме — создание урока
-      const day = slotInfo.start.getDay()
-      if (day === 0 || day === 6) return // выходные
-      onSelectSlot?.(slotInfo.start)
+
+      const day = slotInfo.start.getDay();
+      if (day === 0 || day === 6) return;
+      onSelectSlot?.(slotInfo.start);
     },
-    [view, onSelectSlot]
-  )
+    [view, onSelectSlot],
+  );
 
   const handleDrillDown = (drillDate: Date) => {
-    setDate(drillDate)
-    setView('day')
-  }
+    setDate(drillDate);
+    setView("day");
+  };
 
-  const handleToday = () => setDate(new Date())
+  const handleToday = () => setDate(new Date());
 
   const handleBack = () => {
-    if (view === 'month') {
-      setDate(new Date(date.getFullYear(), date.getMonth() - 1, 1))
+    if (view === "month") {
+      setDate(new Date(date.getFullYear(), date.getMonth() - 1, 1));
     } else {
-      setDate(new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1))
+      setDate(
+        new Date(date.getFullYear(), date.getMonth(), date.getDate() - 1),
+      );
     }
-  }
+  };
 
   const handleNext = () => {
-    if (view === 'month') {
-      setDate(new Date(date.getFullYear(), date.getMonth() + 1, 1))
+    if (view === "month") {
+      setDate(new Date(date.getFullYear(), date.getMonth() + 1, 1));
     } else {
-      setDate(new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1))
+      setDate(
+        new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
+      );
     }
-  }
+  };
 
   const EventComponent = ({ event }: { event: Event }) => {
-    const lesson = event.resource as LessonWithNames
+    const lesson = event.resource as LessonWithNames;
     const classNames = [
       styles.event,
-      lesson.status === 'cancelled' ? styles.cancelled : '',
-      lesson.status === 'completed' ? styles.completed : '',
+      lesson.status === "cancelled" ? styles.cancelled : "",
+      lesson.status === "completed" ? styles.completed : "",
     ]
       .filter(Boolean)
-      .join(' ')
+      .join(" ");
     return (
       <div className={classNames}>
         <span>{event.title}</span>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className={styles.container}>
@@ -113,23 +115,23 @@ export const ScheduleCalendar = ({
         </div>
         <div className={styles.viewButtons}>
           <Button
-            variant={view === 'month' ? 'primary' : 'secondary'}
+            variant={view === "month" ? "primary" : "secondary"}
             size="small"
-            onClick={() => setView('month')}
+            onClick={() => setView("month")}
           >
             Month
           </Button>
           <Button
-            variant={view === 'day' ? 'primary' : 'secondary'}
+            variant={view === "day" ? "primary" : "secondary"}
             size="small"
-            onClick={() => setView('day')}
+            onClick={() => setView("day")}
           >
             Day
           </Button>
         </div>
       </div>
 
-      {view === 'month' ? (
+      {view === "month" ? (
         <Calendar
           localizer={localizer}
           events={events}
@@ -144,7 +146,7 @@ export const ScheduleCalendar = ({
           date={date}
           view="month"
           onNavigate={setDate}
-          views={['month']}
+          views={["month"]}
         />
       ) : (
         <Calendar
@@ -160,14 +162,14 @@ export const ScheduleCalendar = ({
           date={date}
           view="day"
           onNavigate={setDate}
-          views={['day']}
+          views={["day"]}
           min={new Date(0, 0, 0, 9, 0, 0)}
-          max={new Date(0, 0, 0, 22, 30, 0)}
+          max={new Date(0, 0, 0, 22, 0, 0)}
           step={60}
           timeslots={1}
-          formats={{ timeGutterFormat: 'HH:mm' }}
+          formats={{ timeGutterFormat: "HH:mm" }}
         />
       )}
     </div>
-  )
-}
+  );
+};

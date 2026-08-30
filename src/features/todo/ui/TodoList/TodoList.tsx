@@ -19,7 +19,7 @@ export const TodoList = ({ todos, onToggle, onRemove }: TodoListProps) => {
 
   return (
     <ul className={styles.list}>
-      {todos.map((todo) => (
+      {todos.map(todo => (
         <li key={todo.id} className={styles.item}>
           <label className={styles.label}>
             <input

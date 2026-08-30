@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import Modal from '@/shared/ui/Modal/Modal'
-import Button from '@/shared/ui/Button/Button'
+import { Button, Modal, Select } from '@/shared/ui'
 import { updateLessonStatus } from '../../api/updateLessonStatus'
 import { useAppDispatch } from '@/app/store'
 import { addNotification } from '@/features/notifications'
@@ -42,20 +41,15 @@ export const ChangeLessonStatusModal = ({
       <p className={styles.message}>
         Lesson with <strong>{lesson.student?.full_name || 'this student'}</strong>
       </p>
-      <div className={styles.field}>
-        <label className={styles.label}>New Status</label>
-        <select
-          className={styles.select}
-          value={selectedStatus}
-          onChange={(e) => setSelectedStatus(e.target.value as LessonStatus)}
-        >
-          {STATUS_OPTIONS.map((status) => (
-            <option key={status} value={status}>
-              {status.replace('_', ' ')}
-            </option>
-          ))}
-        </select>
-      </div>
+      <Select
+        label="New Status"
+        value={selectedStatus}
+        onChange={(e) => setSelectedStatus(e.target.value as LessonStatus)}
+        options={STATUS_OPTIONS.map((status) => ({
+          value: status,
+          label: status.replace('_', ' '),
+        }))}
+      />
       <div className={styles.actions}>
         <Button variant="secondary" onClick={onClose}>Cancel</Button>
         <Button variant="primary" onClick={handleSave}>Save</Button>

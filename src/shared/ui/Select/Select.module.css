@@ -6,4 +6,17 @@
   color: var(--text-main);
   font-size: 0.875rem;
   outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px #2563eb;
+}
+
+@media (max-width: 768px) {
+  .select {
+    font-size: 1rem;
+    padding: 0.6rem 0.8rem;
+  }
 }

@@ -1,1 +1,1 @@
-export {default as TeacherSchedulePage} from './TeacherSchedulePage'
+export {TeacherSchedulePage} from './TeacherSchedulePage'

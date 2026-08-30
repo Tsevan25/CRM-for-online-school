@@ -4,7 +4,7 @@ import { removeNotification } from '../../model/slice'
 import { Typography, Button } from '@/shared/ui'
 import styles from './ToastContainer.module.css'
 
-const ToastContainer = () => {
+export const ToastContainer = () => {
   const notifications = useAppSelector((state) => state.notifications.items)
   const dispatch = useAppDispatch()
 
@@ -49,4 +49,3 @@ const ToastContainer = () => {
   )
 }
 
-export default ToastContainer

@@ -4,11 +4,11 @@ import styles from './Input.module.css'
 
 interface InputProps extends ComponentPropsWithoutRef<'input'> {
   label?: string
-  error?: string
-  labelClassName?: string 
+  error?: boolean   
+  labelClassName?: string
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, className, labelClassName, id, ...rest }, ref) => {
     const inputId = id ?? label?.toLowerCase().replace(/\s+/g, '-')
 
@@ -26,12 +26,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           aria-invalid={!!error}
           {...rest}
         />
-        {error && <span className={styles.error}>{error}</span>}
       </div>
     )
   }
 )
 
 Input.displayName = 'Input'
-
-export default Input;

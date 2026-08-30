@@ -46,7 +46,7 @@
 
 .onCloseButton:hover {
   color: var(--text-main);
-  background-color: #f1f5f9;
+  background-color: var(--bg-hover);
 }
 
 .content {

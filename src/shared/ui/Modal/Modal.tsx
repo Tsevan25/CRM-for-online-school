@@ -8,7 +8,7 @@ interface ModalProps extends PropsWithChildren {
   title: string;
 }
 
-const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
+export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -34,7 +34,9 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
-          <Typography variant="h2" className={styles.title}>{title}</Typography>
+          <Typography variant="h2" className={styles.title}>
+            {title}
+          </Typography>
           <Button
             variant="secondary"
             size="small"
@@ -51,5 +53,3 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
     </div>
   );
 };
-
-export default Modal;

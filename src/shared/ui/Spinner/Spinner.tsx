@@ -1,7 +1,5 @@
-import styles from './Spinner.module.css'
+import styles from "./Spinner.module.css";
 
-const Spinner = () => {
-  return <div className={styles.spinner} role="status" aria-label="Loading" />
-}
-
-export default Spinner
+export const Spinner = () => {
+  return <div className={styles.spinner} role="status" aria-label="Loading" />;
+};

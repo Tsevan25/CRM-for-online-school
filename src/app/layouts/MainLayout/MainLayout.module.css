@@ -16,3 +16,18 @@
   padding: 1.5rem;
   background-color: var(--bg-main);
 }
+
+
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .mainArea {
+    flex: 1;
+  }
+
+  .content {
+    padding: 1rem;
+  }
+}

@@ -1,1 +1,1 @@
-export {CreateUserAction} from './ui/CreateUserAction/CreateUserAction';
+export {CreateUserAction} from './ui/CreateUserAction';

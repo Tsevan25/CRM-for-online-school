@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
 import styles from "./MainLayout.module.css";
 
-import { Header } from "../Header";
-import {Sidebar } from '../Sidebar';
-import {Footer} from '../Footer';
+import { Header } from "./Header";
+import {Sidebar } from './Sidebar';
+import {Footer} from './Footer';
 
-const MainLayout = () => {
+export const MainLayout = () => {
   return (
     <div className={styles.layout}>
       <Sidebar />
@@ -20,4 +20,3 @@ const MainLayout = () => {
   );
 };
 
-export default MainLayout;

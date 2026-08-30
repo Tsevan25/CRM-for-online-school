@@ -7,10 +7,9 @@ interface AsyncBoundaryProps extends PropsWithChildren {
   error?: string | null
 }
 
-const AsyncBoundary = ({ loading, error, children }: AsyncBoundaryProps) => {
+export const AsyncBoundary = ({ loading, error, children }: AsyncBoundaryProps) => {
   if (loading) return <Spinner />
   if (error) return <ErrorMessage message={error} />
   return <>{children}</>
 }
 
-export default AsyncBoundary

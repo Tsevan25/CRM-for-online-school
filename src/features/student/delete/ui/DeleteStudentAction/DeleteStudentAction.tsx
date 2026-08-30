@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import Button from '@/shared/ui/Button/Button'
-import ConfirmDialog from '@/shared/ui/ConfirmDialog/ConfirmDialog'
+import {Button} from '@/shared/ui/Button/Button'
+import {ConfirmDialog} from '@/shared/ui/ConfirmDialog/ConfirmDialog'
 import { deleteStudent } from '../../api/deleteStudent'
 import { useAppDispatch } from '@/app/store'
 import { addNotification } from '@/features/notifications'

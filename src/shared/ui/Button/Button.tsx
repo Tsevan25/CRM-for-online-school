@@ -11,13 +11,14 @@ interface ButtonProps extends ComponentPropsWithoutRef<"button"> {
   fullWidth?: boolean;
 }
 
-const Button = ({
+export const Button = ({
   className,
   variant = "primary",
   size = "medium",
   fullWidth = false,
   disabled,
   children,
+  type = "button",
   ...rest
 }: ButtonProps) => {
   const combinedClasses = clsx(
@@ -29,10 +30,13 @@ const Button = ({
     className,
   );
   return (
-    <button className={combinedClasses} disabled={disabled} {...rest}>
+    <button
+      className={combinedClasses}
+      disabled={disabled}
+      type={type}
+      {...rest}
+    >
       {children}
     </button>
   );
 };
-
-export default Button;

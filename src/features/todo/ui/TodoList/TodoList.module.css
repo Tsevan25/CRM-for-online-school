@@ -51,3 +51,15 @@
   text-align: center;
   padding: 1rem 0;
 }
+
+
+@media (max-width: 768px) {
+  .item {
+    gap: 0.25rem;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .removeButton {
+    padding: 0.25rem 0.5rem;
+  }
+}

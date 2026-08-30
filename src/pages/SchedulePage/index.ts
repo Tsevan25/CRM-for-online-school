@@ -1,1 +1,1 @@
-export {default as SchedulePage} from './SchedulePage'
+export { SchedulePage} from './SchedulePage'

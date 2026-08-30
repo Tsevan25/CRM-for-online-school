@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Modal from "@/shared/ui/Modal/Modal";
+import { Modal } from "@/shared/ui";
 import { LessonForm } from "@/entities/lesson/ui/LessonForm";
 import { createLessonWithPayment } from "../../api/createLessonWithPayment";
 import { useAppDispatch, useAppSelector } from "@/app/store";
@@ -8,8 +8,7 @@ import type { LessonFormData } from "@/entities/lesson/model/types";
 import { fetchStudents } from "@/entities/student/api/studentApi";
 import { supabase } from "@/shared/api/supabase";
 
-const toISODate = (localDateTime: string) =>
-  new Date(localDateTime).toISOString();
+const toISODate = (localDateTime: string) => new Date(localDateTime).toISOString();
 
 interface CreateLessonModalProps {
   isOpen: boolean;
@@ -26,12 +25,8 @@ export const CreateLessonModal = ({
 }: CreateLessonModalProps) => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
-  const [students, setStudents] = useState<{ id: string; full_name: string }[]>(
-    [],
-  );
-  const [teachers, setTeachers] = useState<{ id: string; full_name: string }[]>(
-    [],
-  );
+  const [students, setStudents] = useState<{ id: string; full_name: string }[]>([]);
+  const [teachers, setTeachers] = useState<{ id: string; full_name: string }[]>([]);
 
   useEffect(() => {
     if (isOpen) {
@@ -59,17 +54,10 @@ export const CreateLessonModal = ({
       });
       onSuccess?.();
       onClose();
-      dispatch(
-        addNotification({
-          type: "success",
-          message: "Lesson created successfully",
-        }),
-      );
+      dispatch(addNotification({ type: "success", message: "Lesson created successfully" }));
     } catch (err) {
       console.error("Error creating lesson:", err);
-      dispatch(
-        addNotification({ type: "error", message: "Failed to create lesson" }),
-      );
+      dispatch(addNotification({ type: "error", message: "Failed to create lesson" }));
     }
   };
 
@@ -80,9 +68,7 @@ export const CreateLessonModal = ({
         onCancel={onClose}
         submitLabel="Create"
         defaultValues={
-          defaultStartTime
-            ? { startTime: defaultStartTime, endTime: "" }
-            : undefined
+          defaultStartTime ? { startTime: defaultStartTime, endTime: "" } : undefined
         }
         students={students}
         teachers={teachers}

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Button from '@/shared/ui/Button/Button'
+import  {Button} from '@/shared/ui/Button/Button'
 import { AddStudentModal } from '../AddStudentModal'
 import { createStudent } from '../../api/createStudent'
 import { useAppSelector, useAppDispatch } from '@/app/store'

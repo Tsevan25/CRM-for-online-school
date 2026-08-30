@@ -1,24 +1,24 @@
-import {Modal} from '@/shared/ui/Modal'
-import {Button} from '@/shared/ui/Button'
-import {Typography} from '@/shared/ui/Typography'
-import styles from './ConfirmDialog.module.css'
+import { Modal } from "@/shared/ui/Modal";
+import { Button } from "@/shared/ui/Button";
+import { Typography } from "@/shared/ui/Typography";
+import styles from "./ConfirmDialog.module.css";
 
 interface ConfirmDialogProps {
-  isOpen: boolean
-  title: string
-  message: string
-  confirmLabel?: string
-  cancelLabel?: string
-  onConfirm: () => void
-  onCancel: () => void
+  isOpen: boolean;
+  title: string;
+  message: string;
+  confirmLabel?: string;
+  cancelLabel?: string;
+  onConfirm: () => void;
+  onCancel: () => void;
 }
 
-const ConfirmDialog = ({
+export const ConfirmDialog = ({
   isOpen,
   title,
   message,
-  confirmLabel = 'Confirm',
-  cancelLabel = 'Cancel',
+  confirmLabel = "Confirm",
+  cancelLabel = "Cancel",
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) => {
@@ -36,7 +36,5 @@ const ConfirmDialog = ({
         </Button>
       </div>
     </Modal>
-  )
-}
-
-export default ConfirmDialog
+  );
+};

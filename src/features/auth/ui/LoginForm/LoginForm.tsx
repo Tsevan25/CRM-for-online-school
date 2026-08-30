@@ -1,22 +1,13 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Input, Button, Typography, FormField } from '@/shared/ui';
-import { useAppDispatch } from "@/app/store/index";
+import { Input, Button, Typography, FormField } from "@/shared/ui";
+import { useAppDispatch } from "@/app/store";
 import { login } from "@/features/auth";
+import { loginSchema, type LoginFormData } from "../../model/types";
 import styles from "./LoginForm.module.css";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
-const loginSchema = z.object({
-  email: z.string().min(1, "Email is required!").email("Incorrect email"),
-  password: z
-    .string()
-    .min(6, "Your password must be at least 6 characters long"),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
-
-const LoginForm = () => {
+export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -32,23 +23,24 @@ const LoginForm = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       await dispatch(login(data)).unwrap();
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : 'Unknown login error';
-      setError('root', { message });
+      const message = err instanceof Error ? err.message : "Unknown login error";
+      setError("root", { message });
     }
   };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="h2" className={styles.title}>Log In to CRM</Typography>
+      <Typography variant="h2" className={styles.title}>
+        Log In to CRM
+      </Typography>
 
       <FormField label="Email" error={errors.email?.message}>
         <Input
           type="email"
           placeholder="Enter your email address"
-          error={errors.email?.message}
+          error={!!errors.email}
           {...register("email")}
         />
       </FormField>
@@ -57,7 +49,7 @@ const LoginForm = () => {
         <Input
           type="password"
           placeholder="Enter your password"
-          error={errors.password?.message}
+          error={!!errors.password}
           {...register("password")}
         />
       </FormField>
@@ -70,5 +62,3 @@ const LoginForm = () => {
     </form>
   );
 };
-
-export default LoginForm;

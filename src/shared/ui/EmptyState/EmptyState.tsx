@@ -4,8 +4,7 @@ interface EmptyStateProps {
   message?: string
 }
 
-const EmptyState = ({ message = 'No data' }: EmptyStateProps) => {
+export const EmptyState = ({ message = 'No data' }: EmptyStateProps) => {
   return <div className={styles.empty}>{message}</div>
 }
 
-export default EmptyState

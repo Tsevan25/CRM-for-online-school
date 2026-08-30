@@ -1,22 +1,22 @@
-import type { ReactNode } from 'react'
-import styles from './DataTable.module.css'
+import type { ReactNode } from "react";
+import styles from "./DataTable.module.css";
 
 export interface Column<T> {
-  key: string
-  header: string
-  render: (item: T) => ReactNode
+  key: string;
+  header: string;
+  render: (item: T) => ReactNode;
 }
 
 interface DataTableProps<T> {
-  columns: Column<T>[]
-  data: T[]
-  keyField?: keyof T
+  columns: Column<T>[];
+  data: T[];
+  keyField?: keyof T;
 }
 
-const DataTable = <T,>({
+export const DataTable = <T,>({
   columns,
   data,
-  keyField = 'id' as keyof T,
+  keyField = "id" as keyof T,
 }: DataTableProps<T>) => {
   return (
     <table className={styles.table}>
@@ -41,7 +41,5 @@ const DataTable = <T,>({
         ))}
       </tbody>
     </table>
-  )
-}
-
-export default DataTable
+  );
+};

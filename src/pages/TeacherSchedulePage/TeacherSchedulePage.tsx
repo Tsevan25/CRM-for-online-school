@@ -1,7 +1,5 @@
 import { TeacherSchedule } from '@/widgets/schedule/TeacherSchedule'
 
-const TeacherSchedulePage = () => {
+export const TeacherSchedulePage = () => {
   return <TeacherSchedule />
 }
-
-export default TeacherSchedulePage

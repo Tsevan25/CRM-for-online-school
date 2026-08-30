@@ -33,7 +33,9 @@
 }
 
 .weatherIcon {
-  font-size: 3rem;
+  width: 48px;
+  height: 48px;
+  color: var(--text-main);
 }
 
 .description {

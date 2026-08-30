@@ -1,1 +1,1 @@
-export {CreateLessonModal} from './ui/CreateLessonModal/CreateLessonModal';
+export {CreateLessonModal} from './ui/CreateLessonModal';

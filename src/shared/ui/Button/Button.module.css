@@ -21,7 +21,7 @@
 }
 
 .small {
-    padding: 0.25rem 0.75rem;
+  padding: 0.25rem 0.75rem;
   font-size: 0.8125rem;
   border-radius: 4px;
 }
@@ -57,7 +57,7 @@
 }
 
 .secondary:hover:not(:disabled) {
-  background-color: #f1f5f9;
+  background-color: var(--bg-hover);
 }
 
 .secondary:active:not(:disabled) {
@@ -97,14 +97,14 @@
   color: inherit;
   cursor: pointer;
   outline: inherit;
-    transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
-.icon-button:hover {
+.icon:hover {
   opacity: 0.7;
 }
 
-.icon-button:focus-visible {
+.icon:focus-visible {
   outline: 2px solid #0076ff;
   outline-offset: 2px;
 }

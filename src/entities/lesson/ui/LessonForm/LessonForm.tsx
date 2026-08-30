@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { lessonSchema, type LessonFormData } from '../../model/types'
-import Input from '@/shared/ui/Input/Input'
-import Button from '@/shared/ui/Button/Button'
-import Select from '@/shared/ui/Select/Select'
+import { Select, Button, Input, FormField } from '@/shared/ui'
 import styles from './LessonForm.module.css'
+
+const formatToLocalInput = (date: Date): string => {
+  const offset = date.getTimezoneOffset() * 60000
+  return new Date(date.getTime() - offset).toISOString().slice(0, 16)
+}
 
 interface StudentOption {
   id: string
@@ -61,8 +64,7 @@ export const LessonForm = ({
     if (startTime) {
       const startDate = new Date(startTime)
       const endDate = new Date(startDate.getTime() + 60 * 60 * 1000)
-      const endTimeStr = endDate.toISOString().slice(0, 16) 
-  
+      const endTimeStr = formatToLocalInput(endDate)
       if (!endTime || new Date(endTime) < endDate) {
         setValue('endTime', endTimeStr)
       }
@@ -93,24 +95,27 @@ export const LessonForm = ({
         options={teachers.map((t) => ({ value: t.id, label: t.full_name }))}
         {...register('teacherId')}
       />
-      <Input
-        label="Start Time"
-        type="datetime-local"
-        error={errors.startTime?.message}
-        {...register('startTime')}
-      />
-      <Input
-        label="End Time"
-        type="datetime-local"
-        error={errors.endTime?.message}
-        {...register('endTime')}
-      />
-      <Input
-        label="Price ($)"
-        type="number"
-        error={errors.price?.message}
-        {...register('price')}
-      />
+      <FormField label="Start Time" error={errors.startTime?.message}>
+        <Input
+          type="datetime-local"
+          error={!!errors.startTime}
+          {...register('startTime')}
+        />
+      </FormField>
+      <FormField label="End Time" error={errors.endTime?.message}>
+        <Input
+          type="datetime-local"
+          error={!!errors.endTime}
+          {...register('endTime')}
+        />
+      </FormField>
+      <FormField label="Price ($)" error={errors.price?.message}>
+        <Input
+          type="number"
+          error={!!errors.price}
+          {...register('price')}
+        />
+      </FormField>
       {rootError && <p className={styles.rootError}>{rootError}</p>}
       <div className={styles.actions}>
         <Button type="button" variant="secondary" onClick={onCancel}>

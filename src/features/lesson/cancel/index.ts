@@ -1,1 +1,1 @@
-export {CancelLessonModal} from './ui/CancelLessonAction/CancelLessonAction';
+export {CancelLessonModal} from './ui/CancelLessonModal';

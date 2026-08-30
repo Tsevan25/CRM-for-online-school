@@ -1,12 +1,20 @@
 .container {
-  display: flex;
-  flex-direction: column;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .positive {
-  color: #166534;
+  color: var(--text-success );
 }
 
 .negative {
-  color: #991b1b;
+  color: var(--text-danger);
+}
+
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 0.5rem;
+  }
 }

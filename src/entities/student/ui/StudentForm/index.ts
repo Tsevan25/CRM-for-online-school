@@ -1,1 +1,1 @@
-export {default as StudentForm} from './StudentForm';
+export { StudentForm} from './StudentForm';

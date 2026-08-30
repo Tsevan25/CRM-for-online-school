@@ -9,7 +9,7 @@ interface TypographyProps extends PropsWithChildren {
   className?: string
 }
 
-const Typography = ({
+export const Typography = ({
   variant = 'body',
   className,
   children,
@@ -31,4 +31,3 @@ const Typography = ({
   }
 }
 
-export default Typography

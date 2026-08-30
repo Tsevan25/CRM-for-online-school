@@ -1,1 +1,1 @@
-export {  EditLessonModal } from './ui/EditLessonModal/EditLessonModal'
+export {  EditLessonModal } from './ui/EditLessonModal'

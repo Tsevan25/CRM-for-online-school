@@ -1,6 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-
-import ProtectedRoute from "@/app/router/ProtectedRouter";
+import { RoleRoute } from "@/app/router/guards/RoleRoute";
+import {ProtectedRoute} from "@/app/router/guards/ProtectedRoute";
 import { MainLayout } from "@/app/layouts/MainLayout";
 
 import {LoginPage} from '@/pages/LoginPage';
@@ -30,13 +30,33 @@ export const router = createBrowserRouter([
           { index: true, element: <Navigate to="/dashboard" replace /> },
           { path: "home", element: <HomePage /> },
           { path: "dashboard", element: <DashboardPage /> },
-          { path: "students", element: <StudentsPage /> },
-          { path: "students/:id", element: <StudentDetailPage /> },
-          { path: "my-students", element: <MyStudentsPage /> },
-          { path: "transactions", element: <TransactionsPage /> },
-          { path: "schedule", element: <SchedulePage /> },
-          { path: "my-schedule", element: <TeacherSchedulePage /> },
-          { path: "users", element: <UsersPage /> },
+
+  
+          {
+            element: <RoleRoute roles={['admin']} />,
+            children: [
+              { path: "users", element: <UsersPage /> },
+            ],
+          },
+
+
+          {
+            element: <RoleRoute roles={['admin', 'manager']} />,
+            children: [
+              { path: "students", element: <StudentsPage /> },
+              { path: "students/:id", element: <StudentDetailPage /> },
+              { path: "transactions", element: <TransactionsPage /> },
+              { path: "schedule", element: <SchedulePage /> },
+            ],
+          },
+
+          {
+            element: <RoleRoute roles={['teacher']} />,
+            children: [
+              { path: "my-schedule", element: <TeacherSchedulePage /> },
+              { path: "my-students", element: <MyStudentsPage /> },
+            ],
+          },
         ],
       },
     ],

@@ -10,44 +10,47 @@ import styles from './StudentLessons.module.css'
 
 export const StudentLessons = () => {
   const { id } = useParams<{ id: string }>()
-  const { role } = useAppSelector((state) => state.auth) 
-const { data, loading, error } = useAsync(() => fetchLessonsByStudent(id!))
-const lessons = data ?? []
+  const { role } = useAppSelector((state) => state.auth)
+  const { data, loading, error } = useAsync(() => fetchLessonsByStudent(id!))
+  const lessons = data ?? []
 
   const columns: Column<LessonWithNames>[] = [
     {
       key: 'date',
       header: 'Date',
-      render: (l) => new Date(l.start_time).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
+      render: (l) =>
+        new Date(l.start_time).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
     },
     { key: 'teacher', header: 'Teacher', render: (l) => l.teacher?.full_name || '—' },
     {
       key: 'status',
       header: 'Status',
       render: (l) => (
-        <span className={`${styles.status} ${styles[l.status]}`}>
-          {l.status}
-        </span>
+        <span className={`${styles.status} ${styles[l.status]}`}>{l.status}</span>
       ),
     },
-     ...(role === 'admin' || role === 'manager'
-      ? [{
-          key: 'price',
-          header: 'Price',
-          render: (l: LessonWithNames) => formatCurrency(l.price),
-        }]
+    ...(role === 'admin' || role === 'manager'
+      ? [
+          {
+            key: 'price',
+            header: 'Price',
+            render: (l: LessonWithNames) => formatCurrency(l.price),
+          },
+        ]
       : []),
   ]
 
   return (
     <AsyncBoundary loading={loading} error={error}>
       <Card padding="large" className={styles.card}>
-        <Typography variant="h3" className={styles.title}>Lesson History</Typography>
+        <Typography variant="h3" className={styles.title}>
+          Lesson History
+        </Typography>
         {lessons.length === 0 ? (
           <EmptyState message="No lessons yet" />
         ) : (

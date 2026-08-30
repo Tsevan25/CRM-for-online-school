@@ -1,11 +1,10 @@
 import { useState } from 'react'
-import Button from '@/shared/ui/Button/Button'
-import { EditStudentModal } from '../EditStudentModal/EditStudentModal'
+import {Button} from '@/shared/ui'
+import { EditStudentModal } from '../EditStudentModal'
 import { updateStudent } from '../../api/updateStudent'
 import { useAppDispatch } from '@/app/store'
 import { addNotification } from '@/features/notifications'
-import type { StudentFormData } from '@/entities/student/model/types'
-import type { Student } from '@/entities/student/model/types'
+import type { StudentFormData, Student } from '@/entities/student'
 import { UserPen } from 'lucide-react'
 
 interface EditStudentActionProps {

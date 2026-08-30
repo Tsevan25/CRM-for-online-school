@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/app/store'
 import { Typography } from '@/shared/ui'
 import { Weather } from '@/widgets/weather/Weather'
-import { Todo } from '@/widgets/todo/Todo'
+import { Todo } from '@/features/todo/ui'
 import styles from './HomePage.module.css'
 
 export const HomePage = () => {

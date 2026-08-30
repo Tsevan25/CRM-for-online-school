@@ -7,6 +7,7 @@
 .label {
   font-size: 0.875rem;
   font-weight: 500;
+  color: var(--text-main);
 }
 
 .input {
@@ -27,7 +28,7 @@
 
 .input:focus {
   border-color: #2563eb;
-  box-shadow: 0 0 0 1px #2563eb; 
+  box-shadow: 0 0 0 1px #2563eb;
 }
 
 .inputError {
@@ -39,7 +40,10 @@
   box-shadow: 0 0 0 1px #ef4444;
 }
 
-.error {
-  font-size: 0.75rem;
-  color: #ef4444;
+
+@media (max-width: 768px) {
+  .input {
+    font-size: 1rem;
+    padding: 0.6rem 0.8rem;
+  }
 }

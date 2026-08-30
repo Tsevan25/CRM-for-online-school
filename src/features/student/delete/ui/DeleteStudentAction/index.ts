@@ -1,0 +1,1 @@
+export {DeleteStudentAction} from './DeleteStudentAction';

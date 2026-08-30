@@ -1,7 +1,5 @@
 import { AdminSchedule } from '@/widgets/schedule/AdminSchedule'
 
-const SchedulePage = () => {
+export const SchedulePage = () => {
   return <AdminSchedule />
 }
-
-export default SchedulePage
