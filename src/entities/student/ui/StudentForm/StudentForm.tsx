@@ -91,10 +91,10 @@ export const StudentForm = ({
       {rootError && <p className={styles.rootError}>{rootError}</p>}
 
       <div className={styles.actions}>
-        <Button type="button" variant="secondary" onClick={onCancel}>
+        <Button type="button" variant="icon" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit" variant="primary" disabled={isSubmitting}>
+        <Button type="submit" variant="icon" disabled={isSubmitting}>
           {isSubmitting ? "Saving..." : submitLabel}
         </Button>
       </div>
