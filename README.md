@@ -1,75 +1,40 @@
-# React + TypeScript + Vite
+ENGLISH SCHOOL CRM
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A CRM system for an online English language school, designed to manage students, teachers, schedules, and finances. Supports three user roles: Administrator, Manager, and Teacher.
 
-Currently, two official plugins are available:
+FEATURES:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Role-based authentication and protected routes
+- Dashboard with analytics and charts for each role
+- Student management (add, edit, delete, view details)
+- Lesson calendar with create, edit, cancel, and status change
+- Financial tracking (transactions, automatic payment on lesson creation)
+- User management (admin only)
+- Dark theme toggle and toast notifications
+- Local search in lists
+- Weather widget and personal todo list
+- Responsive layout for mobile devices
 
-## React Compiler
+Tech Stack:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 + TypeScript
+- Vite
+- Redux Toolkit
+- React Router
+- Supabase (Auth, Database, RLS, Edge Functions)
+- React Hook Form + Zod
+- Recharts
+- React Big Calendar
+- Feature-Sliced Design (FSD) architecture
 
-## Expanding the ESLint configuration
+PROJECT STRUCTURE (FEATURE-SLICED DESIGN):
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+src/
+app/ – app initialization, router, store, layouts
+pages/ – application pages
+widgets/ – composite UI blocks
+features/ – user scenarios and actions
+entities/ – business entities (student, lesson, transaction, user)
+shared/ – reusable UI components, hooks, utilities, API client
+test/ – test setup and utilities (optional)
+main.tsx – entry point
