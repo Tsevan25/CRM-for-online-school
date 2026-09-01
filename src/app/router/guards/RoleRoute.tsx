@@ -9,7 +9,7 @@ export const RoleRoute = ({ roles }: RoleRouteProps) => {
   const { role } = useAppSelector((state) => state.auth)
 
   if (!role || !roles.includes(role)) {
-    return <Navigate to="/dashboard" replace />
+    return <Navigate to="/home" replace />
   }
 
   return <Outlet />

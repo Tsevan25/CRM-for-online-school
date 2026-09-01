@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
       {
         element: <MainLayout />,
         children: [
-          { index: true, element: <Navigate to="/dashboard" replace /> },
+          { index: true, element: <Navigate to="/home" replace /> },
           { path: "home", element: <HomePage /> },
           { path: "dashboard", element: <DashboardPage /> },
           { path: "students/:id", element: <StudentDetailPage /> },

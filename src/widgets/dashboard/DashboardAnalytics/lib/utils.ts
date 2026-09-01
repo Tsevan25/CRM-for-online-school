@@ -23,17 +23,16 @@ export function sumLessonPayments(transactions: Transaction[], start: Date, end:
 
 export function buildMonthlyRevenue(transactions: Transaction[]): RevenueChartData[] {
   const now = new Date()
-  const result: RevenueChartData[] = []
-  for (let i = 5; i >= 0; i--) {
-    const date = new Date(now.getFullYear(), now.getMonth() - i, 1)
+
+  return Array.from({ length: 6 }, (_, index) => {
+    const date = new Date(now.getFullYear(), now.getMonth() - (5 - index), 1)
     const monthStart = startOfMonth(date)
     const monthEnd = endOfMonth(date)
-    result.push({
+    return {
       month: date.toLocaleDateString('en-US', { month: 'short' }),
       revenue: sumLessonPayments(transactions, monthStart, monthEnd),
-    })
-  }
-  return result
+    }
+  })
 }
 
 export function buildLessonsByDay(

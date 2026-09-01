@@ -1,0 +1,22 @@
+.event {
+  font-size: 0.8rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  background-color: var(--bg-event);
+  color: var(--text-event);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cancelled {
+  background-color: var(--bg-event-cancelled);
+  color: var(--text-event-cancelled);
+  text-decoration: line-through;
+}
+
+.completed {
+  background-color: var(--bg-event-completed);
+  color: var(--text-event-completed);
+}

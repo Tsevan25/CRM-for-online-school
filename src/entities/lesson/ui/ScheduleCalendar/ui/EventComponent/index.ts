@@ -1,0 +1,1 @@
+export {EventComponent} from './EventComponent';
