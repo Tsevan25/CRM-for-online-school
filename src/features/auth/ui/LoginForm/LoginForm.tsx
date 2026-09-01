@@ -57,7 +57,7 @@ export const LoginForm = () => {
       {errors.root && <p className={styles.rootError}>{errors.root.message}</p>}
 
       <Button type="submit" variant="primary" fullWidth disabled={isSubmitting}>
-        {isSubmitting ? "Вход..." : "Log In"}
+        {isSubmitting ? "Please wait..." : "Log In"}
       </Button>
     </form>
   );
