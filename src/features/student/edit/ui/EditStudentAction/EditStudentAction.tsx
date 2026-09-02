@@ -35,7 +35,7 @@ export const EditStudentAction = ({ student, onSuccess }: EditStudentActionProps
 
   return (
     <>
-      <Button variant="secondary" size="small" onClick={() => setIsOpen(true)} aria-label="Edit student">
+      <Button variant="icon" size="small" onClick={() => setIsOpen(true)} aria-label="Edit student">
         <UserPen />
       </Button>
       <EditStudentModal

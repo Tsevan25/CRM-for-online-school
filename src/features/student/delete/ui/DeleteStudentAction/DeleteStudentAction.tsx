@@ -30,7 +30,7 @@ export const DeleteStudentAction = ({ student, onSuccess }: DeleteStudentActionP
 
   return (
     <>
-      <Button variant="secondary" size="small" onClick={() => setIsOpen(true)} aria-label="Delete student">
+      <Button variant="icon" size="small" onClick={() => setIsOpen(true)} aria-label="Delete student">
         <Trash />
       </Button>
       <ConfirmDialog
